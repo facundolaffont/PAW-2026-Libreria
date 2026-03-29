@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PAWPrints</title>
+    <title>PAWPrints - Página principal</title>
 </head>
 <body>
     <header>
 
         <!-- Logo de la página -->
-        <a href="página-principal.html">
+        <a href="index.html">
             <img src="../imágenes/placeholder-logo.png"/>
         </a>
 
-        <!-- Buscador de libros. -->
+        <!-- Buscador de libros -->
         <form action="#" method="get">
             <input type="text" name="buscar" placeholder="Buscar por autor, título, género, ISBN"/>
             <input type="image" name="imagen-lupa" src="../imágenes/lupa.png" alt="Botón de búsqueda"/>
@@ -54,7 +54,7 @@
         <nav>
             <ul>
                 <li>
-                    <a href="página-principal.html">
+                    <a href="index.html">
                         <img src="../imágenes/breadcrumbs-home.png"/>
                     </a>
                     <p>Página principal</p>
@@ -64,7 +64,7 @@
 
     </header>
 
-    <!-- Contenido principal: los libros y su información de reserva. -->
+    <!-- Contenido principal: los libros y su información de reserva -->
     <main>
 
         <!-- Carrusel de libros de un género particular -->
@@ -74,25 +74,28 @@
             <!-- Libro -->
             <article>
                 <label for="libro1">
-                    <picture id="libro1">
-                        <source
-                            srcset="../imágenes/placeholder-libro-grande.png"
-                            media="( min-width: 600px )"
-                        >
-                        <img src="../imágenes/placeholder-libro-chica.png" alt="Descripción del libro.">
-                    </picture>
-                    <h3>Título libro</h3>
+                    <a href="detalle-libro.html?id=libro1">
+                        <picture id="libro1">
+                            <source
+                                srcset="../imágenes/placeholder-libro-grande.png"
+                                media="( min-width: 600px )"
+                            >
+                            <img src="../imágenes/placeholder-libro-chica.png" alt="Descripción del libro.">
+                        </picture>
+                        <h3>Título libro</h3>
+                    </a>
                     <p>Autor</p>
                 </label>
                 <p>Precio</p>
+                <price>Disponibilidad</price>
                 <button>Reservar</button>
             </article>
 
-            <!-- Se repite el artículo anterior tantas veces como libros promocionados haya del género. -->
+            <!-- Se repite el artículo anterior tantas veces como libros promocionados haya del género -->
 
         </section>
 
-        <!-- Se repite la sección anterior tantas veces como géneros haya. -->
+        <!-- Se repite la sección anterior tantas veces como géneros haya -->
 
     </main>
 
@@ -103,32 +106,30 @@
                 srcset="../imágenes/placeholder-promoción-grande.png" 
                 media="( min-width: 600px )"
             >
-            <img src="../imágenes/placeholder-promoción-chica.png" alt="Descripción de la promoción.">
+            <a href="promociones.html">
+                <img src="../imágenes/placeholder-promoción-chica.png" alt="Descripción de la promoción.">
+            </a>
         </picture>
     </section>
 
     <footer>
         <nav>
-            <address>
-                <ul>
-                    <li>
-                        <a href="https://maps.app.goo.gl/hmdmq35C8kbvMdKZA" target="_blank">
-                            <img src="../imágenes/ícono-dirección.png"/>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="mailto:pawprints@example.com">
-                            <img src="../imágenes/ícono-mail.png"/>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="tel:+1234567890">
-                            <img src="../imágenes/ícono-teléfono.png"/>
-                        </a>
-                    </li>
-                </ul>
-            </address>
             <ul>
+                <li>
+                    <a href="https://maps.app.goo.gl/hmdmq35C8kbvMdKZA" target="_blank">
+                        <img src="../imágenes/ícono-dirección.png"/>
+                    </a>
+                </li>
+                <li>
+                    <a href="mailto:pawprints@example.com">
+                        <img src="../imágenes/ícono-mail.png"/>
+                    </a>
+                </li>
+                <li>
+                    <a href="tel:+1234567890">
+                        <img src="../imágenes/ícono-teléfono.png"/>
+                    </a>
+                </li>
                 <li>
                     <a href="http://www.instagram.com/" target="_blank">
                         <img src="../imágenes/ícono-instagram.png"/>
@@ -145,6 +146,7 @@
                     </a>
                 </li>
             </ul>
+
         </nav>
     </footer>
 
