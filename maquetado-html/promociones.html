@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PAWPrints</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Promociones - PAWPrints</title>
 </head>
+
 <body>
+
     <header>
 
         <!-- Logo de la página -->
@@ -57,57 +60,87 @@
                     <a href="página-principal.html">
                         <img src="../imágenes/breadcrumbs-home.png"/>
                     </a>
-                    <p>Página principal</p>
+                    <p>Promociones</p>
                 </li>
             </ul>
         </nav>
 
     </header>
 
-    <!-- Contenido principal: los libros y su información de reserva. -->
+
     <main>
 
-        <!-- Carrusel de libros de un género particular -->
-        <section>
-            <h2>Género</h2>
 
-            <!-- Libro -->
-            <article>
-                <label for="libro1">
-                    <picture id="libro1">
-                        <source
-                            srcset="../imágenes/placeholder-libro-grande.png"
-                            media="( min-width: 600px )"
-                        >
-                        <img src="../imágenes/placeholder-libro-chica.png" alt="Descripción del libro.">
-                    </picture>
-                    <h3>Título libro</h3>
-                    <p>Autor</p>
-                </label>
-                <p>Precio</p>
-                <button>Reservar</button>
-            </article>
+        <h2>Promociones Bancarias</h2>
 
-            <!-- Se repite el artículo anterior tantas veces como libros promocionados haya del género. -->
+        <ul>
 
-        </section>
+            <li>
+                <article aria-label="Promoción Banco Nación">
+                    <figure>
+                <img src="../imágenes/placeholder-promocion-logo.png" alt="Logo Banco" />
+                </figure>
+                    <p>[Banco y texto explicativo de la promoción]</p>
+                    <h3>Explicación de los detalles:</h3>
+                    <p>
+                        <!-- Condiciones de la promoción, se cargan dinámicamente desde la base de datos -->
+                    </p>
+                </article>
+                <hr />
+            </li>
 
-        <!-- Se repite la sección anterior tantas veces como géneros haya. -->
+            <li>
+                <article aria-label="Promoción Banco Provincia">
+                    <figure>
+                <img src="../imágenes/placeholder-promocion-logo.png" alt="Logo Banco" />
+                </figure>
+                    <p>[Banco y texto explicativo de la promoción]</p>
+                    <h3>Explicación de los detalles:</h3>
+                    <p>
+                        <!-- Condiciones de la promoción, se cargan dinámicamente desde la base de datos -->
+                    </p>
+                </article>
+                <hr />
+            </li>
+
+            <li>
+                <article aria-label="Promoción Banco Galicia">
+                    <figure>
+                <img src="../imágenes/placeholder-promocion-logo.png" alt="Logo Banco" />
+                </figure>
+                    <p>[Banco y texto explicativo de la promoción]</p>
+                    <h3>Explicación de los detalles:</h3>
+                    <p>
+                        <!-- Condiciones de la promoción, se cargan dinámicamente desde la base de datos -->
+                    </p>
+                </article>
+                <hr />
+            </li>
+
+            <li>
+                <article aria-label="Promoción Banco Macro">
+                    <figure>
+                <img src="../imágenes/placeholder-promocion-logo.png" alt="Logo Banco" />
+                </figure>
+                    <p>[Banco y texto explicativo de la promoción]</p>
+                    <h3>Explicación de los detalles:</h3>
+                    <p>
+                        <!-- Condiciones de la promoción, se cargan dinámicamente desde la base de datos -->
+                    </p>
+                </article>
+                <hr />
+            </li>
+
+        
+
+        </ul>
+       
 
     </main>
 
-    <!-- Promociones -->
-    <section>
-        <picture>
-            <source
-                srcset="../imágenes/placeholder-promoción-grande.png" 
-                media="( min-width: 600px )"
-            >
-            <img src="../imágenes/placeholder-promoción-chica.png" alt="Descripción de la promoción.">
-        </picture>
-    </section>
 
-    <footer>
+
+   <footer>
         <nav>
             <address>
                 <ul>
@@ -147,6 +180,6 @@
             </ul>
         </nav>
     </footer>
-
 </body>
+
 </html>
