@@ -15,3 +15,8 @@ A continuación se detallará la información sobre cada entrega que se va solic
 ### 1era entrega (30/3)
 
 [Consigas de trabajo práctico 1](https://github.com/facundolaffont/PAW-2026-Libreria/raw/refs/heads/main/tps/tp1.pdf).
+
+Archivos de la entrega:
+* [Sitemap](https://raw.githubusercontent.com/facundolaffont/PAW-2026-Libreria/refs/heads/main/Sitemap.png).
+* [Wireframes](https://raw.githubusercontent.com/facundolaffont/PAW-2026-Libreria/refs/heads/main/Librer%C3%ADa%20-%20Wireframes.pdf).
+* [Maquetado](https://github.com/facundolaffont/PAW-2026-Libreria/tree/main/maquetado-html).
