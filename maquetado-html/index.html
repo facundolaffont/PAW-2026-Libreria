@@ -10,34 +10,30 @@
 
         <!-- Logo de la página -->
         <a href="index.html">
-            <img src="../imágenes/placeholder-logo.png"/>
+            <img src="../imágenes/placeholder-logo.png" alt="">
         </a>
 
         <!-- Buscador de libros -->
         <form action="#" method="get">
-            <input type="text" name="buscar" placeholder="Buscar por autor, título, género, ISBN"/>
-            <input type="image" name="imagen-lupa" src="../imágenes/lupa.png" alt="Botón de búsqueda"/>
+            <input type="text" name="buscar" placeholder="Buscar por autor, título, género, ISBN">
+            <input type="image" name="imagen-lupa" src="../imágenes/lupa.png" alt="Botón de búsqueda">
         </form>
 
         <!-- Enlace a Mi Cuenta -->
-        <label for="mi-cuenta">
-            <a href="mi-cuenta.html">
-                <img src="../imágenes/mi-cuenta.png" id="mi-cuenta"/>
-                <p>Mi Cuenta</p>
-            </a>
-        </label>
+        <a href="mi-cuenta.html">
+            <img src="../imágenes/mi-cuenta.png" id="mi-cuenta" alt="">
+            <p>Mi Cuenta</p>
+        </a>
 
         <!-- Enlace a Mis Reservas -->
-        <label for="mis-reservas">
-            <a href="reserva-libros.html">
-                <img src="../imágenes/mis-reservas.png" id="mis-reservas"/>
-                <p>Mis Reservas</p>
-            </a>
-        </label>
+        <a href="reserva-libros.html">
+            <img src="../imágenes/mis-reservas.png" id="mis-reservas" alt="">
+            <p>Mis Reservas</p>
+        </a>
 
         <!-- Menú hamburguesa -->
         <button type="button">
-            <img src="../imágenes/menú-hamburguesa.png"/>
+            <img src="../imágenes/menú-hamburguesa.png" alt="">
         </button>
 
         <!-- Menú de navegación -->
@@ -55,9 +51,9 @@
             <ul>
                 <li>
                     <a href="index.html">
-                        <img src="../imágenes/breadcrumbs-home.png"/>
+                        <img src="../imágenes/breadcrumbs-home.png" alt="">
                     </a>
-                    <p>Catalogo</p>
+                    <p>Página principal</p>
                 </li>
             </ul>
         </nav>
@@ -73,21 +69,18 @@
 
             <!-- Libro -->
             <article>
-                <label for="libro1">
-                    <a href="detalle-libro.html?id=libro1">
-                        <picture id="libro1">
-                            <source
-                                srcset="../imágenes/placeholder-libro-grande.png"
-                                media="( min-width: 600px )"
-                            >
-                            <img src="../imágenes/placeholder-libro-chica.png" alt="Descripción del libro.">
-                        </picture>
-                        <h3>Título libro</h3>
-                    </a>
-                    <p>Autor</p>
-                </label>
+                <a href="detalle-libro.html?id=libro1">
+                    <picture id="libro1">
+                        <source
+                            srcset="../imágenes/placeholder-libro-grande.png"
+                            media="( min-width: 600px )"
+                        >
+                        <img src="../imágenes/placeholder-libro-chica.png" alt="Descripción del libro.">
+                    </picture>
+                    <h3>Título libro</h3>
+                </a>
+                <p>Autor</p>
                 <p>Precio</p>
-                <price>Disponibilidad</price>
                 <button>Reservar</button>
             </article>
 
@@ -101,48 +94,59 @@
 
     <!-- Promociones -->
     <section>
-        <picture>
-            <source
-                srcset="../imágenes/placeholder-promoción-grande.png" 
-                media="( min-width: 600px )"
-            >
-            <a href="promociones.html">
-                <img src="../imágenes/placeholder-promoción-chica.png" alt="Descripción de la promoción.">
-            </a>
-        </picture>
+        
+        <h2>Promociones</h2>
+
+        <a href="promociones.html">
+            <picture>
+                <source
+                    srcset="../imágenes/placeholder-promoción-grande.png" 
+                    media="( min-width: 600px )"
+                >
+                    <img src="../imágenes/placeholder-promoción-chica.png" alt="Descripción de la promoción.">
+            </picture>
+        </a>
     </section>
 
     <footer>
         <nav>
+
+            <!-- Información de contacto -->
+            <address>
+                <ul>
+                    <li>
+                        <a href="https://maps.app.goo.gl/hmdmq35C8kbvMdKZA" target="_blank">
+                            <img src="../imágenes/ícono-dirección.png" alt="">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="mailto:pawprints@example.com">
+                            <img src="../imágenes/ícono-mail.png" alt="">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="tel:+1234567890">
+                            <img src="../imágenes/ícono-teléfono.png" alt="">
+                        </a>
+                    </li>
+                </ul>
+            </address>
+
+            <!-- Redes sociales -->
             <ul>
                 <li>
-                    <a href="https://maps.app.goo.gl/hmdmq35C8kbvMdKZA" target="_blank">
-                        <img src="../imágenes/ícono-dirección.png"/>
-                    </a>
-                </li>
-                <li>
-                    <a href="mailto:pawprints@example.com">
-                        <img src="../imágenes/ícono-mail.png"/>
-                    </a>
-                </li>
-                <li>
-                    <a href="tel:+1234567890">
-                        <img src="../imágenes/ícono-teléfono.png"/>
-                    </a>
-                </li>
-                <li>
                     <a href="http://www.instagram.com/" target="_blank">
-                        <img src="../imágenes/ícono-instagram.png"/>
+                        <img src="../imágenes/ícono-instagram.png" alt="">
                     </a>
                 </li>
                 <li>
                     <a href="http://www.facebook.com/" target="_blank">
-                        <img src="../imágenes/ícono-facebook.png"/>
+                        <img src="../imágenes/ícono-facebook.png" alt="">
                     </a>
                 </li>
                 <li>
                     <a href="http://www.x.com/" target="_blank">
-                        <img src="../imágenes/ícono-x.png"/>
+                        <img src="../imágenes/ícono-x.png" alt="">
                     </a>
                 </li>
             </ul>
