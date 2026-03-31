@@ -2,66 +2,67 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PAWPrints - Promociones</title>
+    <meta charset="UTF-8" >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    <title>Promociones - PAWPrints</title>
 </head>
 
 <body>
 
-    <header>
+        <header>
 
-        <!-- Logo de la página -->
-        <a href="index.html">
-            <img src="../imágenes/placeholder-logo.png"/>
-        </a>
+            <!-- Logo de la página -->
+            <a href="index.html">
+                <img src="../imágenes/placeholder-logo.png" alt="Logo de la pagina">
+            </a>
 
-        <!-- Buscador de libros. -->
-        <form action="#" method="get">
-            <input type="text" name="buscar" placeholder="Buscar por autor, título, género, ISBN"/>
-            <input type="image" name="imagen-lupa" src="../imágenes/lupa.png" alt="Botón de búsqueda"/>
-        </form>
+            <!-- Buscador de libros. -->
+            <form action="#" method="get">
+                <input type="text" name="buscar" placeholder="Buscar por autor, título, género, ISBN">
+                <input type="image" name="imagen-lupa" src="../imágenes/lupa.png" alt="Botón de búsqueda">
+            </form>
 
-        <!-- Enlace a Mi Cuenta -->
-        <a href="mi-cuenta.html">
-            <img src="../imágenes/mi-cuenta.png" id="mi-cuenta"/>
-            <p>Mi Cuenta</p>
-        </a>
+            <!-- Enlace a Mi Cuenta -->
+            <a href="mi-cuenta.html" class="mi-cuenta-link">
+                <img src="../imágenes/mi-cuenta.png" alt="Logo mi cuenta">
+                <span>Mi Cuenta</span>
+            </a>
 
-        <!-- Enlace a Mis Reservas -->
-        <a href="reserva-libros.html">
-            <img src="../imágenes/mis-reservas.png" id="mis-reservas"/>
-            <p>Mis Reservas</p>
-        </a>
+            <!-- Enlace a Mis Reservas -->
+            <a href="reserva-libros.html" id="mis-reservas" class="mis-reservas-link">
+                <img src="../imágenes/mis-reservas.png" alt="Logo mis reservas">
+                <span>Mis Reservas</span>
+            </a>
 
-        <!-- Menú hamburguesa -->
-        <button type="button">
-            <img src="../imágenes/menú-hamburguesa.png"/>
-        </button>
+            <!-- Menú hamburguesa -->
+            <button type="button">
+                <img src="../imágenes/menú-hamburguesa.png" alt="Logo menu hamburguesa">
+            </button>
 
-        <!-- Menú de navegación -->
-        <nav>
-            <ul>
-                <li><a href="catalogo.html"><p>Catálogo</p></a></li>
-                <li><a href="promociones.html"><p>Promociones</p></a></li>
-                <li><a href="reserva-libros.html"><p>Mis reservas</p></a></li>
-                <li><a href="nosotros.html"><p>Acerca de nosotros</p></a></li>
-            </ul>
-        </nav>
+            <!-- Menú de navegación -->
+            <nav>
+                <ul>
+                    <li><a href="catalogo.html"><p>Catálogo</p></a></li>
+                    <li><a href="promociones.html"><p>Promociones</p></a></li>
+                    <li><a href="reserva-libros.html"><p>Mis reservas</p></a></li>
+                    <li><a href="nosotros.html"><p>Acerca de nosotros</p></a></li>
+                </ul>
+            </nav>
 
-        <!-- Breadcrumbs -->
-        <nav>
-            <ul>
-                <li>
-                    <a href="index.html">
-                        <img src="../imágenes/breadcrumbs-home.png"/>
-                    </a>
-                    <p>Promociones</p>
-                </li>
-            </ul>
-        </nav>
 
-    </header>
+            <!-- Breadcrumbs -->
+            <nav>
+                <ul>
+                    <li>
+                        <a href="index.html">
+                            <img src="../imágenes/breadcrumbs-home.png" alt="Breadcrumbs">
+                        </a>
+                        <p>Catalogo</p>
+                    </li>
+                </ul>
+            </nav>
+
+        </header>
 
 
     <main>
@@ -74,7 +75,7 @@
             <li>
                 <article aria-label="Promoción Banco Nación">
                     <figure>
-                <img src="../imágenes/placeholder-promocion-logo.png" alt="Logo Banco" />
+                <img src="../imágenes/placeholder-promocion-logo.png" alt="Logo Banco" >
                 </figure>
                     <p>[Banco y texto explicativo de la promoción]</p>
                     <h3>Explicación de los detalles:</h3>
@@ -82,13 +83,13 @@
                         <!-- Condiciones de la promoción, se cargan dinámicamente desde la base de datos -->
                     </p>
                 </article>
-                <hr />
+                <hr>
             </li>
 
             <li>
                 <article aria-label="Promoción Banco Provincia">
                     <figure>
-                <img src="../imágenes/placeholder-promocion-logo.png" alt="Logo Banco" />
+                <img src="../imágenes/placeholder-promocion-logo.png" alt="Logo Banco" >
                 </figure>
                     <p>[Banco y texto explicativo de la promoción]</p>
                     <h3>Explicación de los detalles:</h3>
@@ -96,13 +97,13 @@
                         <!-- Condiciones de la promoción, se cargan dinámicamente desde la base de datos -->
                     </p>
                 </article>
-                <hr />
+                <hr>
             </li>
 
             <li>
                 <article aria-label="Promoción Banco Galicia">
                     <figure>
-                <img src="../imágenes/placeholder-promocion-logo.png" alt="Logo Banco" />
+                <img src="../imágenes/placeholder-promocion-logo.png" alt="Logo Banco" >
                 </figure>
                     <p>[Banco y texto explicativo de la promoción]</p>
                     <h3>Explicación de los detalles:</h3>
@@ -110,13 +111,13 @@
                         <!-- Condiciones de la promoción, se cargan dinámicamente desde la base de datos -->
                     </p>
                 </article>
-                <hr />
+                <hr >
             </li>
 
             <li>
                 <article aria-label="Promoción Banco Macro">
                     <figure>
-                <img src="../imágenes/placeholder-promocion-logo.png" alt="Logo Banco" />
+                <img src="../imágenes/placeholder-promocion-logo.png" alt="Logo Banco">
                 </figure>
                     <p>[Banco y texto explicativo de la promoción]</p>
                     <h3>Explicación de los detalles:</h3>
@@ -124,58 +125,58 @@
                         <!-- Condiciones de la promoción, se cargan dinámicamente desde la base de datos -->
                     </p>
                 </article>
-                <hr />
+                <hr>
             </li>
 
         
 
         </ul>
-       
+
 
     </main>
 
 
 
-   <footer>
-        <nav>
-            <address>
+    <footer>
+            <nav>
+                <address>
+                    <ul>
+                        <li>
+                            <a href="https://maps.app.goo.gl/hmdmq35C8kbvMdKZA" target="_blank">
+                                <img src="../imágenes/ícono-dirección.png" alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="mailto:pawprints@example.com">
+                                <img src="../imágenes/ícono-mail.png" alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="tel:+1234567890">
+                                <img src="../imágenes/ícono-teléfono.png" alt="">
+                            </a>
+                        </li>
+                    </ul>
+                </address>
                 <ul>
                     <li>
-                        <a href="https://maps.app.goo.gl/hmdmq35C8kbvMdKZA" target="_blank">
-                            <img src="../imágenes/ícono-dirección.png"/>
+                        <a href="http://www.instagram.com/" target="_blank">
+                            <img src="../imágenes/ícono-instagram.png" alt="">
                         </a>
                     </li>
                     <li>
-                        <a href="mailto:pawprints@example.com">
-                            <img src="../imágenes/ícono-mail.png"/>
+                        <a href="http://www.facebook.com/" target="_blank">
+                            <img src="../imágenes/ícono-facebook.png" alt="">
                         </a>
                     </li>
                     <li>
-                        <a href="tel:+1234567890">
-                            <img src="../imágenes/ícono-teléfono.png"/>
+                        <a href="http://www.x.com/" target="_blank">
+                            <img src="../imágenes/ícono-x.png" alt="">
                         </a>
                     </li>
                 </ul>
-            </address>
-            <ul>
-                <li>
-                    <a href="http://www.instagram.com/" target="_blank">
-                        <img src="../imágenes/ícono-instagram.png"/>
-                    </a>
-                </li>
-                <li>
-                    <a href="http://www.facebook.com/" target="_blank">
-                        <img src="../imágenes/ícono-facebook.png"/>
-                    </a>
-                </li>
-                <li>
-                    <a href="http://www.x.com/" target="_blank">
-                        <img src="../imágenes/ícono-x.png"/>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </footer>
+            </nav>
+        </footer>
 </body>
 
 </html>
