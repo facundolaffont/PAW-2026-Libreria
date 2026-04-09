@@ -1,0 +1,496 @@
+/* Estilos globales */
+
+:root {
+    
+    /* Variables */
+    --color-violeta: #5C068C;
+    --color-violeta-oscuro: #4a148c;
+    --color-placeholder: #666768;
+    --color-gris-claro: #D0D4DD;
+    --color-negro: black;
+    --color-blanco: white;
+    
+    /* Estilos */
+    font-size: 12px;
+}
+
+    
+/* Estilos dependientes del tipo de dispositivo */
+
+/* Estilos para desktop */
+@media screen and (min-width: 1000px) {
+
+    header div.header-superior {
+        border-top: 1.2rem solid var(--color-violeta);
+    }
+
+    .menu-hamburguesa {
+        display: none;
+    }
+
+    form.buscador {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0 auto;
+    }
+
+    .mi-cuenta p {
+        margin-left: 0.5rem;
+        margin-right: 3rem;
+        vertical-align: middle;
+    }
+
+    .campo-buscar {
+        width: clamp(10rem, 30vw, 50rem);
+    }
+
+    section.carrusel {
+        margin: 3rem auto;
+    }
+
+}
+
+/* Estilos para mobile */
+@media screen and (max-width: 999px) {
+    
+    .menu-hamburguesa {
+        display: inline-block;
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+    }
+
+    .menu-hamburguesa img {
+        width: 30px;
+        height: auto;
+    }
+
+    /* Header superior: wrap para que el buscador baje */
+    header div.header-superior {
+        flex-wrap: wrap;
+        padding-bottom: 0;
+    }
+
+    /* Logo centrado en mobile */
+    header a.logo {
+        flex: 1;
+        text-align: center;
+    }
+
+    .logo svg {
+        width: 100px;
+        height: auto;
+        margin-left: 2rem;
+    }
+
+    /* Buscador visible debajo del header, en su propia fila */
+    form.buscador {
+        display: flex;
+        align-items: center;
+        order: 1;
+        width: calc(100% + 2rem);
+        margin-left: -1rem;
+        margin-right: -1rem;
+        padding: 0.5rem 0 0;
+    }
+
+    /* Ocultar lupa en mobile */
+    form.buscador .lupa-buscar {
+        display: none;
+    }
+
+    form.buscador .campo-buscar {
+        width: 100%;
+    }
+
+    .mi-cuenta img {
+        margin-left: 0;
+        margin-right: 2rem;
+    }
+
+    .mi-cuenta p {
+        display: none;
+    }
+
+    nav.menu-navegacion {
+        display: none;
+    }
+
+    nav.breadcrumbs {
+        margin-top: -1rem;
+    }
+
+    /* Ocultar flechas del carrusel en mobile */
+    .flecha {
+        display: none;
+    }
+
+    /* Carrusel ocupa más ancho en mobile */
+    section.carrusel {
+        width: 92vw;
+        margin: 5rem 0 5rem auto;
+    }
+
+    section.carrusel h2 {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+    }
+
+    /* Libros más pequeños en mobile */
+    section.carrusel article.libro {
+        width: 160px;
+    }
+
+    /* Promociones ajustadas al ancho de pantalla */
+    section.carrusel article.promocion {
+        width: 80vw;
+    }
+
+    /* Footer: solo íconos, sin texto, en una fila */
+    footer {
+        padding: 1.5rem 1rem;
+        margin-top: 3rem;
+    }
+
+    footer address {
+        display: inline-block;
+        width: auto;
+    }
+
+    footer ul.footer-contacto {
+        width: auto;
+    }
+
+    footer ul.footer-contacto li {
+        display: inline-block;
+        width: auto;
+        height: auto;
+        line-height: normal;
+        margin-right: 2rem;
+    }
+
+    footer ul.footer-contacto p {
+        display: none;
+    }
+
+    footer ul.footer-redes-sociales {
+        width: auto;
+        text-align: right;
+        float: right;
+        padding-right: 1rem;
+    }
+
+    footer ul.footer-redes-sociales li {
+        display: inline-block;
+        width: auto;
+        height: auto;
+        line-height: normal;
+        margin-left: 2rem;
+    }
+
+    footer ul.footer-redes-sociales p {
+        display: none;
+    }
+
+}
+
+
+/* Estilos generales */
+
+a {
+    text-decoration: none;
+}
+
+.campo-buscar {
+    border-width: 0.075rem;
+    border-color: var(--color-violeta);
+    padding: 0.8rem;
+    font-size: 1rem;
+    color: var(--color-placeholder);
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+    font-family: sans-serif;
+    color: var(--color-violeta);
+}
+
+section {
+    margin: 5rem auto;
+}
+
+
+/* Estilos de la cabecera */
+
+header {
+    display: block;
+    text-align: center;
+}
+
+header div.header-superior {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;;
+    padding: 1rem;
+}
+
+header a.logo {
+    display: inline;
+}
+
+header form {
+    display: inline-block;
+}
+
+.lupa-buscar {
+    width: 20px;
+    height: auto;
+    vertical-align: middle;
+}
+
+.mi-cuenta img, .mis-reservas img {
+    width: 20px;
+    height: auto;
+    vertical-align: middle;
+}
+
+.mis-reservas img {
+    margin-right: 1rem;
+}
+
+.mis-reservas p {
+    display: none;
+}
+
+header p {
+    display: inline;
+}
+
+nav.menu-navegacion {
+    text-align: center;
+    border-top: 1px solid var(--color-gris-claro);
+    border-bottom: 1px solid var(--color-gris-claro);
+    padding: 0.3rem 0;
+}
+
+nav.menu-navegacion li {
+    display: inline;
+    margin: 0 1rem;
+}
+
+nav.breadcrumbs {
+    text-align: left;
+}
+
+nav.breadcrumbs ul {
+    display: inline-block;
+    padding: 0;
+    
+}
+
+.breadcrumbs-separador {
+    border-bottom: 1px solid var(--color-gris-claro);
+}
+
+nav.breadcrumbs li {
+    display: inline-flex;
+    align-items: stretch;
+}
+
+nav.breadcrumbs li > a,
+nav.breadcrumbs li > p {
+    border-bottom: 1px solid var(--color-gris-claro);
+    display: flex;
+    align-items: center;
+    padding: 0 0.25rem;
+}
+
+nav.breadcrumbs li > a {
+    padding-left: 0;
+}
+
+nav.breadcrumbs a {
+    line-height: 0;
+}
+
+nav.breadcrumbs img {
+    height: 25px;
+}
+
+
+/* Estilos del carrusel */
+
+section.carrusel {
+    display: block;
+    width: 80vw;
+    position: relative;
+}
+
+section.carrusel h2 {
+    text-align: left;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+
+.contenedor-carrusel {
+    display: block;
+    width: 100%;
+}
+
+.libros-container {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 10px 0;
+    justify-content: flex-start;
+}
+
+section.carrusel h3 {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+section.carrusel article.libro {
+    flex-shrink: 0;
+    width: 220px;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+section.carrusel article.promocion {
+    flex-shrink: 0;
+    width: 1200px;
+    margin-bottom: 1rem;
+}
+
+section.carrusel article > * {
+    margin: 0.7rem 0;
+}
+
+section.carrusel article img {
+    width: 100%;
+    margin-bottom: 0.7rem;
+}
+
+section.carrusel article button {
+    background-color: var(--color-violeta);
+    color: white;
+    font-weight: bold;
+    padding: 0.3rem 1.2rem;
+    border-radius: 0.3rem;
+    border-style: none;
+    cursor: pointer;
+}
+
+section.carrusel article button:hover {
+    background-color: var(--color-violeta-oscuro);
+}
+
+
+/* Flechas de carrusel */
+
+.flecha {
+    background-color: var(--color-violeta);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+}
+
+.flecha-izq {
+    left: -60px;
+}
+
+.flecha-der {
+    right: -60px;
+}
+
+.flecha::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    border-top: 3px solid var(--color-blanco);
+    border-right: 3px solid var(--color-blanco);
+}
+
+.flecha-izq::before {
+    transform: translate(-30%, -50%) rotate(-135deg);
+}
+
+.flecha-der::before {
+    transform: translate(-70%, -50%) rotate(45deg);
+}
+
+.flecha:hover {
+    background-color: var(--color-violeta-oscuro);
+}
+
+
+/* Estilos del footer */
+
+footer {
+    display: block;
+    text-align: center;
+    margin: 5rem auto 0 auto;
+	border-top: 1.2rem solid var(--color-violeta);
+    padding: 2rem 0;
+}
+
+footer img {
+    width: 2rem;
+    vertical-align: middle;
+}
+
+footer address {
+    display: inline-block;
+    text-align: left;
+    width: 45%;
+}
+
+footer ul {
+    display: inline-block;
+}
+
+footer ul li {
+    display: inline-block;
+    width: 100%;
+    height: 3.2rem;
+    line-height: 3.2rem;
+}
+
+footer p {
+    display: inline;
+    font-size: 1rem;
+}
+
+footer ul.footer-contacto {
+    width: 100%;
+}
+
+footer ul.footer-contacto p {
+    margin-left: 0.5rem;
+}
+
+footer ul.footer-redes-sociales {
+    width: 45%;
+    text-align: right;
+}
+
+footer ul.footer-redes-sociales img {
+    margin-bottom: 0.3rem;
+}
+
+footer ul.footer-redes-sociales p {
+    margin-right: 0.5rem;
+}
