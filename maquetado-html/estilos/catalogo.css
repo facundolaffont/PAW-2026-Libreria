@@ -1,0 +1,741 @@
+:root {
+  --color-primario:      #5c068c;
+  --color-primario-hover:#470a6b;
+  --color-fondo:         #f5f5f5;
+  --color-blanco:        #ffffff;
+  --color-texto:         #1a1a1a;
+  --color-texto-suave:   #555555;
+  --color-borde:         #dddddd;
+  --color-placeholder:   #cccccc;
+
+  --fuente-principal: sans-serif;
+  --sombra-tarjeta: 0 2px 6px rgba(0, 0, 0, 0.08);
+  --radio-borde: 6px;
+  --ancho-sidebar: 220px;
+  --gap-grilla: 16px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--fuente-principal);
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+img { display: block; max-width: 100%; }
+ul, ol { list-style: none; }
+a { text-decoration: none; color: inherit; }
+button { cursor: pointer; font-family: inherit; }
+
+
+/* Header */
+
+/* Barra violeta */
+header {
+  border-top: 10px solid var(--color-primario);
+  background-color: var(--color-blanco);
+}
+
+/* Fila superior*/
+header div.header-superior {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  background-color: var(--color-blanco);
+}
+
+/* Logo */
+header a.logo img {
+  height: 52px;
+  width: auto;
+  display: block;
+}
+
+/* Buscador */
+form.buscador {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--color-borde);
+  border-radius: 4px;
+  overflow: hidden;
+  width: 380px;
+  height: 36px;
+  background-color: var(--color-blanco);
+}
+
+form.buscador input[name="buscar"] {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 0 12px;
+  font-size: 13px;
+  color: var(--color-texto);
+  background: transparent;
+  width: auto;
+}
+
+form.buscador input[name="imagen-lupa"] {
+  height: 36px;
+  width: auto;
+  padding: 6px 10px;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* Mi Cuenta */
+.mi-cuenta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--color-texto);
+  white-space: nowrap;
+}
+
+.mi-cuenta img {
+  height: 20px;
+  width: auto;
+}
+
+.mi-cuenta p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--color-texto);
+  display: inline;
+}
+
+/* Mis Reservas */
+.mis-reservas {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--color-texto);
+  white-space: nowrap;
+}
+
+.mis-reservas img {
+  height: 20px;
+  width: auto;
+}
+
+.mis-reservas p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--color-texto);
+  display: inline;
+}
+
+/* Mc donalds */
+.menu-hamburguesa {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.menu-hamburguesa img {
+  height: 24px;
+  width: auto;
+}
+
+/* Nav */
+nav.menu-navegacion {
+  background-color: var(--color-blanco);
+  border-top: none;
+  border-bottom: none;
+  padding: 0;
+  text-align: center;
+}
+
+nav.menu-navegacion ul {
+  display: flex;
+  justify-content: center;
+}
+
+nav.menu-navegacion li {
+  display: inline;
+  margin: 0;
+}
+
+nav.menu-navegacion li a {
+  display: inline-block;
+  padding: 8px 24px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-primario);
+  text-decoration: none;
+  transition: background-color 0.15s;
+}
+
+nav.menu-navegacion li a p {
+  margin: 0;
+  color: var(--color-primario);
+  font-size: 13px;
+}
+
+nav.menu-navegacion li a:hover {
+  background-color: rgba(92, 6, 140, 0.06);
+}
+
+/* Link */
+nav.menu-navegacion li:nth-child(1) a {
+  font-weight: 700;
+  border-bottom: 3px solid var(--color-primario);
+}
+
+/* Breadcrumb */
+nav.breadcrumbs {
+  background-color: var(--color-blanco);
+  padding: 5px 24px;
+  text-align: left;
+  border-top: 1px solid var(--color-borde);
+}
+
+nav.breadcrumbs ul {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+nav.breadcrumbs ul li {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--color-texto-suave);
+}
+
+nav.breadcrumbs ul li a img {
+  height: 13px;
+  width: auto;
+}
+
+nav.breadcrumbs ul li p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--color-texto-suave);
+  display: inline;
+}
+
+nav.breadcrumbs ul li:not(:last-child)::after {
+  content: "›";
+  color: var(--color-texto-suave);
+  font-size: 13px;
+}
+
+
+/* Main */
+
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 24px;
+}
+
+/* Barra móvil ordenar/filtrar */
+main > div:first-child {
+  display: none;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+main > div:first-child button {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-borde);
+  background-color: var(--color-blanco);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* sidebar y grilla */
+main > div:last-child {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+
+/* Filtros */
+
+aside {
+  width: var(--ancho-sidebar);
+  flex-shrink: 0;
+  background-color: var(--color-primario);
+  border-radius: var(--radio-borde);
+  overflow: hidden;
+}
+
+aside h2 {
+  display: none;
+}
+
+aside form {
+  display: flex;
+  flex-direction: column;
+}
+
+aside details {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+aside details:last-of-type {
+  border-bottom: none;
+}
+
+aside summary {
+  list-style: none;
+  padding: 12px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-blanco);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.15s;
+}
+
+aside summary::-webkit-details-marker {
+  display: none;
+}
+
+aside summary::after {
+  content: "›";
+  font-size: 16px;
+  transition: transform 0.2s;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+aside details[open] > summary::after {
+  transform: rotate(90deg);
+}
+
+aside summary:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+aside details ul {
+  padding: 4px 14px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+aside details ul li label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--color-blanco);
+  cursor: pointer;
+}
+
+aside details ul li a {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.85);
+  display: block;
+  padding: 2px 0;
+}
+
+aside details ul li a:hover {
+  color: var(--color-blanco);
+}
+
+aside details div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 14px;
+}
+
+aside details div label {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+aside details div input[type="number"] {
+  padding: 6px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  font-size: 13px;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--color-blanco);
+}
+
+aside details input[type="text"] {
+  width: calc(100% - 28px);
+  margin: 0 14px 10px;
+  padding: 6px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  font-size: 13px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--color-blanco);
+}
+
+aside details label[for="filtro-autor"] {
+  display: none;
+}
+
+aside details button[type="submit"] {
+  margin: 4px 14px 10px;
+  padding: 6px 12px;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: var(--color-blanco);
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+aside form > button[type="submit"] {
+  margin: 12px 14px 6px;
+  padding: 9px;
+  background-color: rgba(255, 255, 255, 0.15);
+  color: var(--color-blanco);
+  border: none;
+  border-radius: var(--radio-borde);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+aside form > a {
+  display: block;
+  text-align: center;
+  margin: 0 14px 12px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: underline;
+}
+
+aside form > a:hover {
+  color: var(--color-blanco);
+}
+
+
+/* Seccion libros */
+
+section[aria-label="Listado de libros"] {
+  flex: 1;
+  min-width: 0;
+}
+
+section[aria-label="Listado de libros"] > h2 {
+  display: none;
+}
+
+section[aria-label="Listado de libros"] > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+section[aria-label="Listado de libros"] > div label {
+  font-size: 13px;
+  color: var(--color-texto-suave);
+  white-space: nowrap;
+}
+
+section[aria-label="Listado de libros"] > div select {
+  padding: 6px 10px;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-borde);
+  font-size: 13px;
+  background-color: var(--color-blanco);
+  color: var(--color-texto);
+}
+
+/* Grilla 4 columnas */
+section[aria-label="Listado de libros"] > ul {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--gap-grilla);
+  margin-bottom: 24px;
+}
+
+/* Tarjeta */
+article {
+  background-color: var(--color-blanco);
+  border-radius: var(--radio-borde);
+  border: 1px solid var(--color-borde);
+  box-shadow: var(--sombra-tarjeta);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+}
+
+article a {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+article picture {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  background-color: var(--color-placeholder);
+  overflow: hidden;
+}
+
+article picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+article a h3 {
+  padding: 8px 10px 4px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-texto);
+  line-height: 1.3;
+}
+
+article > p:nth-of-type(1) {
+  padding: 0 10px;
+  font-size: 12px;
+  color: var(--color-texto-suave);
+}
+
+article > p:nth-of-type(2) {
+  padding: 4px 10px 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-texto);
+}
+
+article > button {
+  margin: auto 10px 10px;
+  padding: 8px 0;
+  background-color: var(--color-primario);
+  color: var(--color-blanco);
+  border: none;
+  border-radius: var(--radio-borde);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  transition: background-color 0.2s;
+}
+
+article > button:hover {
+  background-color: var(--color-primario-hover);
+}
+
+
+/* Paginacion */
+
+nav[aria-label="Paginación del catálogo"] ol {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+nav[aria-label="Paginación del catálogo"] ol li a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-borde);
+  background-color: var(--color-blanco);
+  font-size: 13px;
+  color: var(--color-texto);
+  transition: background-color 0.15s, color 0.15s;
+}
+
+nav[aria-label="Paginación del catálogo"] ol li a:hover {
+  background-color: var(--color-primario);
+  color: var(--color-blanco);
+  border-color: var(--color-primario);
+}
+
+nav[aria-label="Paginación del catálogo"] ol li a[aria-current="page"] {
+  background-color: var(--color-primario);
+  color: var(--color-blanco);
+  border-color: var(--color-primario);
+  font-weight: 700;
+}
+
+nav[aria-label="Paginación del catálogo"] ol li:last-child a {
+  width: auto;
+  padding: 0 12px;
+}
+
+
+/* Footer */
+
+footer {
+  background-color: var(--color-primario);
+  color: var(--color-blanco);
+  padding: 20px 24px;
+  margin-top: 32px;
+}
+
+footer > nav {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+footer address ul {
+  display: flex;
+  gap: 16px;
+}
+
+footer address ul li a img {
+  height: 20px;
+  width: auto;
+}
+
+footer > nav > ul {
+  display: flex;
+  gap: 12px;
+}
+
+footer > nav > ul li a img {
+  height: 22px;
+  width: auto;
+  transition: opacity 0.2s;
+}
+
+footer > nav > ul li a:hover img {
+  opacity: 0.75;
+}
+
+/* Mobile*/
+
+@media (max-width: 1024px) {
+
+  /* Ocultar Mi Cuenta */
+  .mi-cuenta {
+    display: none;
+  }
+
+  /* Ocultar texto de Mis Reservas */
+  .mis-reservas p {
+    display: none;
+  }
+
+  /* Mostrar hamburguesa */
+  .menu-hamburguesa {
+    display: inline-block;
+  }
+
+  /* Buscador responsive */
+  form.buscador {
+    position: static;
+    transform: none;
+    width: 100%;
+    height: 40px;
+    border-radius: 4px;
+    border: 1px solid var(--color-borde);
+    order: 3;
+  }
+
+  header div.header-superior {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px 12px;
+  }
+
+  form.buscador input[name="buscar"] {
+    font-size: 14px;
+    padding: 0 12px;
+  }
+
+  /* Ocultar nav */
+  nav.menu-navegacion {
+    display: none;
+  }
+
+  /* Breadcrumb */
+  nav.breadcrumbs {
+    padding: 5px 12px;
+  }
+
+  main {
+    padding: 12px;
+  }
+
+  /* Mostrar barra móvil */
+  main > div:first-child {
+    display: flex;
+  }
+
+  /* Ocultar sidebar */
+  aside {
+    display: none;
+  }
+
+  /* Grilla adaptable */
+  section[aria-label="Listado de libros"] > ul {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  /* Ocultar ordenar desktop */
+  section[aria-label="Listado de libros"] > div {
+    display: none;
+  }
+
+  footer > nav {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+
+/*Dispositivoo Mouse*/
+@media (hover: hover) {
+
+  nav.menu-navegacion li a:hover {
+    background-color: rgba(92, 6, 140, 0.06);
+  }
+
+  article > button:hover {
+    background-color: var(--color-primario-hover);
+  }
+
+  nav[aria-label="Paginación del catálogo"] ol li a:hover {
+    background-color: var(--color-primario);
+    color: var(--color-blanco);
+    border-color: var(--color-primario);
+  }
+
+  footer > nav > ul li a:hover img {
+    opacity: 0.75;
+  }
+
+}
