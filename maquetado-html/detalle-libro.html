@@ -4,41 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PAWPrints - Detalle de libro</title>
+    <link rel="stylesheet" href="estilos/detalle-libro.css">
 </head>
 <body>
 
-    <header>
+    <header class="encabezado">
 
         <!-- Logo de la página -->
-        <a href="index.html">
+        <a href="index.html" class="logo">
             <img src="../imágenes/placeholder-logo.png" alt="">
         </a>
 
         <!-- Buscador de libros -->
-        <form action="#" method="get">
+        <form action="#" method="get" class="buscador">
             <input type="text" name="buscar" placeholder="Buscar por autor, título, género, ISBN">
             <input type="image" name="imagen-lupa" src="../imágenes/lupa.png" alt="Botón de búsqueda">
         </form>
 
         <!-- Enlace a Mi Cuenta -->
-        <a href="mi-cuenta.html">
+        <a href="mi-cuenta.html" class="mi-cuenta">
             <img src="../imágenes/mi-cuenta.png" id="mi-cuenta" alt="">
             <p>Mi Cuenta</p>
         </a>
 
         <!-- Enlace a Mis Reservas -->
-        <a href="reserva-libros.html">
+        <a href="reserva-libros.html" class="mis-reservas">
             <img src="../imágenes/mis-reservas.png" id="mis-reservas" alt="">
             <p>Mis Reservas</p>
         </a>
 
         <!-- Menú hamburguesa -->
-        <button type="button">
+        <button type="button" class="hamburguesa">
             <img src="../imágenes/menú-hamburguesa.png" alt="">
         </button>
 
         <!-- Menú de navegación -->
-        <nav>
+        <nav class="menu-nav">
             <ul>
                 <li><a href="catalogo.html"><p>Catálogo</p></a></li>
                 <li><a href="promociones.html"><p>Promociones</p></a></li>
@@ -49,7 +50,7 @@
 
 
         <!-- Breadcrumbs -->
-        <nav>
+        <nav class="migas-pan">
             <ul>
                 <li>
                     <a href="index.html">
@@ -70,19 +71,19 @@
             </ol>
         </nav>
 
-        <section>
-            
+        <section class="contenido-detalle">
+
             <h2>Detalle del libro</h2>
 
-            <figure>
+            <figure class="portada">
                 <img src="portada-harry-potter.jpg" alt="Portada del libro Harry Potter y la piedra filosofal">
             </figure>
 
-            <article>
-                <h3>Harry Potter y la piedra filosofal</h3>
-                <p>por J. K. Rowling</p>
+            <article class="info-libro">
+                <h3 class="titulo-libro">Harry Potter y la piedra filosofal</h3>
+                <p class="autor">por J. K. Rowling</p>
 
-                <section>
+                <section class="seccion-descripcion">
                     <h4>Descripcion</h4>
                     <p>
                         Lorem Ipsum is simply dummy text of the printing and typesetting industry.
@@ -96,23 +97,23 @@
                     </p>
                 </section>
 
-                <section>
+                <section class="seccion-generos">
                     <h4>Géneros</h4>
                     <p>Novela, Literatura infantil, Literatura fantástica, Baja fantasía</p>
                 </section>
 
-                <button type="button">Agregar a mis reservas</button>
+                <button type="button" class="boton-reservar">Agregar a mis reservas</button>
             </article>
         </section>
 
     </main>
 
-    <footer>
-        <nav>
+    <footer class="pie-pagina">
+        <nav class="pie-nav">
 
             <!-- Información de contacto -->
             <address>
-                <ul>
+                <ul class="datos-contacto">
                     <li>
                         <a href="https://maps.app.goo.gl/hmdmq35C8kbvMdKZA" target="_blank">
                             <img src="../imágenes/ícono-dirección.png" alt="">
@@ -132,7 +133,7 @@
             </address>
 
             <!-- Redes sociales -->
-            <ul>
+            <ul class="redes-sociales">
                 <li>
                     <a href="http://www.instagram.com/" target="_blank">
                         <img src="../imágenes/ícono-instagram.png" alt="">
