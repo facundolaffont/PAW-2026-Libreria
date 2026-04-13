@@ -592,11 +592,13 @@ nav[aria-label="Paginación del catálogo"] ol li:last-child a {
 
 /* Footer */
 
+
 footer {
-  background-color: var(--color-primario);
-  color: var(--color-blanco);
-  padding: 20px 24px;
-  margin-top: 32px;
+  background-color: var(--color-blanco);
+  border-top: 10px solid var(--color-primario);
+  padding: 30px 20px;
+  color: #333;
+  text-align: center;
 }
 
 footer > nav {
