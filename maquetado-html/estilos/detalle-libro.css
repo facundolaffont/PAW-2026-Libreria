@@ -46,8 +46,8 @@ main {
 }
 
 .portada {
-    flex: 3;
     margin: 0;
+    flex: 1;
 }
 
 .portada img {
@@ -92,7 +92,7 @@ main {
 }
 
 .boton-reservar {
-    background-color: #1a1a1a;
+    background-color: var(--color-violeta);
     color: white;
     border: none;
     padding: 16px 40px;
