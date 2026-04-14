@@ -20,130 +20,9 @@ a {
 }
 
 img {
-    display: block;
     max-width: 100%;
 }
 
-/* ===== ENCABEZADO ===== */
-.encabezado {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 16px;
-    background-color: #5c2d91;
-    padding: 12px 24px 0;
-    color: white;
-}
-
-.hamburguesa {
-    order: 1;
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
-.hamburguesa img {
-    height: 22px;
-}
-
-.logo {
-    order: 2;
-}
-
-.logo img {
-    height: 40px;
-}
-
-.buscador {
-    order: 3;
-    flex: 1;
-    display: flex;
-    background: white;
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-.buscador input[type="text"] {
-    flex: 1;
-    border: none;
-    padding: 8px 12px;
-    font-size: 14px;
-    outline: none;
-    color: #1a1a1a;
-}
-
-.buscador input[type="image"] {
-    padding: 6px 10px;
-    height: 36px;
-    background: white;
-}
-
-.mi-cuenta {
-    order: 4;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    color: white;
-    font-size: 13px;
-}
-
-.mi-cuenta img {
-    height: 24px;
-}
-
-.mis-reservas {
-    order: 5;
-    display: flex;
-    align-items: center;
-    color: white;
-}
-
-.mis-reservas img {
-    height: 28px;
-}
-
-.mis-reservas p {
-    display: none;
-}
-
-.menu-nav {
-    order: 6;
-    width: 100%;
-    display: none;
-}
-
-/* Migas de pan — barra blanca debajo del encabezado */
-.migas-pan {
-    order: 7;
-    width: calc(100% + 48px);
-    margin: 12px -24px 0;
-    padding: 8px 24px;
-    background-color: white;
-    color: #1a1a1a;
-    font-size: 13px;
-}
-
-.migas-pan ul {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
-.migas-pan li {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
-.migas-pan li img {
-    height: 14px;
-    display: inline-block;
-}
-
-.migas-pan p::before {
-    content: '› ';
-    color: #888;
-}
 
 /* ===== MAIN ===== */
 main > nav {
@@ -173,7 +52,6 @@ main {
 
 .portada img {
     width: 100%;
-    height: calc(100vh - 260px);
     object-fit: contain;
     object-position: top left;
 }
@@ -228,60 +106,12 @@ main {
     background-color: #333;
 }
 
-/* ===== PIE DE PAGINA ===== */
-.pie-pagina {
-    background-color: #5c2d91;
-    padding: 20px 24px;
-    margin-top: 40px;
-}
-
-.pie-nav {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.datos-contacto,
-.redes-sociales {
-    display: flex;
-    gap: 24px;
-    align-items: center;
-}
-
-.pie-pagina img {
-    height: 24px;
-}
 
 /* ===== MOBILE ===== */
-@media (max-width: 768px) {
-    .encabezado {
-        padding: 12px 16px 0;
-    }
-
-    .logo {
-        flex: 1;
-        display: flex;
-        justify-content: center;
-    }
-
-    .buscador {
-        display: none;
-    }
-
-    .mi-cuenta p {
-        display: none;
-    }
-
-    .migas-pan {
-        width: calc(100% + 32px);
-        margin: 8px -16px 0;
-        padding: 8px 16px;
-    }
+@media (max-width: 999px) {
 
     main {
-        padding: 0;
+        padding: 2rem 0 0 0;
     }
 
     .contenido-detalle {
@@ -305,13 +135,4 @@ main {
         text-align: center;
     }
 
-    .pie-pagina {
-        padding: 16px;
-        margin-top: 20px;
-    }
-
-    .datos-contacto,
-    .redes-sociales {
-        gap: 16px;
-    }
 }
