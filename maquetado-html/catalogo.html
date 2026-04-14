@@ -100,15 +100,29 @@
                     <h2>Filtros</h2>
 
                     <form action="/catalogo" method="get">
-                        <details>
+                        <details class="color-blanco">
                             <summary>Categorías</summary>
                             <nav aria-label="Filtrar por categoría">
                                 <ul>
-                                    <!--
-                    Las categorías se cargan dinámicamente desde la base de datos.
-                    Cada ítem será:
-                    <li><a href="/catalogo?categoria=ID">Nombre categoría</a></li>
-                    -->
+                                    <!-- Las categorías se cargan dinámicamente desde la base de datos. -->
+                                    <li>
+                                        <label>
+                                            <input type="checkbox" name="categoria" value="ID">
+                                            Categoría A
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label>
+                                            <input type="checkbox" name="categoria" value="ID">
+                                            Categoría B
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label>
+                                            <input type="checkbox" name="categoria" value="ID">
+                                            Categoría C
+                                        </label>
+                                    </li>
                                 </ul>
                             </nav>
                         </details>
@@ -117,44 +131,37 @@
                             <summary>Precio</summary>
                             <div>
                                 <label for="precio-min">Desde</label>
-                                <input type="number" id="precio-min" name="precio_min" min="0" placeholder="$ 0" >
+                                <input type="number" id="precio-min" name="precio_min" min=0 placeholder="$ 0" >
                             </div>
                             <div>
                                 <label for="precio-max">Hasta</label>
-                                <input type="number" id="precio-max" name="precio_max" min="0" placeholder="$ 99999" >
+                                <input type="number" id="precio-max" name="precio_max" min=0 placeholder="$ 99999" >
                             </div>
-                            <button type="submit">Aplicar</button>
                         </details>
 
                         <details>
                             <summary>Editorial</summary>
                             <ul>
-                                <!--
-                    Las editoriales se cargan dinámicamente desde la base de datos.
-                    Cada ítem será:
-                    <li>
-                    <label>
-                        <input type="checkbox" name="editorial" value="ID" />
-                        Nombre editorial
-                    </label>
-                    </li>
-                -->
+                                <!-- Las editoriales se cargan dinámicamente desde la base de datos. -->
+                                <li>
+                                    <label>
+                                        <input type="checkbox" name="editorial" value="ID" />
+                                        Nombre editorial
+                                    </label>
+                                </li>
                             </ul>
                         </details>
 
                         <details>
                             <summary>Idioma</summary>
                             <ul>
-                                <!--
-                    Los idiomas se cargan dinámicamente desde la base de datos.
-                    Cada ítem será:
-                    <li>
-                    <label>
-                        <input type="checkbox" name="idioma" value="ID" />
-                        Nombre idioma
-                    </label>
-                    </li>
-                -->
+                                <!-- Los idiomas se cargan dinámicamente desde la base de datos. -->
+                                <li>
+                                <label>
+                                    <input type="checkbox" name="idioma" value="ID" />
+                                    Nombre idioma
+                                </label>
+                                </li>
                             </ul>
                         </details>
 
@@ -164,8 +171,8 @@
                             <input type="text" id="filtro-autor" name="autor" placeholder="Nombre del autor" >
                         </details>
 
-                        <button type="submit">Aplicar filtros</button>
-                        <a href="/catalogo">Limpiar filtros</a>
+                        <button type="submit" disabled>Aplicar filtros</button>
+                        <a href="#">Limpiar filtros</a>
 
                     </form>
                 </aside>
