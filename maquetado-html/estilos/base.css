@@ -1,0 +1,339 @@
+/* Estilos globales */
+
+:root {
+    
+    /* Variables */
+    --color-violeta: #5C068C;
+    --color-violeta-oscuro: #4a148c;
+    --color-placeholder: #666768;
+    --color-gris-claro: #D0D4DD;
+    --color-negro: black;
+    --color-blanco: white;
+    
+    /* Generales */
+    font-size: 12px;
+}
+
+    
+/*** Estilos dependientes del tipo de dispositivo ***/
+
+/* Estilos para desktop */
+@media screen and (min-width: 1000px) {
+
+    header div.header-superior {
+        border-top: 1.2rem solid var(--color-violeta);
+    }
+
+    .menu-hamburguesa {
+        display: none;
+    }
+
+    form.buscador {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0 auto;
+    }
+
+    .mi-cuenta p {
+        margin-left: 0.5rem;
+        margin-right: 3rem;
+        vertical-align: middle;
+    }
+
+    .campo-buscar {
+        width: clamp(10rem, 30vw, 50rem);
+    }
+
+}
+
+/* Estilos para mobile */
+@media screen and (max-width: 999px) {
+    
+    .menu-hamburguesa {
+        display: inline-block;
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+    }
+
+    .menu-hamburguesa img {
+        width: 30px;
+        height: auto;
+    }
+
+    header div.header-superior {
+        flex-wrap: wrap;
+        padding-bottom: 0;
+    }
+
+    header a.logo {
+        flex: 1;
+        text-align: center;
+    }
+
+    .logo svg {
+        width: 100px;
+        height: auto;
+        margin-left: 2rem;
+    }
+
+    form.buscador {
+        display: flex;
+        align-items: center;
+        order: 1;
+        width: calc(100% + 2rem);
+        margin-left: -1rem;
+        margin-right: -1rem;
+        padding: 0.5rem 0 0;
+    }
+
+    form.buscador .lupa-buscar {
+        display: none;
+    }
+
+    form.buscador .campo-buscar {
+        width: 100%;
+    }
+
+    .mi-cuenta img {
+        margin-left: 0;
+        margin-right: 2rem;
+    }
+
+    .mi-cuenta p {
+        display: none;
+    }
+
+    nav.menu-navegacion {
+        display: none;
+    }
+
+    nav.breadcrumbs {
+        margin-top: -1rem;
+    }
+
+    footer {
+        padding: 1.5rem 1rem;
+        margin-top: 3rem;
+    }
+
+    footer address {
+        display: inline-block;
+        width: auto;
+    }
+
+    footer ul.footer-contacto {
+        width: auto;
+    }
+
+    footer ul.footer-contacto li {
+        display: inline-block;
+        width: auto;
+        height: auto;
+        line-height: normal;
+        margin-right: 2rem;
+    }
+
+    footer ul.footer-contacto p {
+        display: none;
+    }
+
+    footer ul.footer-redes-sociales {
+        width: auto;
+        text-align: right;
+        float: right;
+        padding-right: 1rem;
+    }
+
+    footer ul.footer-redes-sociales li {
+        display: inline-block;
+        width: auto;
+        height: auto;
+        line-height: normal;
+        margin-left: 2rem;
+    }
+
+    footer ul.footer-redes-sociales p {
+        display: none;
+    }
+
+}
+
+
+/* Estilos generales */
+
+a {
+    text-decoration: none;
+}
+
+.campo-buscar {
+    border-width: 0.075rem;
+    border-color: var(--color-violeta);
+    padding: 0.8rem;
+    font-size: 1rem;
+    color: var(--color-placeholder);
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+    font-family: sans-serif;
+    color: var(--color-violeta);
+}
+
+
+/* Estilos de la cabecera */
+
+header {
+    display: block;
+    text-align: center;
+}
+
+header div.header-superior {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;;
+    padding: 1rem;
+}
+
+header a.logo {
+    display: inline;
+}
+
+header form {
+    display: inline-block;
+}
+
+.lupa-buscar {
+    width: 20px;
+    height: auto;
+    vertical-align: middle;
+}
+
+.mi-cuenta img, .mis-reservas img {
+    width: 20px;
+    height: auto;
+    vertical-align: middle;
+}
+
+.mis-reservas img {
+    margin-right: 1rem;
+}
+
+.mis-reservas p {
+    display: none;
+}
+
+header p {
+    display: inline;
+}
+
+nav.menu-navegacion {
+    text-align: center;
+    border-top: 1px solid var(--color-gris-claro);
+    border-bottom: 1px solid var(--color-gris-claro);
+    padding: 0.3rem 0;
+}
+
+nav.menu-navegacion li {
+    display: inline;
+    margin: 0 1rem;
+}
+
+nav.breadcrumbs {
+    text-align: left;
+}
+
+nav.breadcrumbs ul {
+    display: inline-block;
+    padding: 0;
+    
+}
+
+.breadcrumbs-separador {
+    border-bottom: 1px solid var(--color-gris-claro);
+}
+
+nav.breadcrumbs li {
+    display: inline-flex;
+    align-items: stretch;
+}
+
+nav.breadcrumbs li > a,
+nav.breadcrumbs li > p {
+    border-bottom: 1px solid var(--color-gris-claro);
+    display: flex;
+    align-items: center;
+    padding: 0 0.25rem;
+}
+
+nav.breadcrumbs li > a {
+    padding-left: 0;
+}
+
+nav.breadcrumbs a {
+    line-height: 0;
+}
+
+nav.breadcrumbs img {
+    height: 25px;
+}
+
+
+/* Estilos del footer */
+
+footer {
+    display: block;
+    text-align: center;
+    margin: 5rem auto 0 auto;
+	border-top: 1.2rem solid var(--color-violeta);
+    padding: 2rem 0;
+}
+
+footer img {
+    width: 2rem;
+    vertical-align: middle;
+}
+
+footer address {
+    display: inline-block;
+    text-align: left;
+    width: 45%;
+}
+
+footer ul {
+    display: inline-block;
+}
+
+footer ul li {
+    display: inline-block;
+    width: 100%;
+    height: 3.2rem;
+    line-height: 3.2rem;
+}
+
+footer p {
+    display: inline;
+    font-size: 1rem;
+}
+
+footer ul.footer-contacto {
+    width: 100%;
+}
+
+footer ul.footer-contacto p {
+    margin-left: 0.5rem;
+}
+
+footer ul.footer-redes-sociales {
+    width: 45%;
+    text-align: right;
+}
+
+footer ul.footer-redes-sociales img {
+    margin-bottom: 0.3rem;
+}
+
+footer ul.footer-redes-sociales p {
+    margin-right: 0.5rem;
+}
