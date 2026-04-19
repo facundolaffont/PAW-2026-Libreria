@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8" >
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" >        
-    <link rel="stylesheet" href="estilos/reset.css">
-    <link rel="stylesheet" href="estilos/base.css">
-    <link rel="stylesheet" href="estilos/promociones.css">
-    <title>Promociones - PAWPrints</title>
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAWPrints - Reserva de libros</title>
 
+    <!-- Reset CSS -->
+    <link rel="stylesheet" href="resources/styles/reset.css">
+
+    <!-- Estilo base -->
+    <link rel="stylesheet" href="resources/styles/base.css">
+
+    <!-- Estilo específico de esta página -->
+    <link rel="stylesheet" href="resources/styles/reservation.css">
+</head>
 <body>
 
     <header>
@@ -18,11 +22,11 @@
 
             <!-- Menú hamburguesa -->
             <button type="button" class="menu-hamburguesa">
-                <img src="../imágenes/menú-hamburguesa.png" alt="">
+                <img src="resources/images/menú-hamburguesa.png" alt="">
             </button>
 
             <!-- Logo de la página -->
-            <a href="index.html" class="logo">
+            <a href="index.view.php" class="logo">
                 <svg width="159" height="59" viewBox="0 0 159 59" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M54.8948 58.5729H52.2732V41.9956H54.8948V44.0948C55.8243 42.6946 57.2379 41.9956 59.1377 41.9956C60.8426 41.9956 62.2326 42.5424 63.3121 43.6381C64.3916 44.7381 64.9335 46.2305 64.9335 48.1261C64.9335 48.8766 64.8264 49.6099 64.6101 50.3304C64.3916 51.0444 64.0532 51.692 63.5948 52.2667C63.1344 52.8413 62.5368 53.3023 61.8064 53.6497C61.0782 53.9949 60.2022 54.1665 59.1848 54.1665C57.2529 54.1665 55.8243 53.4353 54.8948 51.975V58.5729ZM58.5916 51.9279C59.746 51.9279 60.652 51.5355 61.3052 50.7528C61.9585 49.968 62.2862 49.0481 62.2862 47.9888C62.2862 46.9339 61.9628 46.0204 61.316 45.2485C60.6713 44.4808 59.761 44.0948 58.5916 44.0948C57.42 44.0948 56.5118 44.4765 55.865 45.2377C55.2182 46.0032 54.8948 46.9188 54.8948 47.9888C54.8948 49.2411 55.2525 50.2124 55.9678 50.8965C56.6832 51.5869 57.5571 51.9279 58.5916 51.9279Z" fill="#5C068C"/>
                 <path d="M78.9538 54.1429H76.3301V41.9956H78.9538V44.4143C79.8512 42.8019 81.2498 41.9956 83.1518 41.9956V44.4143C81.8281 44.4143 80.8193 44.7188 80.1275 45.3278C79.4357 45.9368 79.0459 46.7602 78.9538 47.7959V54.1429Z" fill="#5C068C"/>
@@ -41,18 +45,18 @@
             <!-- Buscador de libros -->
             <form action="#" method="get" class="buscador">
                 <input type="text" name="buscar" class="campo-buscar" placeholder="Buscar por autor, título, género, ISBN">
-                <input type="image" name="imagen-lupa" class="lupa-buscar" src="../imágenes/lupa.png" alt="Botón de búsqueda">
+                <input type="image" name="imagen-lupa" class="lupa-buscar" src="resources/images/lupa.png" alt="Botón de búsqueda">
             </form>
 
             <!-- Enlace a Mi Cuenta -->
             <a href="#" class="mi-cuenta">
-                <img src="../imágenes/mi-cuenta.png" id="mi-cuenta" alt="">
+                <img src="resources/images/mi-cuenta.png" id="mi-cuenta" alt="">
                 <p>Mi Cuenta</p>
             </a>
 
             <!-- Enlace a Mis Reservas -->
-            <a href="reserva-libros.html" class="mis-reservas">
-                <img src="../imágenes/mis-reservas.png" id="mis-reservas" alt="">
+            <a href="reservation.view.php" class="mis-reservas">
+                <img src="resources/images/mis-reservas.png" id="mis-reservas" alt="">
                 <p>Mis Reservas</p>
             </a>
 
@@ -61,10 +65,10 @@
         <!-- Menú de navegación -->
         <nav class="menu-navegacion">
             <ul>
-                <li><a href="catalogo.html"><p>Catálogo</p></a></li>
-                <li><a href="promociones.html"><p>Promociones</p></a></li>
-                <li><a href="reserva-libros.html"><p>Mis reservas</p></a></li>
-                <li><a href="nosotros.html"><p>Acerca de nosotros</p></a></li>
+                <li><a href="catalog.view.php"><p>Catálogo</p></a></li>
+                <li><a href="promotions.view.php"><p>Promociones</p></a></li>
+                <li><a href="reservation.view.php"><p>Mis reservas</p></a></li>
+                <li><a href="about-us.view.php"><p>Acerca de nosotros</p></a></li>
             </ul>
         </nav>
 
@@ -72,91 +76,90 @@
         <nav class="breadcrumbs">
             <ul>
                 <li>
-                    <a href="index.html">
-                        <img src="../imágenes/breadcrumbs-home.png" alt="">
+                    <a href="index.view.php">
+                        <img src="resources/images/breadcrumbs-home.png" alt="">
                     </a>
-                    <p>Promociones</p>
-                    <img src="../imágenes/breadcrumbs-home-punta-flecha.png" alt="">
+                    <p>Mis reservas</p>
+                    <img src="resources/images/breadcrumbs-home-punta-flecha.png" alt="">
                 </li>
             </ul>
         </nav>
 
     </header>
 
-
     <main>
 
+        <nav aria-label="Migas de pan">
+            <ol>
+                <li><a href="#">Reserva de libros</a></li>
+            </ol>
+        </nav>
 
-        <h2>Promociones Bancarias</h2>
+        <h1>Mi reserva</h1>
 
-        <ul>
+        <section>
+            <h2>Libros seleccionados</h2>
 
-            <li>
-                <article aria-label="Promoción Banco Nación">
-                    <figure>
-                <img src="../imágenes/placeholder-promocion-logo.png" alt="Logo Banco" >
-                </figure>
-                    <p>[Banco y texto explicativo de la promoción]</p>
-                    <h3>Explicación de los detalles:</h3>
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi hic dolorem fugit a cumque ut doloribus quod ad in illo, laudantium aut unde quibusdam. Expedita sed officia dolorum eaque adipisci!
-                    </p>
-                </article>
-                <hr>
-            </li>
+            <ul>
+                <li>
+                    <article>
+                        <img src="resources/images/portada-harry-potter.jpg" alt="Portada de Harry potter y la piedra filosofal">
+                        <div>
+                            <h3>Harry potter y la piedra filosofal</h3>
+                            <p>J. K. Rowling</p>
+                        </div>
+                        <button type="button" aria-label="Eliminar Harry potter y la piedra filosofal de la reserva"><img class="boton-eliminar" src="resources/images/ícono-eliminar.png" alt=""></button>
+                    </article>
+                </li>
+                <li>
+                    <article>
+                        <img src="resources/images/portada-harry-potter.jpg" alt="Portada de Harry potter y la piedra filosofal">
+                        <div>
+                            <h3>Harry potter y la piedra filosofal</h3>
+                            <p>J. K. Rowling</p>
+                        </div>
+                        <button type="button" aria-label="Eliminar Harry potter y la piedra filosofal de la reserva"><img class="boton-eliminar" src="resources/images/ícono-eliminar.png" alt=""></button>
+                    </article>
+                </li>
+                <li>
+                    <article>
+                        <img src="resources/images/portada-harry-potter.jpg" alt="Portada de Harry potter y la piedra filosofal">
+                        <div>
+                            <h3>Harry potter y la piedra filosofal</h3>
+                            <p>J. K. Rowling</p>
+                        </div>
+                        <button type="button" aria-label="Eliminar Harry potter y la piedra filosofal de la reserva"><img class="boton-eliminar" src="resources/images/ícono-eliminar.png" alt=""></button>
+                    </article>
+                </li>
+            </ul>
+        </section>
 
-            <li>
-                <article aria-label="Promoción Banco Provincia">
-                    <figure>
-                <img src="../imágenes/placeholder-promocion-logo.png" alt="Logo Banco" >
-                </figure>
-                    <p>[Banco y texto explicativo de la promoción]</p>
-                    <h3>Explicación de los detalles:</h3>
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi hic dolorem fugit a cumque ut doloribus quod ad in illo, laudantium aut unde quibusdam. Expedita sed officia dolorum eaque adipisci!
-                    </p>
-                </article>
-                <hr>
-            </li>
+        <section>
+            <h2>Datos personales</h2>
 
-            <li>
-                <article aria-label="Promoción Banco Galicia">
-                    <figure>
-                <img src="../imágenes/placeholder-promocion-logo.png" alt="Logo Banco" >
-                </figure>
-                    <p>[Banco y texto explicativo de la promoción]</p>
-                    <h3>Explicación de los detalles:</h3>
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi hic dolorem fugit a cumque ut doloribus quod ad in illo, laudantium aut unde quibusdam. Expedita sed officia dolorum eaque adipisci!
-                    </p>
-                </article>
-                <hr >
-            </li>
+            <form>
+                <div>
+                    <label for="nombre">Nombre completo</label>
+                    <input type="text" id="nombre" name="nombre" placeholder="Ej: Juan garcia">
+                </div>
 
-            <li>
-                <article aria-label="Promoción Banco Macro">
-                    <figure>
-                <img src="../imágenes/placeholder-promocion-logo.png" alt="Logo Banco">
-                </figure>
-                    <p>[Banco y texto explicativo de la promoción]</p>
-                    <h3>Explicación de los detalles:</h3>
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi hic dolorem fugit a cumque ut doloribus quod ad in illo, laudantium aut unde quibusdam. Expedita sed officia dolorum eaque adipisci!
-                    </p>
-                </article>
-                <hr>
-            </li>
+                <div>
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Ej: mi_correo@gmail.com">
+                </div>
 
-        
+                <div>
+                    <label for="telefono">Teléfono</label>
+                    <input type="tel" id="telefono" name="telefono" placeholder="Ej: 1126660206">
+                </div>
 
-        </ul>
-
+                <button type="submit">Confirmar reserva</button>
+            </form>
+        </section>
 
     </main>
 
-
-
-            <footer>
+    <footer>
         <nav>
 
             <!-- Información de contacto -->
@@ -164,19 +167,19 @@
                 <ul class="footer-contacto">
                     <li>
                         <a href="https://maps.app.goo.gl/hmdmq35C8kbvMdKZA" target="_blank">
-                            <img src="../imágenes/ícono-dirección.png" alt="">
+                            <img src="resources/images/ícono-dirección.png" alt="">
                             <p>Dirección 1234</p>
                         </a>
                     </li>
                     <li>
                         <a href="mailto:pawprints@example.com">
-                            <img src="../imágenes/ícono-mail.png" alt="">
+                            <img src="resources/images/ícono-mail.png" alt="">
                             <p>pawprints@example.com</p>
                         </a>
                     </li>
                     <li>
                         <a href="tel:+1234567890">
-                            <img src="../imágenes/ícono-teléfono.png" alt="">
+                            <img src="resources/images/ícono-teléfono.png" alt="">
                             <p>+1234567890</p>
                         </a>
                     </li>
@@ -188,25 +191,25 @@
                 <li>
                     <a href="http://www.instagram.com/" target="_blank">
                         <p>PawPrints</p>
-                        <img src="../imágenes/ícono-instagram.png" alt="">
+                        <img src="resources/images/ícono-instagram.png" alt="">
                     </a>
                 </li>
                 <li>
                     <a href="http://www.facebook.com/" target="_blank">
                         <p>PawPrints</p>
-                        <img src="../imágenes/ícono-facebook.png" alt="">
+                        <img src="resources/images/ícono-facebook.png" alt="">
                     </a>
                 </li>
                 <li>
                     <a href="http://www.x.com/" target="_blank">
                         <p>@PawPrints</p>
-                        <img src="../imágenes/ícono-x.png" alt="">
+                        <img src="resources/images/ícono-x.png" alt="">
                     </a>
                 </li>
             </ul>
 
         </nav>
     </footer>
-</body>
 
+</body>
 </html>
