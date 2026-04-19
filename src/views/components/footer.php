@@ -1,0 +1,51 @@
+<footer>
+    <nav>
+
+        <!-- Información de contacto -->
+        <address>
+            <ul class="footer-contacto">
+                <li>
+                    <a href="https://maps.app.goo.gl/hmdmq35C8kbvMdKZA" target="_blank">
+                        <img src="resources/images/ícono-dirección.png" alt="">
+                        <p>Dirección 1234</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="mailto:pawprints@example.com">
+                        <img src="resources/images/ícono-mail.png" alt="">
+                        <p>pawprints@example.com</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="tel:+1234567890">
+                        <img src="resources/images/ícono-teléfono.png" alt="">
+                        <p>+1234567890</p>
+                    </a>
+                </li>
+            </ul>
+        </address>
+
+        <!-- Redes sociales -->
+        <ul class="footer-redes-sociales">
+            <li>
+                <a href="http://www.instagram.com/" target="_blank">
+                    <p>PawPrints</p>
+                    <img src="resources/images/ícono-instagram.png" alt="">
+                </a>
+            </li>
+            <li>
+                <a href="http://www.facebook.com/" target="_blank">
+                    <p>PawPrints</p>
+                    <img src="resources/images/ícono-facebook.png" alt="">
+                </a>
+            </li>
+            <li>
+                <a href="http://www.x.com/" target="_blank">
+                    <p>@PawPrints</p>
+                    <img src="resources/images/ícono-x.png" alt="">
+                </a>
+            </li>
+        </ul>
+
+    </nav>
+</footer>
