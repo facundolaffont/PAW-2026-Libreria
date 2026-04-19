@@ -8,9 +8,17 @@ Temática: Librería.
 
 Ver [authors.txt](https://raw.githubusercontent.com/facundolaffont/PAW-2026-Libreria/refs/heads/main/authors.txt).
 
+## Instalación del proyecto
+
+Situarse vía terminal en la carpeta donde se va a descargar la carpeta del proyecto y ejectutar:
+
+```shell
+git clone https://github.com/facundolaffont/PAW-2026-Libreria.git
+```
+
 ## Ejecución del proyecto
 
-Situarse en la carpeta raíz y ejecutar:
+Situarse vía terminal en la carpeta del proyecto y ejecutar:
 
 ```shell
 docker compose up -d
