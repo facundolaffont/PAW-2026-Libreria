@@ -8,6 +8,16 @@ Temática: Librería.
 
 Ver [authors.txt](https://raw.githubusercontent.com/facundolaffont/PAW-2026-Libreria/refs/heads/main/authors.txt).
 
+## Ejecución del proyecto
+
+Situarse en la carpeta raíz y ejecutar:
+
+```shell
+docker compose up -d
+```
+
+Luego, ingresar a través del navegador web al sitio `localhost:8000`.
+
 ## Entregas
 
 A continuación se detallará la información sobre cada entrega que se va solicitando.
