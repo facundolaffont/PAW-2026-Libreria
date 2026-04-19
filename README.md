@@ -26,13 +26,13 @@ docker compose up -d
 
 Luego, ingresar a través del navegador web al sitio `localhost:8000`.
 
-## Entregas
+## Entregas de trabajos prácticos
 
 A continuación se detallará la información sobre cada entrega que se va solicitando.
 
-### 1era entrega (30/3)
+### 1era entrega (30/03/26)
 
-[Consigas de trabajo práctico 1](https://raw.githubusercontent.com/facundolaffont/PAW-2026-Libreria/refs/tags/entrega-1/tps/tp1.pdf).
+[Consigas del trabajo práctico 1](https://raw.githubusercontent.com/facundolaffont/PAW-2026-Libreria/refs/tags/entrega-1/tps/tp1.pdf).
 
 #### Archivos de la entrega
 
@@ -46,11 +46,15 @@ A continuación se detallará la información sobre cada entrega que se va solic
 2. Descomprimir el archivo descargado, ingresar a la carpeta descomprimida y luego a la carpeta maquetado-html.
 3. Abrir index.html y navegar por los enlaces (opcionalmente se puede abrir cualquiera de las otras páginas).
 
-### 2da entrega (13/4)
+### 2da entrega (13/04/26)
 
-[Consigas de trabajo práctico 2](https://raw.githubusercontent.com/facundolaffont/PAW-2026-Libreria/refs/tags/entrega2/tps/tp2/Trabajo%20Pr%C3%A1ctico%20N%C2%BA%202.pdf).
+[Consigas del trabajo práctico 2](https://raw.githubusercontent.com/facundolaffont/PAW-2026-Libreria/refs/tags/entrega2/tps/tp2/Trabajo%20Pr%C3%A1ctico%20N%C2%BA%202.pdf).
 
 #### Archivos de la entrega
 
-* Wireframes: carpeta wireframes.
-* Maquetado: maquetado-html.
+* Wireframes: [carpeta wireframes](https://github.com/facundolaffont/PAW-2026-Libreria/tree/entrega2/wireframes).
+* Maquetado: [maquetado-html](https://github.com/facundolaffont/PAW-2026-Libreria/tree/entrega2/maquetado-html).
+
+### 3ra entrega (04/05/26)
+
+[Consignas del trabajo práctico 3](https://raw.githubusercontent.com/facundolaffont/PAW-2026-Libreria/refs/heads/main/tps/tp3.pdf).
