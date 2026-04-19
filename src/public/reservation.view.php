@@ -1,19 +1,9 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PAWPrints - Reserva de libros</title>
+<?php
+    $title = 'PAWPrints - Reserva de libros';
+    $pageStyle = 'reservation.css';
+    require '../views/head.view.php';
+?>
 
-    <!-- Reset CSS -->
-    <link rel="stylesheet" href="resources/styles/reset.css">
-
-    <!-- Estilo base -->
-    <link rel="stylesheet" href="resources/styles/base.css">
-
-    <!-- Estilo específico de esta página -->
-    <link rel="stylesheet" href="resources/styles/reservation.css">
-</head>
 <body>
 
     <header>

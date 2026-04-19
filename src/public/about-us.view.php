@@ -1,20 +1,9 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PAWPrints - Acerca de nosotros</title>
+<?php
+    $title = 'PAWPrints - Acerca de nosotros';
+    $pageStyle = 'about-us.css';
+    require '../views/head.view.php';
+?>
 
-    <!-- Reset CSS -->
-    <link rel="stylesheet" href="resources/styles/reset.css">
-
-    <!-- Estilo base -->
-    <link rel="stylesheet" href="resources/styles/base.css">
-
-    <!-- Estilo de index -->
-    <link rel="stylesheet" href="resources/styles/about-us.css">
-
-</head>
 <body>
     <header>
 

@@ -1,15 +1,10 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PAWPrints - Detalle de libro</title>
-    
-    <link rel="stylesheet" href="resources/styles/reset.css">
-    <link rel="stylesheet" href="resources/styles/base.css">
-    <link rel="stylesheet" href="resources/styles/book-detail.css">
 
-</head>
+<?php
+    $title = 'PAWPrints - Detalle de libro';
+    $pageStyle = 'book-detail.css';
+    require '../views/head.view.php';
+?>
+
 <body>
 
     <header>

@@ -1,14 +1,8 @@
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-    <meta charset="UTF-8" >
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" >        
-    <link rel="stylesheet" href="resources/styles/reset.css">
-    <link rel="stylesheet" href="resources/styles/base.css">
-    <link rel="stylesheet" href="resources/styles/promotions.css">
-    <title>Promociones - PAWPrints</title>
-</head>
+<?php
+    $title = 'PAWPrints - Promociones';
+    $pageStyle = 'promotions.css';
+    require '../views/head.view.php';
+?>
 
 <body>
 
