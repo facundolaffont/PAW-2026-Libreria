@@ -14,13 +14,13 @@ A continuación se detallará la información sobre cada entrega que se va solic
 
 ### 1era entrega (30/3)
 
-[Consigas de trabajo práctico 1](https://github.com/facundolaffont/PAW-2026-Libreria/raw/refs/heads/main/tps/tp1.pdf).
+[Consigas de trabajo práctico 1](https://raw.githubusercontent.com/facundolaffont/PAW-2026-Libreria/refs/tags/entrega-1/tps/tp1.pdf).
 
 #### Archivos de la entrega
 
-* [Sitemap](https://raw.githubusercontent.com/facundolaffont/PAW-2026-Libreria/refs/heads/main/Sitemap.png).
-* [Wireframes](https://raw.githubusercontent.com/facundolaffont/PAW-2026-Libreria/refs/heads/main/Librer%C3%ADa%20-%20Wireframes.pdf).
-* [Maquetado](https://github.com/facundolaffont/PAW-2026-Libreria/tree/main/maquetado-html).
+* [Sitemap](https://raw.githubusercontent.com/facundolaffont/PAW-2026-Libreria/refs/tags/entrega-1/Sitemap.png).
+* [Wireframes](https://raw.githubusercontent.com/facundolaffont/PAW-2026-Libreria/refs/tags/entrega-1/Librer%C3%ADa%20-%20Wireframes.pdf).
+* [Maquetado](https://github.com/facundolaffont/PAW-2026-Libreria/tree/entrega-1/maquetado-html).
 
 #### Cómo visualizar las páginas
 
@@ -28,9 +28,9 @@ A continuación se detallará la información sobre cada entrega que se va solic
 2. Descomprimir el archivo descargado, ingresar a la carpeta descomprimida y luego a la carpeta maquetado-html.
 3. Abrir index.html y navegar por los enlaces (opcionalmente se puede abrir cualquiera de las otras páginas).
 
-### 1era entrega (13/4)
+### 2da entrega (13/4)
 
-[Consigas de trabajo práctico 2](https://raw.githubusercontent.com/facundolaffont/PAW-2026-Libreria/refs/heads/main/tps/tp2/Trabajo%20Pr%C3%A1ctico%20N%C2%BA%202.pdf).
+[Consigas de trabajo práctico 2](https://raw.githubusercontent.com/facundolaffont/PAW-2026-Libreria/refs/tags/entrega2/tps/tp2/Trabajo%20Pr%C3%A1ctico%20N%C2%BA%202.pdf).
 
 #### Archivos de la entrega
 
