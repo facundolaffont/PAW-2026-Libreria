@@ -22,7 +22,7 @@
 
                     <!-- Libro -->
                     <article class="libro">
-                        <a href="book-detail.php?id=libroN">
+                        <a href="book-detail?id=libroN">
                             <picture>
                                 <source
                                     srcset="resources/images/placeholder-libro-grande.png"
@@ -39,7 +39,7 @@
 
                     <!-- Libro -->
                     <article class="libro">
-                        <a href="book-detail.php?id=libroN">
+                        <a href="book-detail?id=libroN">
                             <picture>
                                 <source
                                     srcset="resources/images/placeholder-libro-grande.png"
@@ -56,7 +56,7 @@
 
                     <!-- Libro -->
                     <article class="libro">
-                        <a href="book-detail.php?id=libroN">
+                        <a href="book-detail?id=libroN">
                             <picture>
                                 <source
                                     srcset="resources/images/placeholder-libro-grande.png"
@@ -73,7 +73,7 @@
 
                     <!-- Libro -->
                     <article class="libro">
-                        <a href="book-detail.php?id=libroN">
+                        <a href="book-detail?id=libroN">
                             <picture>
                                 <source
                                     srcset="resources/images/placeholder-libro-grande.png"
@@ -90,7 +90,7 @@
 
                     <!-- Libro -->
                     <article class="libro">
-                        <a href="book-detail.php?id=libroN">
+                        <a href="book-detail?id=libroN">
                             <picture>
                                 <source
                                     srcset="resources/images/placeholder-libro-grande.png"
@@ -107,7 +107,7 @@
 
                     <!-- Libro -->
                     <article class="libro">
-                        <a href="book-detail.php?id=libroN">
+                        <a href="book-detail?id=libroN">
                             <picture>
                                 <source
                                     srcset="resources/images/placeholder-libro-grande.png"
@@ -124,7 +124,7 @@
 
                     <!-- Libro -->
                     <article class="libro">
-                        <a href="book-detail.php?id=libroN">
+                        <a href="book-detail?id=libroN">
                             <picture>
                                 <source
                                     srcset="resources/images/placeholder-libro-grande.png"
@@ -141,7 +141,7 @@
 
                     <!-- Libro -->
                     <article class="libro">
-                        <a href="book-detail.php?id=libroN">
+                        <a href="book-detail?id=libroN">
                             <picture>
                                 <source
                                     srcset="resources/images/placeholder-libro-grande.png"
@@ -181,7 +181,7 @@
 
                     <!-- Libro -->
                     <article class="libro">
-                        <a href="book-detail.php?id=libroN">
+                        <a href="book-detail?id=libroN">
                             <picture>
                                 <source
                                     srcset="resources/images/placeholder-libro-grande.png"
@@ -198,7 +198,7 @@
 
                     <!-- Libro -->
                     <article class="libro">
-                        <a href="book-detail.php?id=libroN">
+                        <a href="book-detail?id=libroN">
                             <picture>
                                 <source
                                     srcset="resources/images/placeholder-libro-grande.png"
@@ -215,7 +215,7 @@
 
                     <!-- Libro -->
                     <article class="libro">
-                        <a href="book-detail.php?id=libroN">
+                        <a href="book-detail?id=libroN">
                             <picture>
                                 <source
                                     srcset="resources/images/placeholder-libro-grande.png"
@@ -232,7 +232,7 @@
 
                     <!-- Libro -->
                     <article class="libro">
-                        <a href="book-detail.php?id=libroN">
+                        <a href="book-detail?id=libroN">
                             <picture>
                                 <source
                                     srcset="resources/images/placeholder-libro-grande.png"
@@ -249,7 +249,7 @@
 
                     <!-- Libro -->
                     <article class="libro">
-                        <a href="book-detail.php?id=libroN">
+                        <a href="book-detail?id=libroN">
                             <picture>
                                 <source
                                     srcset="resources/images/placeholder-libro-grande.png"
@@ -266,7 +266,7 @@
 
                     <!-- Libro -->
                     <article class="libro">
-                        <a href="book-detail.php?id=libroN">
+                        <a href="book-detail?id=libroN">
                             <picture>
                                 <source
                                     srcset="resources/images/placeholder-libro-grande.png"
@@ -283,7 +283,7 @@
 
                     <!-- Libro -->
                     <article class="libro">
-                        <a href="book-detail.php?id=libroN">
+                        <a href="book-detail?id=libroN">
                             <picture>
                                 <source
                                     srcset="resources/images/placeholder-libro-grande.png"
@@ -300,7 +300,7 @@
 
                     <!-- Libro -->
                     <article class="libro">
-                        <a href="book-detail.php?id=libroN">
+                        <a href="book-detail?id=libroN">
                             <picture>
                                 <source
                                     srcset="resources/images/placeholder-libro-grande.png"
@@ -344,7 +344,7 @@
 
                 <!-- Promoción -->
                 <article class="promocion">
-                    <a href="promotions.php">
+                    <a href="promotions">
                         <picture>
                             <source
                                 srcset="resources/images/placeholder-promoción-grande.png"
@@ -357,7 +357,7 @@
 
                 <!-- Promoción -->
                 <article class="promocion">
-                    <a href="promotions.php">
+                    <a href="promotions">
                         <picture>
                             <source
                                 srcset="resources/images/placeholder-promoción-grande.png"
@@ -370,7 +370,7 @@
 
                 <!-- Promoción -->
                 <article class="promocion">
-                    <a href="promotions.php">
+                    <a href="promotions">
                         <picture>
                             <source
                                 srcset="resources/images/placeholder-promoción-grande.png"

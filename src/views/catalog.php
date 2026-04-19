@@ -113,7 +113,7 @@
 
                     <li>
                         <article>
-                            <a href="book-detail.php?id=libroN">
+                            <a href="book-detail?id=libroN">
                                 <picture id="libro1">
                                     <source
                                         srcset="resources/images/placeholder-libro-grande.png"
@@ -131,7 +131,7 @@
 
                     <li>
                         <article>
-                            <a href="book-detail.php?id=libroN">
+                            <a href="book-detail?id=libroN">
                                 <picture id="libro2">
                                     <source
                                         srcset="resources/images/placeholder-libro-grande.png"
@@ -149,7 +149,7 @@
 
                     <li>
                         <article>
-                            <a href="book-detail.php?id=libroN">
+                            <a href="book-detail?id=libroN">
                                 <picture id="libro3">
                                     <source
                                         srcset="resources/images/placeholder-libro-grande.png"
@@ -167,7 +167,7 @@
 
                     <li>
                         <article>
-                            <a href="book-detail.php?id=libroN">
+                            <a href="book-detail?id=libroN">
                                 <picture id="libro4">
                                     <source
                                         srcset="resources/images/placeholder-libro-grande.png"
@@ -185,7 +185,7 @@
 
                     <li>
                         <article>
-                            <a href="book-detail.php?id=libroN">
+                            <a href="book-detail?id=libroN">
                                 <picture id="libro5">
                                     <source
                                         srcset="resources/images/placeholder-libro-grande.png"
@@ -203,7 +203,7 @@
 
                     <li>
                         <article>
-                            <a href="book-detail.php?id=libroN">
+                            <a href="book-detail?id=libroN">
                                 <picture id="libro6">
                                     <source
                                         srcset="resources/images/placeholder-libro-grande.png"
@@ -221,7 +221,7 @@
 
                     <li>
                         <article>
-                            <a href="book-detail.php?id=libroN">
+                            <a href="book-detail?id=libroN">
                                 <picture id="libro7">
                                     <source
                                         srcset="resources/images/placeholder-libro-grande.png"
@@ -239,7 +239,7 @@
 
                     <li>
                         <article>
-                            <a href="book-detail.php?id=libroN">
+                            <a href="book-detail?id=libroN">
                                 <picture id="libro8">
                                     <source
                                         srcset="resources/images/placeholder-libro-grande.png"
@@ -257,7 +257,7 @@
 
                     <li>
                         <article>
-                            <a href="book-detail.php?id=libroN">
+                            <a href="book-detail?id=libroN">
                                 <picture id="libro9">
                                     <source
                                         srcset="resources/images/placeholder-libro-grande.png"
@@ -275,7 +275,7 @@
 
                     <li>
                         <article>
-                            <a href="book-detail.php?id=libroN">
+                            <a href="book-detail?id=libroN">
                                 <picture id="libro10">
                                     <source
                                         srcset="resources/images/placeholder-libro-grande.png"
@@ -296,16 +296,16 @@
                     <nav aria-label="Paginación del catálogo">
                         <ol>
                             <li>
-                                <a href="catalog.php?pagina=1" aria-label="Página 1" aria-current="page">1</a>
+                                <a href="catalog?pagina=1" aria-label="Página 1" aria-current="page">1</a>
                             </li>
                             <li>
-                                <a href="catalog.php?pagina=2" aria-label="Página 2">2</a>
+                                <a href="catalog?pagina=2" aria-label="Página 2">2</a>
                             </li>
                             <li>
-                                <a href="catalog.php?pagina=3" aria-label="Página 3">3</a>
+                                <a href="catalog?pagina=3" aria-label="Página 3">3</a>
                             </li>
                             <li>
-                                <a href="catalog.php?pagina=2" aria-label="Página siguiente">Siguiente</a>
+                                <a href="catalog?pagina=2" aria-label="Página siguiente">Siguiente</a>
                             </li>
                         </ol>
                     </nav>
