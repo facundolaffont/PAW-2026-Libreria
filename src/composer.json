@@ -2,7 +2,9 @@
     "name": "root/app",
     "require": {
         "filp/whoops": "^2.18",
-        "monolog/monolog": "^3.10"
+        "monolog/monolog": "^3.10",
+        "robmorgan/phinx": "^0.16.11",
+        "vlucas/phpdotenv": "^5.6"
     },
     "autoload": {
         "psr-4": {
