@@ -1,7 +1,8 @@
 {
     "name": "root/app",
     "require": {
-        "filp/whoops": "^2.18"
+        "filp/whoops": "^2.18",
+        "monolog/monolog": "^3.10"
     },
     "autoload": {
         "psr-4": {

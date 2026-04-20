@@ -1,17 +1,10 @@
 <?php
-    
-    # Incluye funciones utilitarias.
-    require '../utilities/utilities.php';
 
-    # Incluye plugins.
-    require '../vendor/autoload.php';
-    $whoops = new \Whoops\Run;
-    $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
-    $whoops->register();
-
-    $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    # Configuraciones iniciales.
+    require '../bootstrap.php';
 
     # Ruteador.
+    $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
     switch ($path) {
         case '/':
             $title = 'PAWPrints - Página principal';
