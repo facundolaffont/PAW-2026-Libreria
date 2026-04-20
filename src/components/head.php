@@ -10,9 +10,7 @@
     <!-- Estilo base -->
     <link rel="stylesheet" href="resources/styles/base.css">
 
-    <?php if (isset($pageStyle)): ?>
-        <!-- Estilo de la página -->
-        <link rel="stylesheet" href="resources/styles/<?= $pageStyle ?>">
-    <?php endif; ?>
+    <!-- Estilo de la página -->
+    <link rel="stylesheet" href="resources/styles/<?= $page ?>.css">
 
 </head>

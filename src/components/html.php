@@ -3,10 +3,10 @@
     <?php
         require 'head.php';
 
-        if(isset($bodyContent)) {
-            require "../views/{$bodyContent}.php";
+        if(isset($page)) {
+            require "../views/{$page}.php";
         } else {
-            die("Error: No se ha definido el contenido del cuerpo de la página.");
+            throw new Exception("Error: no se ha definido el contenido del cuerpo de la página.");
         }
     ?>
 </html>
