@@ -2,23 +2,15 @@
 
     namespace Paw\Controllers;
 
+    use Paw\Repositories\BookRepository;
+
     class PageController {
+        public function __construct(private BookRepository $bookRepository) {}
 
-        private $routes = [];
-
-        public function addRoute($path, $title, $page) {
-            $this->routes[$path] = [
-                'title' => $title,
-                'page' => $page
-            ];
-
-            return $this;
-        }
-
-        public function route($path) {
-            return $this->routes[$path] ?? [
-                'title' => 'PAWPrints - Página no encontrada',
-                'page' => '404'
-            ];
+        public function show(string $title, string $page): void {
+            if ($page === 'home-page') {
+                $booksByGenre = $this->bookRepository->findAllGroupedByGenre();
+            }
+            require __DIR__ . '/../../components/html.php';
         }
     }

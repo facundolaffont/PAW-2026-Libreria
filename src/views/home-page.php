@@ -5,10 +5,11 @@
     <!-- Contenido principal: los libros y su información de reserva -->
     <main>
 
-        <!-- Carrusel de libros de un género particular -->
+        <?php foreach ($booksByGenre as $genre => $genreBooks): ?>
+        <!-- Carrusel de libros de <?= htmlspecialchars($genre) ?> -->
         <section class="carrusel">
 
-            <h2>Género</h2>
+            <h2><?= htmlspecialchars($genre) ?></h2>
 
             <!-- Flecha izquierda del carrusel -->
             <button class="flecha flecha-izq"></button>
@@ -20,310 +21,30 @@
 
                 <div class="libros-container">
 
-                    <!-- Libro -->
+                    <?php foreach ($genreBooks as $book): ?>
                     <article class="libro">
-                        <a href="book-detail?id=libroN">
+                        <a href="book-detail?id=<?= (int)$book['id'] ?>">
                             <picture>
                                 <source
                                     srcset="resources/images/placeholder-libro-grande.png"
                                     media="( min-width: 600px )"
                                 >
-                                <img src="resources/images/placeholder-libro-chica.png" alt="Descripción del libro.">
+                                <img src="resources/images/placeholder-libro-chica.png" alt="<?= htmlspecialchars($book['title']) ?>">
                             </picture>
-                            <h3>Título</h3>
+                            <h3><?= htmlspecialchars($book['title']) ?></h3>
                         </a>
-                        <p>Autor</p>
-                        <p>$ 99.999,99</p>
+                        <p><?= htmlspecialchars($book['author']) ?></p>
+                        <p>$ <?= number_format($book['price'], 2, ',', '.') ?></p>
                         <button>Reservar</button>
                     </article>
-
-                    <!-- Libro -->
-                    <article class="libro">
-                        <a href="book-detail?id=libroN">
-                            <picture>
-                                <source
-                                    srcset="resources/images/placeholder-libro-grande.png"
-                                    media="( min-width: 600px )"
-                                >
-                                <img src="resources/images/placeholder-libro-chica.png" alt="Descripción del libro.">
-                            </picture>
-                            <h3>Título</h3>
-                        </a>
-                        <p>Autor</p>
-                        <p>$ 99.999,99</p>
-                        <button>Reservar</button>
-                    </article>
-
-                    <!-- Libro -->
-                    <article class="libro">
-                        <a href="book-detail?id=libroN">
-                            <picture>
-                                <source
-                                    srcset="resources/images/placeholder-libro-grande.png"
-                                    media="( min-width: 600px )"
-                                >
-                                <img src="resources/images/placeholder-libro-chica.png" alt="Descripción del libro.">
-                            </picture>
-                            <h3>Título</h3>
-                        </a>
-                        <p>Autor</p>
-                        <p>$ 99.999,99</p>
-                        <button>Reservar</button>
-                    </article>
-
-                    <!-- Libro -->
-                    <article class="libro">
-                        <a href="book-detail?id=libroN">
-                            <picture>
-                                <source
-                                    srcset="resources/images/placeholder-libro-grande.png"
-                                    media="( min-width: 600px )"
-                                >
-                                <img src="resources/images/placeholder-libro-chica.png" alt="Descripción del libro.">
-                            </picture>
-                            <h3>Título</h3>
-                        </a>
-                        <p>Autor</p>
-                        <p>$ 99.999,99</p>
-                        <button>Reservar</button>
-                    </article>
-
-                    <!-- Libro -->
-                    <article class="libro">
-                        <a href="book-detail?id=libroN">
-                            <picture>
-                                <source
-                                    srcset="resources/images/placeholder-libro-grande.png"
-                                    media="( min-width: 600px )"
-                                >
-                                <img src="resources/images/placeholder-libro-chica.png" alt="Descripción del libro.">
-                            </picture>
-                            <h3>Título</h3>
-                        </a>
-                        <p>Autor</p>
-                        <p>$ 99.999,99</p>
-                        <button>Reservar</button>
-                    </article>
-
-                    <!-- Libro -->
-                    <article class="libro">
-                        <a href="book-detail?id=libroN">
-                            <picture>
-                                <source
-                                    srcset="resources/images/placeholder-libro-grande.png"
-                                    media="( min-width: 600px )"
-                                >
-                                <img src="resources/images/placeholder-libro-chica.png" alt="Descripción del libro.">
-                            </picture>
-                            <h3>Título</h3>
-                        </a>
-                        <p>Autor</p>
-                        <p>$ 99.999,99</p>
-                        <button>Reservar</button>
-                    </article>
-
-                    <!-- Libro -->
-                    <article class="libro">
-                        <a href="book-detail?id=libroN">
-                            <picture>
-                                <source
-                                    srcset="resources/images/placeholder-libro-grande.png"
-                                    media="( min-width: 600px )"
-                                >
-                                <img src="resources/images/placeholder-libro-chica.png" alt="Descripción del libro.">
-                            </picture>
-                            <h3>Título</h3>
-                        </a>
-                        <p>Autor</p>
-                        <p>$ 99.999,99</p>
-                        <button>Reservar</button>
-                    </article>
-
-                    <!-- Libro -->
-                    <article class="libro">
-                        <a href="book-detail?id=libroN">
-                            <picture>
-                                <source
-                                    srcset="resources/images/placeholder-libro-grande.png"
-                                    media="( min-width: 600px )"
-                                >
-                                <img src="resources/images/placeholder-libro-chica.png" alt="Descripción del libro.">
-                            </picture>
-                            <h3>Título</h3>
-                        </a>
-                        <p>Autor</p>
-                        <p>$ 99.999,99</p>
-                        <button>Reservar</button>
-                    </article>
-
-                    <!-- Se repite el artículo anterior tantas veces como libros promocionados haya del género -->
+                    <?php endforeach; ?>
 
                 </div>
 
             </div>
 
         </section>
-
-        <!-- Carrusel de libros de un género particular -->
-        <section class="carrusel">
-
-            <h2>Género</h2>
-
-            <!-- Flecha izquierda del carrusel -->
-            <button class="flecha flecha-izq"></button>
-
-            <!-- Flecha derecha del carrusel -->
-            <button class="flecha flecha-der"></button>
-
-            <div class="contenedor-carrusel">
-                
-                <div class="libros-container">
-
-                    <!-- Libro -->
-                    <article class="libro">
-                        <a href="book-detail?id=libroN">
-                            <picture>
-                                <source
-                                    srcset="resources/images/placeholder-libro-grande.png"
-                                    media="( min-width: 600px )"
-                                >
-                                <img src="resources/images/placeholder-libro-chica.png" alt="Descripción del libro.">
-                            </picture>
-                            <h3>Título</h3>
-                        </a>
-                        <p>Autor</p>
-                        <p>$ 99.999,99</p>
-                        <button>Reservar</button>
-                    </article>
-
-                    <!-- Libro -->
-                    <article class="libro">
-                        <a href="book-detail?id=libroN">
-                            <picture>
-                                <source
-                                    srcset="resources/images/placeholder-libro-grande.png"
-                                    media="( min-width: 600px )"
-                                >
-                                <img src="resources/images/placeholder-libro-chica.png" alt="Descripción del libro.">
-                            </picture>
-                            <h3>Título</h3>
-                        </a>
-                        <p>Autor</p>
-                        <p>$ 99.999,99</p>
-                        <button>Reservar</button>
-                    </article>
-
-                    <!-- Libro -->
-                    <article class="libro">
-                        <a href="book-detail?id=libroN">
-                            <picture>
-                                <source
-                                    srcset="resources/images/placeholder-libro-grande.png"
-                                    media="( min-width: 600px )"
-                                >
-                                <img src="resources/images/placeholder-libro-chica.png" alt="Descripción del libro.">
-                            </picture>
-                            <h3>Título</h3>
-                        </a>
-                        <p>Autor</p>
-                        <p>$ 99.999,99</p>
-                        <button>Reservar</button>
-                    </article>
-
-                    <!-- Libro -->
-                    <article class="libro">
-                        <a href="book-detail?id=libroN">
-                            <picture>
-                                <source
-                                    srcset="resources/images/placeholder-libro-grande.png"
-                                    media="( min-width: 600px )"
-                                >
-                                <img src="resources/images/placeholder-libro-chica.png" alt="Descripción del libro.">
-                            </picture>
-                            <h3>Título</h3>
-                        </a>
-                        <p>Autor</p>
-                        <p>$ 99.999,99</p>
-                        <button>Reservar</button>
-                    </article>
-
-                    <!-- Libro -->
-                    <article class="libro">
-                        <a href="book-detail?id=libroN">
-                            <picture>
-                                <source
-                                    srcset="resources/images/placeholder-libro-grande.png"
-                                    media="( min-width: 600px )"
-                                >
-                                <img src="resources/images/placeholder-libro-chica.png" alt="Descripción del libro.">
-                            </picture>
-                            <h3>Título</h3>
-                        </a>
-                        <p>Autor</p>
-                        <p>$ 99.999,99</p>
-                        <button>Reservar</button>
-                    </article>
-
-                    <!-- Libro -->
-                    <article class="libro">
-                        <a href="book-detail?id=libroN">
-                            <picture>
-                                <source
-                                    srcset="resources/images/placeholder-libro-grande.png"
-                                    media="( min-width: 600px )"
-                                >
-                                <img src="resources/images/placeholder-libro-chica.png" alt="Descripción del libro.">
-                            </picture>
-                            <h3>Título</h3>
-                        </a>
-                        <p>Autor</p>
-                        <p>$ 99.999,99</p>
-                        <button>Reservar</button>
-                    </article>
-
-                    <!-- Libro -->
-                    <article class="libro">
-                        <a href="book-detail?id=libroN">
-                            <picture>
-                                <source
-                                    srcset="resources/images/placeholder-libro-grande.png"
-                                    media="( min-width: 600px )"
-                                >
-                                <img src="resources/images/placeholder-libro-chica.png" alt="Descripción del libro.">
-                            </picture>
-                            <h3>Título</h3>
-                        </a>
-                        <p>Autor</p>
-                        <p>$ 99.999,99</p>
-                        <button>Reservar</button>
-                    </article>
-
-                    <!-- Libro -->
-                    <article class="libro">
-                        <a href="book-detail?id=libroN">
-                            <picture>
-                                <source
-                                    srcset="resources/images/placeholder-libro-grande.png"
-                                    media="( min-width: 600px )"
-                                >
-                                <img src="resources/images/placeholder-libro-chica.png" alt="Descripción del libro.">
-                            </picture>
-                            <h3>Título</h3>
-                        </a>
-                        <p>Autor</p>
-                        <p>$ 99.999,99</p>
-                        <button>Reservar</button>
-                    </article>
-
-                    <!-- Se repite el artículo anterior tantas veces como libros promocionados haya del género -->
-
-                </div>
-
-            </div>
-
-        </section>
-
-        <!-- Se repite la sección anterior tantas veces como géneros haya -->
+        <?php endforeach; ?>
 
     </main>
 
