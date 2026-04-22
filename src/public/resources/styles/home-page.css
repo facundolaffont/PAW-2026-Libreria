@@ -64,11 +64,6 @@ section.carrusel h2 {
 }
 
 .contenedor-carrusel {
-    display: block;
-    width: 100%;
-}
-
-.libros-container {
     display: flex;
     gap: 20px;
     overflow-x: auto;

@@ -5,7 +5,8 @@
     <!-- Contenido principal: los libros y su información de reserva -->
     <main>
 
-        <?php foreach ($booksByGenre as $genre => $genreBooks): ?>
+        <?php foreach ($context['booksByGenre'] as $genre => $genreBooks): ?>
+
         <!-- Carrusel de libros de <?= htmlspecialchars($genre) ?> -->
         <section class="carrusel">
 
@@ -19,9 +20,8 @@
 
             <div class="contenedor-carrusel">
 
-                <div class="libros-container">
-
                     <?php foreach ($genreBooks as $book): ?>
+
                     <article class="libro">
                         <a href="book-detail?id=<?= (int)$book['id'] ?>">
                             <picture>
@@ -37,13 +37,13 @@
                         <p>$ <?= number_format($book['price'], 2, ',', '.') ?></p>
                         <button>Reservar</button>
                     </article>
-                    <?php endforeach; ?>
 
-                </div>
+                    <?php endforeach; ?>
 
             </div>
 
         </section>
+
         <?php endforeach; ?>
 
     </main>
@@ -60,56 +60,34 @@
         <button class="flecha flecha-der"></button>
 
         <div class="contenedor-carrusel">
+            
+            <?php foreach ($context['promotions'] as $promotion): ?>
 
-            <div class="libros-container">
+            <article class="promocion">
+                <a href="promotions">
+                    <picture>
+                        <source
+                            srcset="resources/images/<?= htmlspecialchars($promotion['image']) ?>"
+                            media="( min-width: 600px )"
+                        >
+                        <img src="resources/images/<?= htmlspecialchars($promotion['image']) ?>" alt="<?= htmlspecialchars($promotion['description']) ?>">
+                    </picture>
+                </a>
+            </article>
 
-                <!-- Promoción -->
-                <article class="promocion">
-                    <a href="promotions">
-                        <picture>
-                            <source
-                                srcset="resources/images/placeholder-promoción-grande.png"
-                                media="( min-width: 600px )"
-                            >
-                            <img src="resources/images/placeholder-promoción-chica.png" alt="Descripción de la promoción.">
-                        </picture>
-                    </a>
-                </article>
-
-                <!-- Promoción -->
-                <article class="promocion">
-                    <a href="promotions">
-                        <picture>
-                            <source
-                                srcset="resources/images/placeholder-promoción-grande.png"
-                                media="( min-width: 600px )"
-                            >
-                            <img src="resources/images/placeholder-promoción-chica.png" alt="Descripción de la promoción.">
-                        </picture>
-                    </a>
-                </article>
-
-                <!-- Promoción -->
-                <article class="promocion">
-                    <a href="promotions">
-                        <picture>
-                            <source
-                                srcset="resources/images/placeholder-promoción-grande.png"
-                                media="( min-width: 600px )"
-                            >
-                            <img src="resources/images/placeholder-promoción-chica.png" alt="Descripción de la promoción.">
-                        </picture>
-                    </a>
-                </article>
-
-                <!-- Se repite el artículo anterior tantas veces como promociones haya -->
-
-            </div>
+            <?php endforeach; ?>
 
         </div>
 
     </section>
 
     <?php require 'components/footer.php'; ?>
+
+    <script src="resources/js/components/Carrusel.js"></script>
+    <script>
+        document.querySelectorAll('section.carrusel').forEach(carrusel => {
+            new Carrusel(carrusel);
+        });
+    </script>
 
 </body>

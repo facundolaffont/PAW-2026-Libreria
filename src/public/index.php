@@ -7,11 +7,12 @@
     use Paw\Controllers\RouteController;
     use Paw\Controllers\PageController;
     use Paw\Repositories\BookRepository;
+    use Paw\Repositories\PromotionRepository;
 
     # Obtiene ruta actual.
     $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-    # Asigna rutas y rutea.
+    # Asigna rutas y solicita al ruteador que ejecute el ruteo.
     $routeController = new RouteController();
     $routeController
         ->addRoute('/', 'PAWPrints - Página principal', 'home-page')
@@ -26,5 +27,5 @@
     $appLogger->info("Ruta accedida: {$path}");
 
     # Delega al controlador de página.
-    $pageController = new PageController(new BookRepository($db));
+    $pageController = new PageController(new BookRepository($db), new PromotionRepository($db));
     $pageController->show($title, $page);

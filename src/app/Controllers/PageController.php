@@ -3,14 +3,22 @@
     namespace Paw\Controllers;
 
     use Paw\Repositories\BookRepository;
+    use Paw\Repositories\PromotionRepository;
+    use Paw\View;
 
     class PageController {
-        public function __construct(private BookRepository $bookRepository) {}
+        public function __construct(
+            private BookRepository $bookRepository,
+            private PromotionRepository $promotionRepository
+        ) {}
 
         public function show(string $title, string $page): void {
             if ($page === 'home-page') {
-                $booksByGenre = $this->bookRepository->findAllGroupedByGenre();
+                $context = [
+                    'booksByGenre' => $this->bookRepository->findAllGroupedByGenre(),
+                    'promotions'   => $this->promotionRepository->findAll(),
+                ];
             }
-            require __DIR__ . '/../../components/html.php';
+            View::render($title, $page, $context ?? []);
         }
     }
