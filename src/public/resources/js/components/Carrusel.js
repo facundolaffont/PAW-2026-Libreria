@@ -1,12 +1,21 @@
+/**
+ * Clase para manejar un carrusel de productos.
+ * 
+ * Permite desplazarse horizontalmente a través de los productos utilizando botones de flecha.
+ * El desplazamiento se realiza de manera suave y se calcula automáticamente según el parámetro pasado.
+ * 
+ * @param {HTMLElement} container - El elemento div que contiene los artículos del carrusel.
+ * @param {HTMLElement} leftButton - El botón para desplazarse a la izquierda.
+ * @param {HTMLElement} rightButton - El botón para desplazarse a la derecha.
+ * @param {number} gap - El espacio entre artículos en píxeles.
+ * @param {number} scrollAmount - La cantidad de píxeles a desplazar por clic.
+ */
 class Carrusel {
-    constructor(carruselElement) {
-        this.container = carruselElement.querySelector('.contenedor-carrusel');
-        this.leftButton = carruselElement.querySelector('.flecha-izq');
-        this.rightButton = carruselElement.querySelector('.flecha-der');
-
-        const firstItem = this.container.querySelector('article');
-        const gap = parseFloat(getComputedStyle(this.container).gap) || 0;
-        this.scrollAmount = firstItem.offsetWidth + gap;
+    constructor(container, leftButton, rightButton, gap, scrollAmount) {
+        this.container = container;
+        this.leftButton = leftButton;
+        this.rightButton = rightButton;
+        this.scrollAmount = scrollAmount;
 
         this.leftButton.addEventListener('click', () => {
             this.container.scrollBy({ left: -this.scrollAmount, behavior: 'smooth' });
