@@ -7,11 +7,10 @@
  * @param {HTMLElement} container - El elemento div que contiene los artículos del carrusel.
  * @param {HTMLElement} leftButton - El botón para desplazarse a la izquierda.
  * @param {HTMLElement} rightButton - El botón para desplazarse a la derecha.
- * @param {number} gap - El espacio entre artículos en píxeles.
  * @param {number} scrollAmount - La cantidad de píxeles a desplazar por clic.
  */
 class Carrusel {
-    constructor(container, leftButton, rightButton, gap, scrollAmount) {
+    constructor(container, leftButton, rightButton, scrollAmount) {
         this.container = container;
         this.leftButton = leftButton;
         this.rightButton = rightButton;

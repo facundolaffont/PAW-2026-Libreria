@@ -20,10 +20,6 @@
     $appLogger = new Logger('AppLogger');
     $appLogger->pushHandler(new StreamHandler(__DIR__ . '/app.log', Level::Debug));
 
-    # Configuración de variables de entorno.
-    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-    $dotenv->load();
-
     # Conexión a la base de datos.
     $db = new PDO(
         "mysql:host={$_ENV['DB_HOST']};dbname={$_ENV['DB_NAME']};charset=utf8",
