@@ -2,7 +2,9 @@
 
     namespace Paw\Repositories;
 
-    class PromotionRepository {
+    use Paw\Interfaces\IPromotionRepository;
+    
+    class PromotionRepository implements IPromotionRepository {
         public function __construct(private \PDO $db) {}
 
         public function findAll(): array {

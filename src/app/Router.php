@@ -1,8 +1,8 @@
 <?php
 
-    namespace Paw\Controllers;
+    namespace Paw;
 
-    class RouteController {
+    class Router {
 
         private $routes = [];
 

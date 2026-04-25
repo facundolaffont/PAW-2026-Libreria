@@ -1,8 +1,10 @@
 <?php
 
     namespace Paw\Repositories;
+
+    use Paw\Interfaces\IBookRepository;
     
-    class BookRepository {
+    class BookRepository implements IBookRepository {
         public function __construct(private \PDO $db) {}
 
         public function findAllGroupedByGenre(): array {
