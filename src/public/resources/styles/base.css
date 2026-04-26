@@ -46,6 +46,18 @@
         width: clamp(10rem, 30vw, 50rem);
     }
 
+    nav.menu-navegacion {
+        text-align: center;
+        border-top: 1px solid var(--color-gris-claro);
+        border-bottom: 1px solid var(--color-gris-claro);
+        padding: 0.3rem 0;
+    }
+
+    nav.menu-navegacion li {
+        display: inline;
+        margin: 0 1rem;
+    }
+
 }
 
 /* Estilos para mobile */
@@ -57,6 +69,17 @@
         border: none;
         padding: 0;
         cursor: pointer;
+    }
+
+    .menu-hamburguesa.activo {
+        z-index: 1001;
+        display: block;
+        position: fixed;
+        top: 1rem;
+    }
+
+    .menu-hamburguesa.activo img {
+        filter: brightness(0) invert(1);
     }
 
     .menu-hamburguesa img {
@@ -109,6 +132,40 @@
 
     nav.menu-navegacion {
         display: none;
+    }
+
+    .menu-navegacion.menu-visible {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: var(--color-violeta);
+        z-index: 1000;
+        padding: 0;
+        margin: 0;
+    }
+
+    .menu-navegacion.menu-visible ul {
+        margin: 0;
+        padding: 2rem 0 0 0;
+        list-style: none;
+        width: 100vw;
+        text-align: center;
+    }
+
+    .menu-navegacion.menu-visible li {
+        margin: 2rem 0;
+    }
+
+    .menu-navegacion.menu-visible a,
+    .menu-navegacion.menu-visible a:visited,
+    .menu-navegacion.menu-visible p {
+        color: var(--color-blanco);
+        font-weight: bolder;
+        font-size: 2rem;
+        text-decoration: none;
     }
 
     nav.breadcrumbs {
@@ -227,18 +284,6 @@ header form {
 
 header p {
     display: inline;
-}
-
-nav.menu-navegacion {
-    text-align: center;
-    border-top: 1px solid var(--color-gris-claro);
-    border-bottom: 1px solid var(--color-gris-claro);
-    padding: 0.3rem 0;
-}
-
-nav.menu-navegacion li {
-    display: inline;
-    margin: 0 1rem;
 }
 
 nav.breadcrumbs {

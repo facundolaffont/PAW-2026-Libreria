@@ -113,8 +113,10 @@
 
     <?php require 'components/footer.php'; ?>
 
-    <script src="resources/js/components/Carrusel.js"></script>
+    <script src="resources/js/components/Carousel.js"></script>
     <script>
+
+        // Crea los carruseles de libros y promociones.
         document.querySelectorAll('section.carrusel').forEach(carrusel => {
             const container = carrusel.querySelector('div');
             const buttons = carrusel.querySelectorAll('button');
@@ -125,6 +127,7 @@
             const scrollAmount = firstItem.offsetWidth + gap;
             new Carousel(container, leftButton, rightButton, scrollAmount);
         });
+
     </script>
 
 </body>
