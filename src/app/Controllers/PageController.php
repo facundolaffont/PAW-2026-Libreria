@@ -2,15 +2,16 @@
 
     namespace Paw\Controllers;
 
-    use Paw\Interfaces\IBookRepository;
-    use Paw\Interfaces\IPromotionRepository;
+    use Paw\Interfaces\BookRepositoryInterface;
+    use Paw\Interfaces\PageControllerInterface;
+    use Paw\Interfaces\PromotionRepositoryInterface;
     use Paw\View;
 
     class PageController {
         
         public function __construct(
-            private IBookRepository $iBookRepository,
-            private IPromotionRepository $iPromotionRepository
+            private BookRepositoryInterface $bookRepository,
+            private PromotionRepositoryInterface $promotionRepository
         ) {}
 
         public function show(string $title, string $page): void {
@@ -23,8 +24,8 @@
         private function buildContext(string $page): array {
             return match($page) {
                 'home-page' => [
-                    'booksByGenre' => $this->iBookRepository->findAllGroupedByGenre(),
-                    'promotions'   => $this->iPromotionRepository->findAll(),
+                    'booksByGenre' => $this->bookRepository->findAllGroupedByGenre(),
+                    'promotions'   => $this->promotionRepository->findAll(),
                 ],
                 default => [],
             };

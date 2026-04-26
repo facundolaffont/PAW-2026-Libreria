@@ -1,13 +1,10 @@
 <?php
 
-    $services  = require '../bootstrap.php';
-    $db        = $services['db'];
-    $appLogger = $services['appLogger'];
+    $container = require '../bootstrap.php';
 
     use Paw\Router;
     use Paw\Controllers\PageController;
-    use Paw\Repositories\BookRepository;
-    use Paw\Repositories\PromotionRepository;
+    use Psr\Log\LoggerInterface;
 
     # Obtiene ruta actual.
     $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -24,8 +21,7 @@
     $route = $router->route($path);
     $title = $route['title'];
     $page = $route['page'];
-    $appLogger->info("Ruta accedida: {$path}");
+    $container->get(LoggerInterface::class)->info("Ruta accedida: {$path}");
 
     # Delega al controlador de página.
-    $pageController = new PageController(new BookRepository($db), new PromotionRepository($db));
-    $pageController->show($title, $page);
+    $container->get(PageController::class)->show($title, $page);

@@ -2,6 +2,6 @@
 
     namespace Paw\Interfaces;
 
-    interface IBookRepository {
+    interface BookRepositoryInterface {
         public function findAllGroupedByGenre(): array;
     }

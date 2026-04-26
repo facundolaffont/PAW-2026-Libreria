@@ -11,7 +11,7 @@
  */
 class Carrusel {
 
-    #state;
+    /*** Público ***/
 
     constructor(container, leftButton, rightButton, scrollAmount) {
         this.container = container;
@@ -39,6 +39,11 @@ class Carrusel {
         });
     }
 
+
+    /*** Privado ***/
+
+    #state;
+    
     #setState(newState) {
         const maxPosition = this.container.scrollWidth - this.container.clientWidth;
         const clamped = Math.max(0, Math.min(newState.position, maxPosition));
@@ -49,5 +54,5 @@ class Carrusel {
     #render() {
         this.container.scrollTo({ left: this.#state.position, behavior: 'smooth' });
     }
-    
+
 }

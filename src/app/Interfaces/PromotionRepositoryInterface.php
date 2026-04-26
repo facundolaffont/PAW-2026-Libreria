@@ -2,6 +2,6 @@
 
     namespace Paw\Interfaces;
 
-    interface IPromotionRepository {
+    interface PromotionRepositoryInterface {
         public function findAll(): array;
     }

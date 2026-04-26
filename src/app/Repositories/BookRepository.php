@@ -2,9 +2,9 @@
 
     namespace Paw\Repositories;
 
-    use Paw\Interfaces\IBookRepository;
+    use Paw\Interfaces\BookRepositoryInterface;
     
-    class BookRepository implements IBookRepository {
+    class BookRepository implements BookRepositoryInterface {
         public function __construct(private \PDO $db) {}
 
         public function findAllGroupedByGenre(): array {
