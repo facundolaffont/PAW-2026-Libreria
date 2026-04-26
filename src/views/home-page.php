@@ -22,14 +22,29 @@
 
                     <?php foreach ($genreBooks as $book): ?>
 
+                    <?php
+                        $imageParts = explode(';', $book['image']);
+                        $sources = [];
+                        $fallbackSrc = '';
+                        foreach ($imageParts as $part) {
+                            if (preg_match('/^(\d+):(.+)$/', $part, $m)) {
+                                $sources[] = ['maxWidth' => (int)$m[1], 'url' => $m[2]];
+                            } else {
+                                $fallbackSrc = $part;
+                            }
+                        }
+                    ?>
+
                     <article class="libro">
                         <a href="book-detail?id=<?= (int)$book['id'] ?>">
                             <picture>
+                                <?php foreach ($sources as $source): ?>
                                 <source
-                                    srcset="resources/images/placeholder-libro-grande.png"
-                                    media="( min-width: 600px )"
+                                    srcset="resources/images/<?= $source['url'] ?>"
+                                    media="( max-width: <?= $source['maxWidth'] ?>px )"
                                 >
-                                <img src="resources/images/placeholder-libro-chica.png" alt="<?= $book['title'] ?>">
+                                <?php endforeach; ?>
+                                <img src="resources/images/<?= $fallbackSrc ?>" alt="<?= $book['title'] ?>">
                             </picture>
                             <h3><?= $book['title'] ?></h3>
                         </a>
@@ -63,14 +78,29 @@
             
             <?php foreach ($context['promotions'] as $promotion): ?>
 
+            <?php
+                $imageParts = explode(';', $promotion['image']);
+                $sources = [];
+                $fallbackSrc = '';
+                foreach ($imageParts as $part) {
+                    if (preg_match('/^(\d+):(.+)$/', $part, $m)) {
+                        $sources[] = ['maxWidth' => (int)$m[1], 'url' => $m[2]];
+                    } else {
+                        $fallbackSrc = $part;
+                    }
+                }
+            ?>
+
             <article class="promocion">
                 <a href="promotions">
                     <picture>
+                        <?php foreach ($sources as $source): ?>
                         <source
-                            srcset="resources/images/<?= $promotion['image'] ?>"
-                            media="( min-width: 600px )"
+                            srcset="resources/images/<?= $source['url'] ?>"
+                            media="( max-width: <?= $source['maxWidth'] ?>px )"
                         >
-                        <img src="resources/images/<?= $promotion['image'] ?>" alt="<?= $promotion['description'] ?>">
+                        <?php endforeach; ?>
+                        <img src="resources/images/<?= $fallbackSrc ?>" alt="<?= $promotion['description'] ?>">
                     </picture>
                 </a>
             </article>

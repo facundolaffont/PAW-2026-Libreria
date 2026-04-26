@@ -1,8 +1,8 @@
 <?php
 
     function dump($data) {
-        echo '<pre>';
-        var_dump($data);
-        echo '</pre>';
-        die;
+        
+        $text = print_r($data, true);
+        throw new Exception("DUMP: " . $text);
+
     }
