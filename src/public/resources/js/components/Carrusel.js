@@ -9,7 +9,7 @@
  * @param {HTMLElement} rightButton - El botón para desplazarse a la derecha.
  * @param {number} scrollAmount - La cantidad de píxeles a desplazar por clic.
  */
-class Carrusel {
+class Carousel {
 
     /*** Público ***/
 
@@ -19,10 +19,28 @@ class Carrusel {
         this.rightButton = rightButton;
         this.scrollAmount = scrollAmount;
 
+        // Inicializa el estado.
         this.#state = { position: 0 };
         this.#render();
 
-        this.container.addEventListener('wheel', (e) => {
+        this.#addDesktopEventListeners(
+            this.container,
+            this.leftButton,
+            this.rightButton,
+            this.scrollAmount
+        );
+
+        this.#addMobileEventListeners(this.container);
+
+    }
+
+
+    /*** Privado ***/
+
+    #state;
+
+    #addDesktopEventListeners(container, leftButton, rightButton, scrollAmount) {
+        container.addEventListener('wheel', (e) => {
             if (window.matchMedia('(min-width: 1000px)').matches) {
                 if (e.shiftKey || e.deltaX !== 0) {
                     e.preventDefault();
@@ -30,19 +48,43 @@ class Carrusel {
             }
         }, { passive: false });
 
-        this.leftButton.addEventListener('click', () => {
-            this.#setState({ position: this.#state.position - this.scrollAmount });
+        leftButton.addEventListener('click', () => {
+            this.#setState({ position: this.#state.position - scrollAmount });
         });
 
-        this.rightButton.addEventListener('click', () => {
-            this.#setState({ position: this.#state.position + this.scrollAmount });
+        rightButton.addEventListener('click', () => {
+            this.#setState({ position: this.#state.position + scrollAmount });
         });
     }
 
+    #addMobileEventListeners(container) {
+        let touchStartX = 0;
+        let scrollStartX = 0;
+        let isDragging = false;
 
-    /*** Privado ***/
+        container.addEventListener('touchstart', (e) => {
+            if (e.touches.length !== 1) return;
+            isDragging = true;
+            touchStartX = e.touches[0].clientX;
+            scrollStartX = container.scrollLeft;
+        }, { passive: true });
 
-    #state;
+        container.addEventListener('touchmove', (e) => {
+            if (!isDragging || e.touches.length !== 1) return;
+            const deltaX = e.touches[0].clientX - touchStartX;
+            container.scrollLeft = scrollStartX - deltaX;
+
+            // Evita el scroll vertical si el movimiento es principalmente horizontal.
+            if (Math.abs(deltaX) > 10) e.preventDefault();
+        }, { passive: false });
+
+        container.addEventListener('touchend', () => {
+            isDragging = false;
+
+            // Actualiza el estado para mantener la posición.
+            this.#setState({ position: container.scrollLeft });
+        });
+    }
     
     #setState(newState) {
         const maxPosition = this.container.scrollWidth - this.container.clientWidth;

@@ -123,7 +123,7 @@
             const firstItem = container.querySelector('article');
             const gap = parseFloat(getComputedStyle(container).gap) || 0;
             const scrollAmount = firstItem.offsetWidth + gap;
-            new Carrusel(container, leftButton, rightButton, scrollAmount);
+            new Carousel(container, leftButton, rightButton, scrollAmount);
         });
     </script>
 
