@@ -7,6 +7,7 @@
     use Paw\Interfaces\PromotionRepositoryInterface;
     use Paw\Repositories\BookRepository;
     use Paw\Repositories\PromotionRepository;
+    use Paw\Services\EmailService;
     use Psr\Log\LoggerInterface;
 
     use function DI\autowire;
@@ -40,5 +41,6 @@
 
         BookRepositoryInterface::class      => autowire(BookRepository::class),
         PromotionRepositoryInterface::class => autowire(PromotionRepository::class),
+        EmailService::class                 => autowire(EmailService::class),
 
     ];
