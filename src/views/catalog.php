@@ -4,6 +4,11 @@
 
     <main>
 
+        <?php
+            // Garantiza que el contexto, el cual se debería construir dinámicamente en el
+            // controlador de página según la vista solicitada, siempre estará definido.
+            $context = $context ?? [];
+        ?>
 
         <!-- Barra de acciones móvil (ordenar / filtrar) -->
         <div>
@@ -21,7 +26,7 @@
                         <summary>Categorías</summary>
                         <nav aria-label="Filtrar por categoría">
                             <ul>
-                                <?php foreach ($context['genres'] as $genre): ?>
+                                <?php foreach ($context['genres'] ?? [] as $genre): ?>
                                 <li>
                                     <label>
                                         <input

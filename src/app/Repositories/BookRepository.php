@@ -3,8 +3,10 @@
     namespace Paw\Repositories;
 
     use Paw\Interfaces\BookRepositoryInterface;
+    use Psr\Log\LoggerInterface;
     
     class BookRepository implements BookRepositoryInterface {
+        
         public function __construct(private \PDO $db) {}
 
         public function findAllGroupedByGenre(): array {
@@ -33,6 +35,30 @@
             $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
             $stmt->execute();
             return $stmt->fetchAll();
+        }
+
+        /**
+         * Encuentra un libro por su ID.
+         * 
+         * @param int $id El ID del libro.
+         * @return array|null El libro encontrado, o null si no existe.
+         */
+        public function findById(int $id): ?array {
+            global $container;
+            $container->get(LoggerInterface::class)->debug("BookRepository.findById [\$id={$id}]");
+
+            $container->get(LoggerInterface::class)->debug(
+                "Ejecutando consulta para encontrar libro por ID {$id}..."
+            );
+            $stmt = $this->db->prepare(
+                'SELECT id, title, description, author, genre, price, image FROM books WHERE id = :id'
+            );
+            $stmt->bindValue(':id', $id, \PDO::PARAM_INT);
+            $stmt->execute();
+            $book = $stmt->fetch();
+            $container->get(LoggerInterface::class)->debug("Consulta ejecutada. [\$book=" . json_encode($book) . "]");
+
+            return $book ?: null;
         }
 
         public function countAll(array $filters = []): int {
