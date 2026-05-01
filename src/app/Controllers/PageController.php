@@ -3,7 +3,6 @@
     namespace Paw\Controllers;
 
     use Paw\Interfaces\BookRepositoryInterface;
-    use Paw\Interfaces\PageControllerInterface;
     use Paw\Interfaces\PromotionRepositoryInterface;
     use Paw\View;
 
@@ -53,6 +52,12 @@
                         'genres'      => $this->bookRepository->findAllGenres(),
                         'filters'     => $filters,
                         'filterQuery' => $filterQuery,
+                    ];
+                })(),
+                'book-detail' => (function () {
+                    $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+                    return [
+                        'book' => $this->bookRepository->findById($id),
                     ];
                 })(),
                 default => [],

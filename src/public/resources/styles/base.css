@@ -58,6 +58,10 @@
         margin: 0 1rem;
     }
 
+    footer {
+        margin-top: 5rem;
+    }
+
 }
 
 /* Estilos para mobile */
@@ -85,6 +89,10 @@
     .menu-hamburguesa img {
         width: 30px;
         height: auto;
+    }
+
+    main {
+        padding-bottom: 100px;
     }
 
     header div.header-superior {
@@ -175,6 +183,8 @@
     footer {
         padding: 1.5rem 1rem;
         margin-top: 3rem;
+        position: static;
+        width: 100%;
     }
 
     footer address {
@@ -237,6 +247,10 @@ a {
 p, h1, h2, h3, h4, h5, h6 {
     font-family: sans-serif;
     color: var(--color-violeta);
+}
+
+main {
+    min-height: calc(100vh - 220px);
 }
 
 
@@ -329,9 +343,8 @@ nav.breadcrumbs img {
 /* Estilos del footer */
 
 footer {
-    display: block;
-    text-align: center;
-    margin: 5rem auto 0 auto;
+   	display: block;
+	text-align: center;
 	border-top: 1.2rem solid var(--color-violeta);
     padding: 2rem 0;
 }
