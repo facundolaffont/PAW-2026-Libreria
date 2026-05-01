@@ -16,30 +16,24 @@
             <aside aria-label="Filtros de búsqueda">
                 <h2>Filtros</h2>
 
-                <form action="/catalogo" method="get">
+                <form action="/catalog" method="get">
                     <details class="color-blanco">
                         <summary>Categorías</summary>
                         <nav aria-label="Filtrar por categoría">
                             <ul>
-                                <!-- Las categorías se cargan dinámicamente desde la base de datos. -->
+                                <?php foreach ($context['genres'] as $genre): ?>
                                 <li>
                                     <label>
-                                        <input type="checkbox" name="categoria" value="ID">
-                                        Categoría A
+                                        <input
+                                            type="checkbox"
+                                            name="genero[]"
+                                            value="<?= htmlspecialchars($genre) ?>"
+                                            <?= in_array($genre, $context['filters']['generos']) ? 'checked' : '' ?>
+                                        >
+                                        <?= htmlspecialchars($genre) ?>
                                     </label>
                                 </li>
-                                <li>
-                                    <label>
-                                        <input type="checkbox" name="categoria" value="ID">
-                                        Categoría B
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input type="checkbox" name="categoria" value="ID">
-                                        Categoría C
-                                    </label>
-                                </li>
+                                <?php endforeach; ?>
                             </ul>
                         </nav>
                     </details>
@@ -48,11 +42,11 @@
                         <summary>Precio</summary>
                         <div>
                             <label for="precio-min">Desde</label>
-                            <input type="number" id="precio-min" name="precio_min" min=0 placeholder="$ 0" >
+                            <input type="number" id="precio-min" name="precio_min" min=0 placeholder="$ 0" value="<?= htmlspecialchars($context['filters']['precio_min']) ?>">
                         </div>
                         <div>
                             <label for="precio-max">Hasta</label>
-                            <input type="number" id="precio-max" name="precio_max" min=0 placeholder="$ 99999" >
+                            <input type="number" id="precio-max" name="precio_max" min=0 placeholder="$ 99999" value="<?= htmlspecialchars($context['filters']['precio_max']) ?>">
                         </div>
                     </details>
 
@@ -85,11 +79,11 @@
                     <details>
                         <summary>Autor</summary>
                         <label for="filtro-autor">Buscar autor</label>
-                        <input type="text" id="filtro-autor" name="autor" placeholder="Nombre del autor" >
+                        <input type="text" id="filtro-autor" name="autor" placeholder="Nombre del autor" value="<?= htmlspecialchars($context['filters']['autor']) ?>">
                     </details>
 
-                    <button type="submit" disabled>Aplicar filtros</button>
-                    <a href="#">Limpiar filtros</a>
+                    <button type="submit">Aplicar filtros</button>
+                    <a href="/catalog">Limpiar filtros</a>
 
                 </form>
             </aside>
@@ -111,202 +105,69 @@
 
                 <ul>
 
+                    <?php foreach ($context['books'] as $book): ?>
+                    <?php
+                        $imageParts  = explode(';', $book['image']);
+                        $sources     = [];
+                        $fallbackSrc = '';
+                        foreach ($imageParts as $part) {
+                            if (preg_match('/^(\d+):(.+)$/', $part, $m)) {
+                                $sources[] = ['maxWidth' => (int)$m[1], 'url' => $m[2]];
+                            } else {
+                                $fallbackSrc = $part;
+                            }
+                        }
+                    ?>
                     <li>
                         <article>
-                            <a href="book-detail?id=libroN">
-                                <picture id="libro1">
+                            <a href="book-detail?id=<?= (int)$book['id'] ?>">
+                                <picture>
+                                    <?php foreach ($sources as $source): ?>
                                     <source
-                                        srcset="resources/images/placeholder-libro-grande.png"
-                                        media="( min-width: 600px )"
-                                >
-                                <img src="resources/images/placeholder-libro-chica.png" alt="Descripción del libro.">
+                                        srcset="resources/images/<?= htmlspecialchars($source['url']) ?>"
+                                        media="( max-width: <?= $source['maxWidth'] ?>px )"
+                                    >
+                                    <?php endforeach; ?>
+                                    <img src="resources/images/<?= htmlspecialchars($fallbackSrc) ?>" alt="<?= htmlspecialchars($book['title']) ?>">
                                 </picture>
-                                <h3>[Título del libro 1]</h3>
+                                <h3><?= htmlspecialchars($book['title']) ?></h3>
                             </a>
-                            <p>[Autor/a]</p>
-                            <p><strong>$[Precio]</strong></p>
+                            <p><?= htmlspecialchars($book['author']) ?></p>
+                            <p><strong>$ <?= number_format($book['price'], 2, ',', '.') ?></strong></p>
                             <button type="button">Reservar</button>
                         </article>
                     </li>
-
-                    <li>
-                        <article>
-                            <a href="book-detail?id=libroN">
-                                <picture id="libro2">
-                                    <source
-                                        srcset="resources/images/placeholder-libro-grande.png"
-                                        media="( min-width: 600px )"
-                                >
-                                <img src="resources/images/placeholder-libro-chica.png" alt="Descripción del libro.">
-                                </picture>
-                                <h3>[Título del libro 2]</h3>
-                            </a>
-                            <p>[Autor/a]</p>
-                            <p><strong>$[Precio]</strong></p>
-                            <button type="button">Reservar</button>
-                        </article>
-                    </li>
-
-                    <li>
-                        <article>
-                            <a href="book-detail?id=libroN">
-                                <picture id="libro3">
-                                    <source
-                                        srcset="resources/images/placeholder-libro-grande.png"
-                                        media="( min-width: 600px )"
-                                >
-                                <img src="resources/images/placeholder-libro-chica.png" alt="Descripción del libro.">
-                                </picture>
-                                <h3>[Título del libro 3]</h3>
-                            </a>
-                            <p>[Autor/a]</p>
-                            <p><strong>$[Precio]</strong></p>
-                            <button type="button">Reservar</button>
-                        </article>
-                    </li>
-
-                    <li>
-                        <article>
-                            <a href="book-detail?id=libroN">
-                                <picture id="libro4">
-                                    <source
-                                        srcset="resources/images/placeholder-libro-grande.png"
-                                        media="( min-width: 600px )"
-                                >
-                                <img src="resources/images/placeholder-libro-chica.png" alt="Descripción del libro.">
-                                </picture>
-                                <h3>[Título del libro 4]</h3>
-                            </a>
-                            <p>[Autor/a]</p>
-                            <p><strong>$[Precio]</strong></p>
-                            <button type="button">Reservar</button>
-                        </article>
-                    </li>
-
-                    <li>
-                        <article>
-                            <a href="book-detail?id=libroN">
-                                <picture id="libro5">
-                                    <source
-                                        srcset="resources/images/placeholder-libro-grande.png"
-                                        media="( min-width: 600px )"
-                                >
-                                <img src="resources/images/placeholder-libro-chica.png" alt="Descripción del libro.">
-                                </picture>
-                                <h3>[Título del libro 5]</h3>
-                            </a>
-                            <p>[Autor/a]</p>
-                            <p><strong>$[Precio]</strong></p>
-                            <button type="button">Reservar</button>
-                        </article>
-                    </li>
-
-                    <li>
-                        <article>
-                            <a href="book-detail?id=libroN">
-                                <picture id="libro6">
-                                    <source
-                                        srcset="resources/images/placeholder-libro-grande.png"
-                                        media="( min-width: 600px )"
-                                >
-                                <img src="resources/images/placeholder-libro-chica.png" alt="Descripción del libro.">
-                                </picture>
-                                <h3>[Título del libro 6]</h3>
-                            </a>
-                            <p>[Autor/a]</p>
-                            <p><strong>$[Precio]</strong></p>
-                            <button type="button">Reservar</button>
-                        </article>
-                    </li>
-
-                    <li>
-                        <article>
-                            <a href="book-detail?id=libroN">
-                                <picture id="libro7">
-                                    <source
-                                        srcset="resources/images/placeholder-libro-grande.png"
-                                        media="( min-width: 600px )"
-                                >
-                                <img src="resources/images/placeholder-libro-chica.png" alt="Descripción del libro.">
-                                </picture>
-                                <h3>[Título del libro 7]</h3>
-                            </a>
-                            <p>[Autor/a]</p>
-                            <p><strong>$[Precio]</strong></p>
-                            <button type="button">Reservar</button>
-                        </article>
-                    </li>
-
-                    <li>
-                        <article>
-                            <a href="book-detail?id=libroN">
-                                <picture id="libro8">
-                                    <source
-                                        srcset="resources/images/placeholder-libro-grande.png"
-                                        media="( min-width: 600px )"
-                                >
-                                <img src="resources/images/placeholder-libro-chica.png" alt="Descripción del libro.">
-                                </picture>
-                                <h3>[Título del libro 8]</h3>
-                            </a>
-                            <p>[Autor/a]</p>
-                            <p><strong>$[Precio]</strong></p>
-                            <button type="button">Reservar</button>
-                        </article>
-                    </li>
-
-                    <li>
-                        <article>
-                            <a href="book-detail?id=libroN">
-                                <picture id="libro9">
-                                    <source
-                                        srcset="resources/images/placeholder-libro-grande.png"
-                                        media="( min-width: 600px )"
-                                >
-                                <img src="resources/images/placeholder-libro-chica.png" alt="Descripción del libro.">
-                                </picture>
-                                <h3>[Título del libro 9]</h3>
-                            </a>
-                            <p>[Autor/a]</p>
-                            <p><strong>$[Precio]</strong></p>
-                            <button type="button">Reservar</button>
-                        </article>
-                    </li>
-
-                    <li>
-                        <article>
-                            <a href="book-detail?id=libroN">
-                                <picture id="libro10">
-                                    <source
-                                        srcset="resources/images/placeholder-libro-grande.png"
-                                        media="( min-width: 600px )"
-                                >
-                                <img src="resources/images/placeholder-libro-chica.png" alt="Descripción del libro.">
-                                </picture>
-                                <h3>[Título del libro 10]</h3>
-                            </a>
-                            <p>[Autor/a]</p>
-                            <p><strong>$[Precio]</strong></p>
-                            <button type="button">Reservar</button>
-                        </article>
-                    </li>
+                    <?php endforeach; ?>
 
                 </ul>
 
                     <nav aria-label="Paginación del catálogo">
                         <ol>
+                            <?php
+                                $fq = $context['filterQuery'] ? '&' . $context['filterQuery'] : '';
+                            ?>
+
+                            <?php if ($context['currentPage'] > 1): ?>
                             <li>
-                                <a href="catalog?pagina=1" aria-label="Página 1" aria-current="page">1</a>
+                                <a href="catalog?pagina=<?= $context['currentPage'] - 1 ?><?= $fq ?>" aria-label="Página anterior">Anterior</a>
                             </li>
+                            <?php endif; ?>
+
+                            <?php for ($i = 1; $i <= $context['totalPages']; $i++): ?>
                             <li>
-                                <a href="catalog?pagina=2" aria-label="Página 2">2</a>
+                                <a
+                                    href="catalog?pagina=<?= $i ?><?= $fq ?>"
+                                    aria-label="Página <?= $i ?>"
+                                    <?= $i === $context['currentPage'] ? 'aria-current="page"' : '' ?>
+                                ><?= $i ?></a>
                             </li>
+                            <?php endfor; ?>
+
+                            <?php if ($context['currentPage'] < $context['totalPages']): ?>
                             <li>
-                                <a href="catalog?pagina=3" aria-label="Página 3">3</a>
+                                <a href="catalog?pagina=<?= $context['currentPage'] + 1 ?><?= $fq ?>" aria-label="Página siguiente">Siguiente</a>
                             </li>
-                            <li>
-                                <a href="catalog?pagina=2" aria-label="Página siguiente">Siguiente</a>
-                            </li>
+                            <?php endif; ?>
                         </ol>
                     </nav>
 
