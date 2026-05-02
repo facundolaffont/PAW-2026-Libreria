@@ -43,7 +43,7 @@
             $errors = $this->validate($nombre, $email, $telefono);
 
             if (!empty($errors)) {
-                View::render('PAWPrints - Reserva', 'reservation', [
+                View::render('Reserva', 'reservation', [
                     'errors'   => $errors,
                     'nombre'   => $nombre,
                     'email'    => $email,
@@ -60,7 +60,7 @@
                 exit;
             }
 
-            View::render('PAWPrints - Reserva', 'reservation', [
+            View::render('Reserva', 'reservation', [
                 'errors'   => ['general' => 'Hubo un problema al enviar la reserva. Por favor, intentá nuevamente.'],
                 'nombre'   => $nombre,
                 'email'    => $email,

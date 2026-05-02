@@ -9,6 +9,7 @@
     use Paw\Router;
     use Paw\Controllers\PageController;
     use Paw\Controllers\ReservationController;
+    use Paw\Services\ContextBuilder;
     use Psr\Log\LoggerInterface;
 
     $method = $_SERVER['REQUEST_METHOD'];
@@ -38,15 +39,21 @@
     # Rutas GET: cada ruta mapea una URL a un título de página y una vista.
     $router = new Router();
     $router
-        ->addRoute('/', 'PAWPrints - Página principal', 'home-page')
-        ->addRoute('/promotions', 'PAWPrints - Promociones', 'promotions')
-        ->addRoute('/catalog', 'PAWPrints - Catálogo', 'catalog')
-        ->addRoute('/book-detail', 'PAWPrints - Detalles de libro', 'book-detail')
-        ->addRoute('/reservation', 'PAWPrints - Reserva', 'reservation')
-        ->addRoute('/about-us', 'PAWPrints - Acerca de nosotros', 'about-us');
+        ->addRoute('/', 'Página principal', 'home-page')
+        ->addRoute('/promotions', 'Promociones', 'promotions')
+        ->addRoute('/catalog', 'Catálogo', 'catalog')
+        ->addRoute('/book-detail', 'Detalles de libro', 'book-detail')
+        ->addRoute('/reservation', 'Reserva', 'reservation')
+        ->addRoute('/about-us', 'Acerca de nosotros', 'about-us');
 
     $route = $router->route($path);
     $title = $route['title'];
     $page  = $route['page'];
 
-    $container->get(PageController::class)->show($title, $page);
+    $container
+        ->get(PageController::class)
+        ->show(
+            $container->get(ContextBuilder::class),
+            $title,
+            $page
+        );

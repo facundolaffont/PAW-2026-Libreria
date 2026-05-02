@@ -4,9 +4,7 @@
 
     class Router {
 
-        private $routes = [];
-
-        public function addRoute($path, $title, $page) {
+        public function addRoute(string $path, string $title, string $page) {
             $this->routes[$path] = [
                 'title' => $title,
                 'page' => $page,
@@ -15,10 +13,12 @@
             return $this;
         }
 
-        public function route($path) {
+        public function route(string $path): array {
             return $this->routes[$path] ?? [
-                'title' => 'PAWPrints - Página no encontrada',
+                'title' => 'Página no encontrada',
                 'page' => '404'
             ];
         }
+
+        private array $routes = [];
     }

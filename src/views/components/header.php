@@ -55,13 +55,16 @@
     </nav>
 
     <!-- Breadcrumbs -->
+    <?php
+        $currentPageName = $context['currentPageName'] ?? '';
+    ?>
     <nav class="breadcrumbs">
         <ul>
             <li>
                 <a href="/">
                     <img src="resources/images/breadcrumbs-home.png" alt="">
                 </a>
-                <p>Detalle de libro</p>
+                <p><?= htmlspecialchars($currentPageName) ?></p>
                 <img src="resources/images/breadcrumbs-home-punta-flecha.png" alt="">
             </li>
         </ul>
