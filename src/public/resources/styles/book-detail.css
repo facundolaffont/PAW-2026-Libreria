@@ -119,10 +119,6 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-.error-libro-no-encontrado p {
-    margin: 0;
     font-weight: bold;
     color: var(--color-blanco);
 }

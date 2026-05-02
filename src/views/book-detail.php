@@ -1,7 +1,7 @@
 <body>
 
+    <!-- Inclusión del encabezado global del sitio -->
     <?php require 'components/header.php'; ?>
-
 
     <main>
 
@@ -11,6 +11,7 @@
             $context = $context ?? [];
         ?>
 
+        <!-- Breadcrumbs -->
         <nav aria-label="Migas de pan">
             <ol>
                 <li><a href="#">Detalle de libro</a></li>
@@ -20,33 +21,60 @@
         <section class="contenido-detalle">
             <h2>Detalle del libro</h2>
 
+            <!-- Verifica si existe la información del libro en el contexto -->
+            <?php
 
-            <?php if ($context['book'] ?? false): ?>
-                <?php
-                    $imageParts = explode(';', $context['book']['image'] ?? '');
-                    $sources = [];
-                    $fallbackSrc = 'default.jpg';
-                    foreach ($imageParts as $part) {
-                        if (preg_match('/^(\d+):(.+)$/', $part, $m)) {
-                            $sources[] = ['maxWidth' => (int)$m[1], 'url' => $m[2]];
-                        } elseif ($part) {
-                            $fallbackSrc = $part;
-                        }
+            if ($context['book'] ?? false):
+
+                /*
+                 * Procesa imágenes adaptables. Se asume que
+                 * $context['book']['image'] es un string formateado
+                 * (p.e., "400:small.jpg;800:medium.jpg;fallback.jpg").
+                 */
+
+                $imageParts = explode(';', $context['book']['image'] ?? '');
+                $sources = [];
+                $fallbackSrc = 'default.jpg'; // Imagen por defecto.
+
+                foreach ($imageParts as $part) {
+
+                    // Si la parte tiene el formato 'ancho:url', se añade como
+                    // fuente para <source>.
+                    if (preg_match('/^(\d+):(.+)$/', $part, $m)) {
+                        $sources[] = ['maxWidth' => (int)$m[1], 'url' => $m[2]];
+
+                    // Si es solo una URL, se toma como la imagen de respaldo.
+                    } elseif ($part) {
+                        $fallbackSrc = $part;
                     }
-                ?>
+                }
+            ?>
+
+                <!-- Contenedor visual de la portada. -->
                 <figure class="portada">
                     <picture>
                         <?php foreach ($sources as $source): ?>
-                        <source
-                            srcset="resources/images/<?= htmlspecialchars($source['url']) ?>"
-                            media="(max-width: <?= (int)$source['maxWidth'] ?>px)"
-                        >
+
+                            <!-- Definición de imágenes para diferentes anchos de pantalla. -->
+                            <source
+                                srcset="resources/images/<?= htmlspecialchars($source['url']) ?>"
+                                media="(max-width: <?= (int)$source['maxWidth'] ?>px)"
+                            >
+
                         <?php endforeach; ?>
-                        <img src="resources/images/<?= htmlspecialchars($fallbackSrc) ?>" alt="Portada del libro <?= htmlspecialchars($context['book']['title']) ?>">
+                        
+                        <!-- Imagen fallback. -->
+                        <img
+                            src="resources/images/<?= htmlspecialchars($fallbackSrc) ?>" 
+                            alt="Portada del libro <?= htmlspecialchars($context['book']['title']) ?>"
+                        >
+
                     </picture>
                 </figure>
 
+                <!-- Bloque de información textual del libro. -->
                 <article class="info-libro">
+
                     <h3 class="titulo-libro"><?= htmlspecialchars($context['book']['title']) ?></h3>
                     <p class="autor">por <?= htmlspecialchars($context['book']['author']) ?></p>
 
@@ -61,15 +89,21 @@
                     </section>
 
                     <button type="button" class="boton-reservar">Agregar a mis reservas</button>
+
                 </article>
+
             <?php else: ?>
-                <div class="error-libro-no-encontrado">
-                    <p>El libro solicitado no existe o no se encuentra disponible.</p>
-                </div>
+
+                <!-- Estado de error: mensaje cuando no hay libro disponible -->
+                <p class="error-libro-no-encontrado" role="alert">
+                    El libro solicitado no existe o no se encuentra disponible.
+                </p>
+
             <?php endif; ?>
         </section>
     </main>
 
+    <!-- Inclusión del pie de página global del sitio. -->
     <?php require 'components/footer.php'; ?>
 
 </body>

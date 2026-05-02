@@ -1,10 +1,6 @@
 <?php
 
     $container = require '../bootstrap.php';
-    
-    // Vuelve global la instancia del contenedor para que pueda ser accedida desde cualquier
-    // parte de la aplicación.
-    global $container;
 
     use Paw\Router;
     use Paw\Controllers\PageController;
