@@ -131,7 +131,14 @@
             const firstItem = container.querySelector('article');
             const gap = parseFloat(getComputedStyle(container).gap) || 0;
             const scrollAmount = firstItem.offsetWidth + gap;
-            new Carousel(container, leftButton, rightButton, scrollAmount);
+            const carouselInstance = new Carousel(container);
+
+            leftButton.addEventListener('click', () => carouselInstance.moveLeft(container, scrollAmount));
+            rightButton.addEventListener('click', () => carouselInstance.moveRight(container, scrollAmount));
+
+            container.addEventListener('touchstart', (e) => carouselInstance.handleTouchStart(container, e), { passive: true });
+            container.addEventListener('touchmove', (e) => carouselInstance.handleTouchMove(container, e), { passive: false });
+            container.addEventListener('touchend', () => carouselInstance.handleTouchEnd(container));
         });
 
     </script>

@@ -1,94 +1,84 @@
 /**
  * Clase para manejar un carrusel de productos.
  * 
- * Mantiene el estado de la posición en #state y actualiza el DOM
- * exclusivamente a través de #render(), disparado por #setState().
+ * Mantiene la posición en #position y actualiza el DOM
+ * exclusivamente a través de #render(), disparado por #setPosition().
  * 
  * @param {HTMLElement} container - El elemento div que contiene los artículos del carrusel.
- * @param {HTMLElement} leftButton - El botón para desplazarse a la izquierda.
- * @param {HTMLElement} rightButton - El botón para desplazarse a la derecha.
- * @param {number} scrollAmount - La cantidad de píxeles a desplazar por clic.
  */
 class Carousel {
 
     /*** Público ***/
 
-    constructor(container, leftButton, rightButton, scrollAmount) {
-        this.container = container;
-        this.leftButton = leftButton;
-        this.rightButton = rightButton;
-        this.scrollAmount = scrollAmount;
+    constructor(container) {
 
-        // Inicializa el estado.
-        this.#state = { position: 0 };
-        this.#render();
+        // Renderiza la posición inicial.
+        this.#render(container);
 
-        this.#addDesktopEventListeners();
-        this.#addMobileEventListeners();
+        this.#cancelWheel(container);
 
+    }
+
+    moveLeft(container, scrollAmount) {
+        this.#setPosition(container, this.#position - scrollAmount);
+    }
+    
+    moveRight(container, scrollAmount) {
+        this.#setPosition(container, this.#position + scrollAmount);
+    }
+
+    handleTouchStart(container, e) {
+        if (e.touches.length !== 1) return;
+        this.#isDragging = true;
+        this.#touchStartX = e.touches[0].clientX;
+        this.#scrollStartX = container.scrollLeft;
+    }
+
+    handleTouchMove(container, e) {
+        if (!this.#isDragging || e.touches.length !== 1) return;
+        const deltaX = e.touches[0].clientX - this.#touchStartX;
+        container.scrollLeft = this.#scrollStartX - deltaX;
+
+        // Evita el scroll vertical si el movimiento es principalmente horizontal.
+        if (Math.abs(deltaX) > 10) e.preventDefault();
+    }
+
+    handleTouchEnd(container) {
+        this.#isDragging = false;
+
+        // Actualiza el estado para mantener la posición.
+        this.#setPosition(container, container.scrollLeft);
     }
 
 
     /*** Privado ***/
 
-    #state;
+    #position = 0;
+    #touchStartX = 0;
+    #scrollStartX = 0;
+    #isDragging = false;
 
-    #addDesktopEventListeners() {
-        this.container.addEventListener('wheel', (e) => {
+    /**
+     * Previene en pantalla grande el scroll horizontal con la rueda del mouse en el carrusel.
+     */
+    #cancelWheel(container) {
+        container.addEventListener('wheel', (e) => {
             if (window.matchMedia('(min-width: 1000px)').matches) {
                 if (e.shiftKey || e.deltaX !== 0) {
                     e.preventDefault();
                 }
             }
         }, { passive: false });
-
-        this.leftButton.addEventListener('click', () => {
-            this.#setState({ position: this.#state.position - this.scrollAmount });
-        });
-
-        this.rightButton.addEventListener('click', () => {
-            this.#setState({ position: this.#state.position + this.scrollAmount });
-        });
     }
 
-    #addMobileEventListeners() {
-        let touchStartX = 0;
-        let scrollStartX = 0;
-        let isDragging = false;
-
-        this.container.addEventListener('touchstart', (e) => {
-            if (e.touches.length !== 1) return;
-            isDragging = true;
-            touchStartX = e.touches[0].clientX;
-            scrollStartX = this.container.scrollLeft;
-        }, { passive: true });
-
-        this.container.addEventListener('touchmove', (e) => {
-            if (!isDragging || e.touches.length !== 1) return;
-            const deltaX = e.touches[0].clientX - touchStartX;
-            this.container.scrollLeft = scrollStartX - deltaX;
-
-            // Evita el scroll vertical si el movimiento es principalmente horizontal.
-            if (Math.abs(deltaX) > 10) e.preventDefault();
-        }, { passive: false });
-
-        this.container.addEventListener('touchend', () => {
-            isDragging = false;
-
-            // Actualiza el estado para mantener la posición.
-            this.#setState({ position: this.container.scrollLeft });
-        });
-    }
-    
-    #setState(newState) {
-        const maxPosition = this.container.scrollWidth - this.container.clientWidth;
-        const clamped = Math.max(0, Math.min(newState.position, maxPosition));
-        this.#state = { ...this.#state, position: clamped };
-        this.#render();
+    #setPosition(container, newPosition) {
+        const maxPosition = container.scrollWidth - container.clientWidth;
+        this.#position = Math.max(0, Math.min(newPosition, maxPosition));
+        this.#render(container);
     }
 
-    #render() {
-        this.container.scrollTo({ left: this.#state.position, behavior: 'smooth' });
+    #render(container) {
+        container.scrollTo({ left: this.#position, behavior: 'smooth' });
     }
 
 }
