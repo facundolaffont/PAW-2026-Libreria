@@ -66,6 +66,21 @@ class BooksSeeder extends AbstractSeed
             ['title' => 'Las palabras', 'author' => 'Jean-Paul Sartre', 'genre' => 'Ensayo', 'isbn' => '9788420633824', 'price' => 1100.00, 'stock' => 6, 'description' => 'Una obra maestra del género autobiográfico. Sartre despelleja con ironía y brillantez sus primeros diez años de vida en el seno de un hogar burgués, narrando cómo construyó su identidad engañosa alrededor de los libros, la lectura en el despacho de su abuelo y la imperiosa y pretenciosa vocación de convertirse en un genio literario.']
         ];
 
+        $placeholderImage = '599:placeholder-libro-chica.png;placeholder-libro-grande.png';
+        $booksImagesDir = __DIR__ . '/../../public/resources/images/libros';
+
+        foreach ($books as &$book) {
+            $fileName = sprintf('%s - %s.jpg', $book['author'], $book['title']);
+            $relativeImagePath = 'libros/' . $fileName;
+
+            if (is_file($booksImagesDir . '/' . $fileName)) {
+                $book['image'] = sprintf('%s', $relativeImagePath);
+            } else {
+                $book['image'] = $placeholderImage;
+            }
+        }
+        unset($book);
+
         $this->table('books')->insert($books)->saveData();
     }
 }

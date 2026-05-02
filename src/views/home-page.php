@@ -5,6 +5,12 @@
     <!-- Contenido principal: los libros y su información de reserva -->
     <main>
 
+        <?php
+            // Garantiza que el contexto, el cual se debería construir dinámicamente en el
+            // controlador de página según la vista solicitada, siempre estará definido.
+            $context = $context ?? [];
+        ?>
+
         <?php foreach ($context['booksByGenre'] as $genre => $genreBooks): ?>
 
         <!-- Carrusel de libros de <?= $genre ?> -->

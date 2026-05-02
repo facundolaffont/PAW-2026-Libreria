@@ -11,9 +11,7 @@ services:
           sleep 2;
         done &&
         composer install &&
-        vendor/bin/phinx migrate -c phinx.php &&
-        vendor/bin/phinx seed:run -c phinx.php -s BooksSeeder &&
-        vendor/bin/phinx seed:run -c phinx.php -s PromotionsSeeder &&
+        composer db:setup &&
         php -S 0.0.0.0:8000 -t public\
       "
     ports:

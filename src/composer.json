@@ -12,5 +12,13 @@
         "psr-4": {
             "Paw\\": "app/"
         }
+    },
+    "scripts": {
+        "db:migrate": "vendor/bin/phinx migrate -c phinx.php",
+        "db:seed": "vendor/bin/phinx seed:run -c phinx.php",
+        "db:setup": [
+            "@db:migrate",
+            "@db:seed"
+        ]
     }
 }
