@@ -4,10 +4,10 @@
 
     class Router {
 
-        public function addRoute(string $path, string $title, string $page) {
+        public function addRoute(string $path, string $page, string $title) {
             $this->routes[$path] = [
-                'title' => $title,
                 'page' => $page,
+                'title' => $title,
             ];
 
             return $this;
@@ -15,8 +15,8 @@
 
         public function route(string $path): array {
             return $this->routes[$path] ?? [
-                'title' => 'Página no encontrada',
-                'page' => '404'
+                'page' => '404',
+                'title' => 'Página no encontrada'
             ];
         }
 
