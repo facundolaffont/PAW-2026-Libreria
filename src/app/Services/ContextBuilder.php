@@ -2,6 +2,8 @@
 
 namespace Paw\Services;
 
+use Paw\Enums\HttpCodeError;
+use Paw\Errors\Exceptions\HttpErrorException;
 use Paw\Interfaces\BookRepositoryInterface;
 use Paw\Interfaces\PromotionRepositoryInterface;
 
@@ -45,16 +47,22 @@ class ContextBuilder {
         ];
     }
 
+    public static function buildCatalogFilters(array $queryParams): array {
+        return [
+            'generos'    => array_map('strval', (array)($queryParams['genero'] ?? [])),
+            'precio_min' => $queryParams['precio_min'] ?? '',
+            'precio_max' => $queryParams['precio_max'] ?? '',
+            'autor'      => array_map('strval', (array)($queryParams['autor'] ?? [])),
+            'q'          => trim($queryParams['q'] ?? ''),
+            'orden'      => (string)($queryParams['orden'] ?? ''),
+        ];
+    }
+
     private function buildCatalogContext(
         BookRepositoryInterface $bookRepository,
         array $queryParams
     ): array {
-        $filters = [
-            'generos'    => array_map('strval', (array)($queryParams['genero'] ?? [])),
-            'precio_min' => $queryParams['precio_min'] ?? '',
-            'precio_max' => $queryParams['precio_max'] ?? '',
-            'autor'      => trim($queryParams['autor'] ?? ''),
-        ];
+        $filters = self::buildCatalogFilters($queryParams);
 
         $filterParams = $queryParams;
         unset($filterParams['pagina']);
@@ -72,6 +80,7 @@ class ContextBuilder {
             'currentPage' => $currentPage,
             'totalPages'  => $totalPages,
             'genres'      => $bookRepository->findAllGenres(),
+            'authors'     => $bookRepository->findAllAuthors(),
             'filters'     => $filters,
             'filterQuery' => $filterQuery,
         ];
@@ -81,10 +90,15 @@ class ContextBuilder {
         BookRepositoryInterface $bookRepository,
         array $queryParams
     ): array {
-        $id = isset($queryParams['id']) ? (int)$queryParams['id'] : 0;
+        $id   = isset($queryParams['id']) ? (int)$queryParams['id'] : 0;
+        $book = $id > 0 ? $bookRepository->findById($id) : null;
+
+        if ($book === null) {
+            throw new HttpErrorException(HttpCodeError::NOT_FOUND);
+        }
 
         return [
-            'book' => $bookRepository->findById($id),
+            'book' => $book,
         ];
     }
 }

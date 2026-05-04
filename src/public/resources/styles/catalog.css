@@ -176,7 +176,8 @@ aside details div input[type="number"] {
   color: var(--color-blanco);
 }
 
-aside details input[type="text"] {
+aside details input[type="text"],
+aside details select {
   margin: 0 14px 10px;
   padding: 6px 8px;
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -186,8 +187,83 @@ aside details input[type="text"] {
   color: var(--color-blanco);
 }
 
+aside details select option {
+  background-color: var(--color-primario);
+  color: var(--color-blanco);
+}
+
 aside details label[for="filtro-autor"] {
   display: none;
+}
+
+/* Filtro de autor — lista de checkboxes con "Ver todos" */
+.filtro-autor .autor-lista {
+  padding: 4px 14px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filtro-autor .autor-lista li label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--color-blanco);
+  cursor: pointer;
+}
+
+.filtro-autor .autor-ver-todos {
+  display: block;
+  margin: 0 14px 10px;
+  padding: 0;
+  background: none;
+  border: none;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: underline;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.filtro-autor .autor-ver-todos:hover {
+  color: var(--color-blanco);
+}
+
+/* Checkboxes custom — reemplazan el cuadrado gris nativo */
+aside details ul li label input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  border: 1.5px solid rgba(255, 255, 255, 0.55);
+  border-radius: 3px;
+  background-color: rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+
+aside details ul li label input[type="checkbox"]:hover {
+  border-color: var(--color-blanco);
+}
+
+aside details ul li label input[type="checkbox"]:checked {
+  background-color: var(--color-blanco);
+  border-color: var(--color-blanco);
+}
+
+aside details ul li label input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 4px;
+  width: 4px;
+  height: 8px;
+  border-right: 2px solid var(--color-primario);
+  border-bottom: 2px solid var(--color-primario);
+  transform: rotate(45deg);
 }
 
 aside details button[type="submit"] {
@@ -356,8 +432,9 @@ nav[aria-label="Paginación del catálogo"] ol li a {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
+  min-width: 34px;
   height: 34px;
+  padding: 0 10px;
   border: 1px solid var(--color-borde);
   border-radius: var(--radio-borde);
   background-color: var(--color-blanco);
@@ -379,10 +456,6 @@ nav[aria-label="Paginación del catálogo"] ol li a[aria-current="page"] {
   font-weight: 700;
 }
 
-nav[aria-label="Paginación del catálogo"] ol li:last-child a {
-  width: auto;
-  padding: 0 12px;
-}
 
 
 /* Mobile */
@@ -393,13 +466,31 @@ nav[aria-label="Paginación del catálogo"] ol li:last-child a {
     padding: 12px;
   }
 
-  /* Mostrar barra móvil */
+  /* Mostrar barra móvil con los botones Ordenar / Filtrar */
   main > div:first-child {
     display: flex;
   }
 
-  /* Ocultar sidebar */
+  /* Apilar verticalmente: aside (cuando se muestra) arriba del listado */
+  main > div:last-child {
+    flex-direction: column;
+  }
+
+  /* Sidebar oculta por defecto; se muestra cuando el botón "Filtrar" la
+     activa vía la clase mobile-visible (toggleada por JS). */
   aside {
+    display: none;
+  }
+
+  aside.mobile-visible {
+    display: block;
+    width: 100%;
+    margin-bottom: 12px;
+  }
+
+  /* En mobile el <select> de orden no se usa; el orden se elige desde la
+     lista .ordenar-opciones-mobile que abre el botón "Ordenar". */
+  #ordenar-mobile {
     display: none;
   }
 
@@ -408,11 +499,60 @@ nav[aria-label="Paginación del catálogo"] ol li:last-child a {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
   }
+}
 
-  /* Ocultar ordenar desktop */
-  section[aria-label="Listado de libros"] > div {
-    display: none;
+
+/*
+ * Lista de opciones de orden para mobile. Oculta por defecto en todas las
+ * resoluciones; el JS le agrega .mobile-visible cuando se pulsa "Ordenar".
+ * En desktop se mantiene oculta porque el orden se elige con el <select>.
+ */
+.ordenar-opciones-mobile {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .ordenar-opciones-mobile.mobile-visible {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 12px;
+    padding: 8px;
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-borde);
+    background-color: var(--color-blanco);
   }
+
+  .ordenar-opciones-mobile li a {
+    display: block;
+    padding: 8px 10px;
+    font-size: 13px;
+    color: var(--color-texto);
+    border-radius: 4px;
+  }
+
+  .ordenar-opciones-mobile li a[aria-current="true"] {
+    background-color: var(--color-primario);
+    color: var(--color-blanco);
+    font-weight: 700;
+  }
+}
+
+
+/* Link de descarga CSV — discreto, alineado a la derecha bajo la paginación. */
+.descargar-csv-wrapper {
+  margin-top: 16px;
+  text-align: right;
+}
+
+.descargar-csv-wrapper .descargar-csv {
+  font-size: 12px;
+  color: var(--color-texto-suave);
+  text-decoration: underline;
+}
+
+.descargar-csv-wrapper .descargar-csv:hover {
+  color: var(--color-primario);
 }
 
 

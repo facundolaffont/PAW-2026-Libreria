@@ -277,6 +277,14 @@ header form {
 }
 
 .lupa-buscar {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.lupa-buscar img {
     width: 20px;
     height: auto;
     vertical-align: middle;

@@ -24,10 +24,23 @@
             </svg>
         </a>
         
-        <!-- Buscador de libros -->
-        <form action="#" method="get" class="buscador">
-            <input type="text" name="buscar" class="campo-buscar" placeholder="Buscar por autor, título, género, ISBN">
-            <input type="image" name="imagen-lupa" class="lupa-buscar" src="resources/images/lupa.png" alt="Botón de búsqueda">
+        <!--
+            Buscador de libros.
+            Método: GET. Formato: query string (application/x-www-form-urlencoded).
+            Razones: la búsqueda es idempotente, cacheable, bookmarkable y se compone
+            naturalmente con los filtros del catálogo (que también viajan por GET).
+        -->
+        <form action="/catalog" method="get" class="buscador" role="search">
+            <input
+                type="text"
+                name="q"
+                class="campo-buscar"
+                placeholder="Buscar por autor, título o género"
+                value="<?= htmlspecialchars($context['filters']['q'] ?? '') ?>"
+            >
+            <button type="submit" class="lupa-buscar" aria-label="Buscar">
+                <img src="resources/images/lupa.png" alt="">
+            </button>
         </form>
 
         <!-- Enlace a Mi Cuenta -->

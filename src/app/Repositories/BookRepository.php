@@ -27,14 +27,22 @@
             return array_column($stmt->fetchAll(), 'genre');
         }
 
+        public function findAllAuthors(): array {
+            $this->logger->debug("");
+
+            $stmt = $this->db->query('SELECT DISTINCT author FROM books ORDER BY author');
+            return array_column($stmt->fetchAll(), 'author');
+        }
+
         public function findAll(int $offset, int $limit, array $filters = []): array {
             $this->logger->debug("",
                 compact('offset', 'limit', 'filters')
             );
 
             ['clause' => $where, 'params' => $params] = $this->buildWhere($filters);
+            $orderBy = $this->buildOrderBy($filters['orden'] ?? '');
             $stmt = $this->db->prepare(
-                "SELECT id, title, author, genre, price, image FROM books {$where} ORDER BY title LIMIT :limit OFFSET :offset"
+                "SELECT id, title, author, genre, price, image FROM books {$where} ORDER BY {$orderBy} LIMIT :limit OFFSET :offset"
             );
             foreach ($params as $key => $value) {
                 $stmt->bindValue($key, $value);
@@ -104,13 +112,37 @@
                 $params[':precio_max'] = (float)$filters['precio_max'];
             }
             if (!empty($filters['autor'])) {
-                $where[]         = 'author LIKE :autor';
-                $params[':autor'] = '%' . $filters['autor'] . '%';
+                $placeholders = [];
+                foreach ($filters['autor'] as $i => $a) {
+                    $key = ":autor{$i}";
+                    $placeholders[] = $key;
+                    $params[$key]   = $a;
+                }
+                $where[] = 'author IN (' . implode(', ', $placeholders) . ')';
+            }
+            if (!empty($filters['q'])) {
+                $where[]     = '(title LIKE :q OR author LIKE :q OR genre LIKE :q)';
+                $params[':q'] = '%' . $filters['q'] . '%';
             }
 
             return [
                 'clause' => $where ? 'WHERE ' . implode(' AND ', $where) : '',
                 'params' => $params,
             ];
+        }
+
+        /**
+         * Traduce el parámetro `orden` (whitelist) a una cláusula ORDER BY segura.
+         * Nunca interpola el valor crudo en SQL.
+         */
+        private function buildOrderBy(string $orden): string {
+            return match ($orden) {
+                'precio-asc'  => 'price ASC',
+                'precio-desc' => 'price DESC',
+                'titulo-desc' => 'title DESC',
+                'autor-asc'   => 'author ASC, title ASC',
+                'recientes'   => 'id DESC',
+                default       => 'title ASC',
+            };
         }
     }
