@@ -10,39 +10,59 @@
 
         public function __construct(private LoggerInterface $logger) {}
 
-        public function sendReservationNotification(string $nombre, string $email, string $telefono, array $libros = []): bool {
-            $mail = new PHPMailer(true);
+        public function sendReservationNotification(
+            string $nombre,
+            string $email, 
+            string $telefono, 
+            array $libros = []
+        ): bool {
+
+            $mailer = new PHPMailer(true);
 
             try {
-                $mail->isSMTP();
-                $mail->Host       = $_ENV['MAIL_HOST'];
-                $mail->SMTPAuth   = true;
-                $mail->Username   = $_ENV['MAIL_USERNAME'];
-                $mail->Password   = $_ENV['MAIL_PASSWORD'];
-                $mail->SMTPSecure = strtolower($_ENV['MAIL_ENCRYPTION']) === 'ssl'
+
+                // Configura el mailer.
+                $mailer->isSMTP();
+                $mailer->Host       = $_ENV['MAIL_HOST'];
+                $mailer->SMTPAuth   = true;
+                $mailer->Username   = $_ENV['MAIL_USERNAME'];
+                $mailer->Password   = $_ENV['MAIL_PASSWORD'];
+                $mailer->SMTPSecure = strtolower($_ENV['MAIL_ENCRYPTION']) === 'ssl'
                     ? PHPMailer::ENCRYPTION_SMTPS
                     : PHPMailer::ENCRYPTION_STARTTLS;
-                $mail->Port    = (int) $_ENV['MAIL_PORT'];
-                $mail->CharSet = PHPMailer::CHARSET_UTF8;
+                $mailer->Port    = (int) $_ENV['MAIL_PORT'];
+                $mailer->CharSet = PHPMailer::CHARSET_UTF8;
 
-                $mail->setFrom($_ENV['MAIL_FROM'], $_ENV['MAIL_FROM_NAME']);
+                // Establece remitente y destinatarios.
+                $mailer->setFrom($_ENV['MAIL_FROM'], $_ENV['MAIL_FROM_NAME']);
                 foreach (explode(',', $_ENV['MAIL_TO']) as $recipient) {
-                    $mail->addAddress(trim($recipient));
+                    $mailer->addAddress(trim($recipient));
                 }
 
-                $mail->isHTML(true);
-                $mail->Subject = 'Nueva solicitud de reserva - PAWPrints';
-                $mail->Body    = $this->buildHtmlBody($nombre, $email, $telefono, $libros);
-                $mail->AltBody = $this->buildTextBody($nombre, $email, $telefono, $libros);
+                // Construye el correo.
+                $mailer->isHTML(true);
+                $mailer->Subject = 'Nueva solicitud de reserva - PAWPrints';
+                $mailer->Body    = $this->buildHtmlBody($nombre, $email, $telefono, $libros);
+                $mailer->AltBody = $this->buildTextBody($nombre, $email, $telefono, $libros);
 
-                $mail->send();
-                $this->logger->info("Correo de reserva enviado. Solicitante: {$email}");
+                // Envía el correo.
+                $mailer->send();
+                $this->logger->info(
+                    "Correo de reserva enviado.",
+                    compact('email')
+                );
+                
                 return true;
 
             } catch (MailException $e) {
-                $this->logger->error("Error al enviar correo de reserva: {$mail->ErrorInfo}");
+                $this->logger->error(
+                    "Error al enviar correo de reserva.",
+                    ['error' => $mailer->ErrorInfo]
+                );
+
                 return false;
             }
+
         }
 
         private function buildHtmlBody(string $nombre, string $email, string $telefono, array $libros): string {

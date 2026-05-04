@@ -6,12 +6,15 @@
 
     class View {
         public static function render(
-            string $title,
             string $page,
+            string $title,
             LoggerInterface $logger,
             array $context = []
         ): void {
-            $logger->debug("View.render. [\$title=$title; \$page=$page]");
+            $logger->debug(
+                "",
+                compact('page', 'title', 'context')
+            );
 
             // Genera la vista.
             $title = "PAWPrints - $title";

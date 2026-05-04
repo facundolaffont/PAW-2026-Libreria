@@ -43,7 +43,7 @@
             $errors = $this->validate($nombre, $email, $telefono);
 
             if (!empty($errors)) {
-                View::render('Reserva', 'reservation', $this->logger,
+                View::render('reservation', 'Reserva', $this->logger,
                     [
                         'errors'   => $errors,
                         'nombre'   => $nombre,
@@ -62,7 +62,7 @@
                 exit;
             }
 
-            View::render('Reserva', 'reservation', $this->logger, [
+            View::render('reservation', 'Reserva', $this->logger, [
                 'errors'   => ['general' => 'Hubo un problema al enviar la reserva. Por favor, intentá nuevamente.'],
                 'nombre'   => $nombre,
                 'email'    => $email,

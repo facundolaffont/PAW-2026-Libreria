@@ -1,0 +1,45 @@
+/* Estilos de la página de error */
+
+body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    background-color: var(--color-violeta);
+}
+
+h1, p {
+    color: var(--color-gris-claro);
+    font-family: sans-serif;
+    font-weight: bolder;
+}
+
+h1 {
+    font-size: 12rem;
+}
+
+p {
+    font-size: 6rem;
+    margin-top: 5rem;
+}
+
+a {
+	display: inline-block;
+	margin-top: 7rem;
+	padding: 2rem 5rem;
+	background-color: var(--color-gris-claro);
+	color: var(--color-violeta);
+	font-family: sans-serif;
+	font-weight: bolder;
+	font-size: 3rem;
+	text-decoration: none;
+	border-radius: 0.5rem;
+}
+
+a:hover {
+    opacity: 0.85;
+}

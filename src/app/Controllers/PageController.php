@@ -16,12 +16,15 @@
             string $page, 
             LoggerInterface $logger
         ): void {
-            $logger->debug("PageController.show. [\$title=$title]");
+            $logger->debug(
+                "",
+                compact('title', 'page')
+            );
 
             // Construye el contexto específico para la página solicitada.
             $context = $contextBuilder->build($title, $page, $_GET);
 
             // Renderiza la vista correspondiente, pasando el contexto construido.
-            View::render($title, $page, $logger, $context);
+            View::render($page, $title, $logger, $context);
         }
     }

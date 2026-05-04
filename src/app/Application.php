@@ -4,6 +4,8 @@
 
     use Paw\Controllers\PageController;
     use Paw\Controllers\ReservationController;
+    use Paw\Enums\HttpCodeError;
+    use Paw\Errors\Exceptions\HttpErrorException;
     use Paw\Services\ContextBuilder;
     use Psr\Container\ContainerInterface;
     use Psr\Log\LoggerInterface;
@@ -39,8 +41,8 @@
                 return;
             }
 
-            # Rutas GET: cada ruta mapea una URL a una vista y un título de página.
-            $router = new Router();
+            // Configura las rutas.
+            $router = new Router($logger);
             $router
                 ->addRoute('/', 'home-page', 'Página principal')
                 ->addRoute('/promotions', 'promotions', 'Promociones')
@@ -48,11 +50,17 @@
                 ->addRoute('/book-detail', 'book-detail', 'Detalles de libro')
                 ->addRoute('/reservation', 'reservation', 'Reserva')
                 ->addRoute('/about-us', 'about-us', 'Acerca de nosotros');
-
             $route = $router->route($path);
+            $logger->debug("Resultado del ruteo: " . print_r($route, true));
+            
+            // Si route está vacío (lo que indica que no se encontró una ruta coincidente),
+            // lanza una excepción.
+            if (empty($route)) throw new HttpErrorException(HttpCodeError::NOT_FOUND);
+
+            // Si route no está vacío, extrae el título y la página, y llama
+            // al controlador de páginas para mostrar la vista correspondiente.
             $title = $route['title'];
             $page  = $route['page'];
-
             $this->dependencyContainer
                 ->get(PageController::class)
                 ->show(

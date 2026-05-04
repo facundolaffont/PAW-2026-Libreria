@@ -10,7 +10,7 @@
         public function __construct(private \PDO $db, private LoggerInterface $logger) {}
 
         public function findAllGroupedByGenre(): array {
-            $this->logger->debug("BookRepository.findAllGroupedByGenre");
+            $this->logger->debug("");
 
             $stmt = $this->db->query('SELECT id, title, author, genre, price, image FROM books ORDER BY genre, title');
             $booksByGenre = [];
@@ -21,14 +21,16 @@
         }
 
         public function findAllGenres(): array {
-            $this->logger->debug("BookRepository.findAllGenres");
+            $this->logger->debug("");
 
             $stmt = $this->db->query('SELECT DISTINCT genre FROM books ORDER BY genre');
             return array_column($stmt->fetchAll(), 'genre');
         }
 
         public function findAll(int $offset, int $limit, array $filters = []): array {
-            $this->logger->debug("BookRepository.findAll [\$offset={$offset}, \$limit={$limit}, \$filters=" . json_encode($filters) . "]");
+            $this->logger->debug("",
+                compact('offset', 'limit', 'filters')
+            );
 
             ['clause' => $where, 'params' => $params] = $this->buildWhere($filters);
             $stmt = $this->db->prepare(
@@ -50,18 +52,16 @@
          * @return array|null El libro encontrado, o null si no existe.
          */
         public function findById(int $id): ?array {
-            $this->logger->debug("BookRepository.findById [\$id={$id}]");
+            $this->logger->debug("", compact('id'));
 
-            $this->logger->debug(
-                "Ejecutando consulta para encontrar libro por ID {$id}..."
-            );
+            $this->logger->debug("Ejecutando consulta para encontrar libro por ID {$id}...");
             $stmt = $this->db->prepare(
                 'SELECT id, title, description, author, genre, price, image FROM books WHERE id = :id'
             );
             $stmt->bindValue(':id', $id, \PDO::PARAM_INT);
             $stmt->execute();
             $book = $stmt->fetch();
-            $this->logger->debug("Consulta ejecutada. [\$book=" . json_encode($book) . "]");
+            $this->logger->debug("Consulta ejecutada.", compact('book'));
 
             return $book ?: null;
         }

@@ -2,7 +2,13 @@
 
     namespace Paw;
 
+    use \Psr\Log\LoggerInterface;
+
     class Router {
+
+        public function __construct(private LoggerInterface $logger) {}
+
+        private array $routes = [];
 
         public function addRoute(string $path, string $page, string $title) {
             $this->routes[$path] = [
@@ -14,11 +20,9 @@
         }
 
         public function route(string $path): array {
-            return $this->routes[$path] ?? [
-                'page' => '404',
-                'title' => 'Página no encontrada'
-            ];
+            $this->logger->debug("Ruteo: {$path}");
+
+            return $this->routes[$path] ?? [];
         }
 
-        private array $routes = [];
     }

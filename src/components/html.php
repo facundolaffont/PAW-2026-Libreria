@@ -3,10 +3,14 @@
     <?php
         require 'head.php';
 
+        use Paw\Errors\Exceptions\AppException;
+
         if(isset($page)) {
             require "../views/{$page}.php";
         } else {
-            throw new Exception("Error: no se ha definido el contenido del cuerpo de la página.");
+            throw new AppException(
+                "Error: no se ha definido el contenido del cuerpo de la página."
+            );
         }
     ?>
 </html>

@@ -6,13 +6,23 @@ services:
     working_dir: /app
     command: >
       sh -c "\
+
+        # En desarrollo, limpia el log para facilitar la depuración.
+        if [ \"$APP_ENV\" = \"development\" ]; then
+          : > app.log;
+        fi &&
+
+        # Espera a que MySQL esté listo antes de iniciar la aplicación.
         until nc -z mysql 3306; do
           echo 'Esperando a MySQL...';
           sleep 2;
         done &&
+
+        # Instala dependencias, configura la base de datos y arranca el servidor.
         composer install &&
         composer db:setup &&
         php -S 0.0.0.0:8000 -t public\
+        
       "
     ports:
       - "8000:8000"
@@ -31,6 +41,7 @@ services:
       MAIL_FROM: ${MAIL_FROM}
       MAIL_FROM_NAME: ${MAIL_FROM_NAME}
       MAIL_TO: ${MAIL_TO}
+      APP_ENV: ${APP_ENV}
 
   mysql:
     image: mysql:8.0
@@ -40,7 +51,7 @@ services:
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
     ports:
-      - "${DB_PORT}:3306"
+      - "${DB_PORT:-3306}:3306"
     volumes:
       - mysql_data:/var/lib/mysql
 
