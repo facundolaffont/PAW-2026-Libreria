@@ -58,3 +58,21 @@ A continuación se detallará la información sobre cada entrega que se va solic
 ### 3ra entrega (04/05/26)
 
 [Consignas del trabajo práctico 3](https://raw.githubusercontent.com/facundolaffont/PAW-2026-Libreria/refs/heads/main/tps/tp3.pdf).
+
+#### Archivos de la entrega
+
+* [Informe de arquitectura](https://raw.githubusercontent.com/facundolaffont/PAW-2026-Libreria/refs/heads/main/site-info/Informe%20de%20arquitectura.pdf).
+
+Para ejecutar la aplicación, primero clonar el repositorio:
+
+```sh
+git clone https://github.com/facundolaffont/PAW-2026-Libreria.git
+```
+
+Luego, ingresar en la carpeta creada, crear el archivo `.env`, tal como indica el archivo `.env.example`, completarlo y luego ejecutar:
+
+```sh
+docker compose up
+```
+
+Finalmente, ingresar a través del navegador a `localhost:3000`.
