@@ -2,6 +2,7 @@
 
     namespace Paw;
 
+    use Paw\Controllers\NewBookController;
     use Paw\Controllers\PageController;
     use Paw\Controllers\ReservationController;
     use Paw\Enums\HttpCodeError;
@@ -33,9 +34,10 @@
             if ($method === 'POST') {
                 match ($path) {
                     '/reservation' => $this->dependencyContainer->get(ReservationController::class)->handle(),
+                    '/new-book'    => $this->dependencyContainer->get(NewBookController::class)->handle(),
                     default        => (function () {
                         http_response_code(405);
-                        header('Allow: POST /reservation');
+                        header('Allow: POST /reservation, POST /new-book');
                         echo "Método no permitido.";
                     })(),
                 };
@@ -50,7 +52,8 @@
                 ->addRoute('/catalog', 'catalog', 'Catálogo')
                 ->addRoute('/book-detail', 'book-detail', 'Detalles de libro')
                 ->addRoute('/reservation', 'reservation', 'Reserva')
-                ->addRoute('/about-us', 'about-us', 'Acerca de nosotros');
+                ->addRoute('/about-us', 'about-us', 'Acerca de nosotros')
+                ->addRoute('/new-book', 'new-book', 'Nuevo libro');
             $route = $router->route($path);
             $logger->debug("Resultado del ruteo: " . print_r($route, true));
             

@@ -9,4 +9,6 @@
         public function findAll(int $offset, int $limit, array $filters = []): array;
         public function findById(int $id): ?array;
         public function countAll(array $filters = []): int;
+        public function create(array $data): int;
+        public function existsByIsbn(string $isbn): bool;
     }

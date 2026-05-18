@@ -131,6 +131,29 @@
             ];
         }
 
+        public function create(array $data): int {
+            $stmt = $this->db->prepare(
+                'INSERT INTO books (title, author, genre, price, stock, isbn, description)
+                 VALUES (:title, :author, :genre, :price, :stock, :isbn, :description)'
+            );
+            $stmt->bindValue(':title',       $data['title']);
+            $stmt->bindValue(':author',      $data['author']);
+            $stmt->bindValue(':genre',       $data['genre'] ?? null);
+            $stmt->bindValue(':price',       (float) $data['price']);
+            $stmt->bindValue(':stock',       (int)   $data['stock'],   \PDO::PARAM_INT);
+            $stmt->bindValue(':isbn',        $data['isbn'] ?? null);
+            $stmt->bindValue(':description', $data['description'] ?? null);
+            $stmt->execute();
+            return (int) $this->db->lastInsertId();
+        }
+
+        public function existsByIsbn(string $isbn): bool {
+            $stmt = $this->db->prepare('SELECT 1 FROM books WHERE isbn = :isbn LIMIT 1');
+            $stmt->bindValue(':isbn', $isbn);
+            $stmt->execute();
+            return (bool) $stmt->fetchColumn();
+        }
+
         /**
          * Traduce el parámetro `orden` (whitelist) a una cláusula ORDER BY segura.
          * Nunca interpola el valor crudo en SQL.

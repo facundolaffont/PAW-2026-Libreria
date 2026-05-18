@@ -1,0 +1,247 @@
+main > nav[aria-label] {
+    display: none;
+}
+
+
+/* --- Alertas globales --- */
+
+.alerta {
+    padding: 0.9rem 1.2rem;
+    border-radius: 0.4rem;
+    margin-bottom: 1.5rem;
+    font-family: sans-serif;
+    font-size: 1rem;
+}
+
+.alerta p {
+    margin: 0;
+}
+
+.alerta-exito {
+    background-color: #e6f4ea;
+    border: 1px solid #4caf50;
+    color: #2e7d32;
+}
+
+.alerta-error {
+    background-color: #fdecea;
+    border: 1px solid #e53935;
+    color: #b71c1c;
+}
+
+
+/* --- Errores de campo individual --- */
+
+.campo-error {
+    display: block;
+    color: #b71c1c;
+    font-size: 0.9rem;
+    font-family: sans-serif;
+    margin-top: 0.25rem;
+    min-height: 1.2em;
+}
+
+input[aria-invalid="true"],
+textarea[aria-invalid="true"] {
+    border-color: #e53935;
+    outline-color: #e53935;
+}
+
+
+/* --- Layout general --- */
+
+main {
+    width: 80%;
+    max-width: 750px;
+    margin: 2rem auto;
+}
+
+main > h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+
+
+/* --- Formulario --- */
+
+#form-nuevo-libro {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.campo-grupo {
+    margin-bottom: 1rem;
+}
+
+.campo-grupo label {
+    display: block;
+    font-weight: bold;
+    color: var(--color-negro);
+    font-family: sans-serif;
+    margin-bottom: 0.3rem;
+}
+
+.obligatorio {
+    color: #b71c1c;
+}
+
+.campo-grupo input,
+.campo-grupo textarea {
+    width: 100%;
+    padding: 0.6rem;
+    font-size: 1rem;
+    font-family: sans-serif;
+    box-sizing: border-box;
+}
+
+.campo-grupo textarea {
+    resize: vertical;
+    min-height: 8rem;
+}
+
+.campo-contador {
+    display: block;
+    font-size: 0.8rem;
+    font-family: sans-serif;
+    color: var(--color-placeholder);
+    text-align: right;
+    margin-top: 0.15rem;
+}
+
+.leyenda-obligatorio {
+    font-size: 0.85rem;
+    font-family: sans-serif;
+    color: var(--color-placeholder);
+    margin-bottom: 1.2rem;
+}
+
+/* Campo de imagen reservado para drag & drop (futuro) */
+.campo-imagen {
+    display: none;
+}
+
+#form-nuevo-libro > button[type="submit"] {
+    background-color: var(--color-violeta);
+    color: var(--color-blanco);
+    font-weight: bold;
+    font-size: 1.2rem;
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-family: sans-serif;
+    align-self: flex-start;
+}
+
+#form-nuevo-libro > button[type="submit"]:hover {
+    background-color: var(--color-violeta-oscuro);
+}
+
+
+/* --- Desktop --- */
+@media screen and (min-width: 1000px) {
+
+    #form-nuevo-libro {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 2rem;
+    }
+
+    /* Título y autor ocupan cada uno una columna */
+    .campo-grupo:nth-child(1),
+    .campo-grupo:nth-child(2) {
+        grid-column: span 1;
+    }
+
+    /* Género ocupa columna 1, precio columna 2 */
+    .campo-grupo:nth-child(3) { grid-column: 1; }
+    .campo-grupo:nth-child(4) { grid-column: 2; }
+
+    /* Stock columna 1, ISBN columna 2 */
+    .campo-grupo:nth-child(5) { grid-column: 1; }
+    .campo-grupo:nth-child(6) { grid-column: 2; }
+
+    /* Descripción y leyenda ocupan las dos columnas */
+    .campo-descripcion,
+    .leyenda-obligatorio {
+        grid-column: 1 / -1;
+    }
+
+    #form-nuevo-libro > button[type="submit"] {
+        grid-column: 1 / -1;
+        justify-self: start;
+    }
+
+    .campo-grupo input {
+        background-color: var(--color-gris-oscuro);
+        color: var(--color-negro);
+        font-weight: bolder;
+        border: none;
+    }
+
+    .campo-grupo textarea {
+        background-color: var(--color-gris-oscuro);
+        color: var(--color-negro);
+        font-weight: bolder;
+        border: none;
+    }
+
+    .campo-grupo input::placeholder,
+    .campo-grupo textarea::placeholder {
+        color: var(--color-placeholder);
+        font-weight: normal;
+    }
+
+    input[aria-invalid="true"],
+    textarea[aria-invalid="true"] {
+        background-color: #fdecea;
+    }
+
+}
+
+
+/* --- Mobile --- */
+@media screen and (max-width: 999px) {
+
+    main {
+        width: 90%;
+    }
+
+    main > h1 {
+        font-size: 3rem;
+    }
+
+    .campo-grupo input,
+    .campo-grupo textarea {
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid var(--color-gris-oscuro);
+        padding: 0.5rem 0;
+        border-radius: 0;
+    }
+
+    .campo-grupo textarea {
+        border: 1px solid var(--color-gris-oscuro);
+        padding: 0.5rem;
+    }
+
+    input[aria-invalid="true"] {
+        border-bottom-color: #e53935;
+    }
+
+    textarea[aria-invalid="true"] {
+        border-color: #e53935;
+    }
+
+    #form-nuevo-libro > button[type="submit"] {
+        display: block;
+        width: 70%;
+        margin: 1.5rem auto 0;
+        padding: 1rem;
+        font-size: 1.3rem;
+        align-self: center;
+    }
+
+}
