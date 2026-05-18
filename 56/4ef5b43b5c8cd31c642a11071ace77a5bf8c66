@@ -1,0 +1,58 @@
+src/app/Interfaces/BookRepositoryInterface.php
+  s_b354d7bc788d1d::t_ed70745f30830f 12-13
+src/public/resources/styles/new-book.css
+  s_b354d7bc788d1d::t_68dd15e420d9a7 1-247
+src/app/Controllers/NewBookController.php
+  s_b354d7bc788d1d::t_e153e2b6730ac0 1-139
+src/views/new-book.php
+  s_b354d7bc788d1d::t_29b162e53cc912 1-191
+src/app/Repositories/BookRepository.php
+  s_b354d7bc788d1d::t_5e9c3892fc6f06 134-156
+src/app/Application.php
+  s_b354d7bc788d1d::t_260d7b777dcb19 55-56
+  s_b354d7bc788d1d::t_22eec761a00269 37,40
+  s_b354d7bc788d1d::t_6f804c3f52497d 5
+src/public/resources/js/new-book-validation.js
+  s_b354d7bc788d1d::t_94767ddf118df0 1-174
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "564ef5b43b5c8cd31c642a11071ace77a5bf8c66",
+  "prompts": {
+    "84cdfd5dbc455d11": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "bfa6a070-06a9-4e6c-9db1-868800ac73d1",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "rrobles_meli <renzo.robles@mercadolibre.com>",
+      "total_additions": 734,
+      "total_deletions": 18,
+      "accepted_lines": 716,
+      "overriden_lines": 0
+    },
+    "acf843c6961b564c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1b4d24f0-0f6f-41ea-a580-2b8f81b564b6",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "rrobles_meli <renzo.robles@mercadolibre.com>",
+      "total_additions": 156,
+      "total_deletions": 0,
+      "accepted_lines": 104,
+      "overriden_lines": 17
+    }
+  },
+  "sessions": {
+    "s_b354d7bc788d1d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "778c1688-9ba6-435b-a726-6c5a847b3d50",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "rrobles_meli <renzo.robles@mercadolibre.com>"
+    }
+  }
+}
