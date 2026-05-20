@@ -131,7 +131,7 @@
 
             move_uploaded_file($file['tmp_name'], $destino);
 
-            return $filename;
+            return 'libros/' . $filename;
         }
 
         private function validate(
