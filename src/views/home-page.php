@@ -9,20 +9,21 @@
             // Garantiza que el contexto, el cual se debería construir dinámicamente en el
             // controlador de página según la vista solicitada, siempre estará definido.
             $context = $context ?? [];
+
+            // Define una rotacion de efectos para asignar uno distinto a cada carrusel de libros.
+            $bookCarouselEffects = ['slide', 'block', 'disappear'];
+            $bookCarouselIndex = 0;
         ?>
 
         <?php foreach ($context['booksByGenre'] as $genre => $genreBooks): ?>
 
         <!-- Carrusel de libros de <?= $genre ?> -->
-        <section class="carrusel">
+        <section
+            class="carrusel"
+            data-effect="<?= $bookCarouselEffects[$bookCarouselIndex % count($bookCarouselEffects)] ?>"
+        >
 
             <h2><?= $genre ?></h2>
-
-            <!-- Flecha izquierda del carrusel -->
-            <button class="flecha flecha-izq"></button>
-
-            <!-- Flecha derecha del carrusel -->
-            <button class="flecha flecha-der"></button>
 
             <div class="contenedor-carrusel">
 
@@ -46,11 +47,15 @@
                             <picture>
                                 <?php foreach ($sources as $source): ?>
                                 <source
-                                    srcset="resources/images/<?= $source['url'] ?>"
+                                    data-carousel-srcset="resources/images/<?= $source['url'] ?>"
                                     media="( max-width: <?= $source['maxWidth'] ?>px )"
                                 >
                                 <?php endforeach; ?>
-                                <img src="resources/images/<?= $fallbackSrc ?>" alt="<?= $book['title'] ?>">
+                                <img
+                                    src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
+                                    data-carousel-src="resources/images/<?= $fallbackSrc ?>"
+                                    alt="<?= $book['title'] ?>"
+                                >
                             </picture>
                             <h3><?= $book['title'] ?></h3>
                         </a>
@@ -65,20 +70,16 @@
 
         </section>
 
+        <?php $bookCarouselIndex += 1; ?>
+
         <?php endforeach; ?>
 
     </main>
 
     <!-- Promociones -->
-    <section class="carrusel">
+    <section class="carrusel" data-effect="block">
 
         <h2>Promociones</h2>
-
-        <!-- Flecha izquierda del carrusel -->
-        <button class="flecha flecha-izq"></button>
-
-        <!-- Flecha derecha del carrusel -->
-        <button class="flecha flecha-der"></button>
 
         <div class="contenedor-carrusel">
             
@@ -102,11 +103,15 @@
                     <picture>
                         <?php foreach ($sources as $source): ?>
                         <source
-                            srcset="resources/images/<?= $source['url'] ?>"
+                            data-carousel-srcset="resources/images/<?= $source['url'] ?>"
                             media="( max-width: <?= $source['maxWidth'] ?>px )"
                         >
                         <?php endforeach; ?>
-                        <img src="resources/images/<?= $fallbackSrc ?>" alt="<?= $promotion['description'] ?>">
+                        <img
+                            src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
+                            data-carousel-src="resources/images/<?= $fallbackSrc ?>"
+                            alt="<?= $promotion['description'] ?>"
+                        >
                     </picture>
                 </a>
             </article>
@@ -122,23 +127,12 @@
     <script src="resources/js/components/Carousel.js"></script>
     <script>
 
-        // Crea los carruseles de libros y promociones.
+        // Inicializa los carruseles con unicamente su contenedor.
+        // El efecto se define por argumento (tomado del data-effect de cada seccion).
         document.querySelectorAll('section.carrusel').forEach(carrusel => {
-            const container = carrusel.querySelector('div');
-            const buttons = carrusel.querySelectorAll('button');
-            const leftButton = buttons[0];
-            const rightButton = buttons[1];
-            const firstItem = container.querySelector('article');
-            const gap = parseFloat(getComputedStyle(container).gap) || 0;
-            const scrollAmount = firstItem.offsetWidth + gap;
-            const carouselInstance = new Carousel(container);
-
-            leftButton.addEventListener('click', () => carouselInstance.moveLeft(container, scrollAmount));
-            rightButton.addEventListener('click', () => carouselInstance.moveRight(container, scrollAmount));
-
-            container.addEventListener('touchstart', (e) => carouselInstance.handleTouchStart(container, e), { passive: true });
-            container.addEventListener('touchmove', (e) => carouselInstance.handleTouchMove(container, e), { passive: false });
-            container.addEventListener('touchend', () => carouselInstance.handleTouchEnd(container));
+            const container = carrusel.querySelector('.contenedor-carrusel');
+            const effect = carrusel.dataset.effect || 'slide';
+            new Carousel(container, { effect: effect, autoPlayMs: 4000 });
         });
 
     </script>
