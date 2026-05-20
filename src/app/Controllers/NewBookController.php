@@ -20,6 +20,10 @@
         private const ISBN_LENGTH     = 13;
         private const DESCRIPCION_MAX = 2000;
 
+        private const IMAGE_MAX_SIZE  = 2097152; // 2 MB
+        private const IMAGE_ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+        private const IMAGE_UPLOAD_DIR = __DIR__ . '/../../public/resources/images/libros';
+
         public function __construct(
             private BookRepositoryInterface $bookRepository,
             private LoggerInterface         $logger
@@ -46,6 +50,11 @@
 
             $errors = $this->validate($titulo, $autor, $genero, $precio, $stock, $isbn, $descripcion);
 
+            $imagenError = $this->validateImage($_FILES['imagen'] ?? null);
+            if ($imagenError) {
+                $errors['imagen'] = $imagenError;
+            }
+
             if (!empty($errors)) {
                 View::render('new-book', 'Nuevo libro', $this->logger, [
                     'errors'      => $errors,
@@ -60,6 +69,8 @@
                 return;
             }
 
+            $imagenNombre = $this->saveImage($_FILES['imagen']);
+
             $id = $this->bookRepository->create([
                 'title'       => $titulo,
                 'author'      => $autor,
@@ -68,13 +79,59 @@
                 'stock'       => (int)   $stock,
                 'isbn'        => $isbn         ?: null,
                 'description' => $descripcion  ?: null,
+                'image'       => $imagenNombre,
             ]);
 
-            $this->logger->info("Libro creado.", ['id' => $id, 'titulo' => $titulo]);
+            $this->logger->info("Libro creado.", ['id' => $id, 'titulo' => $titulo, 'image' => $imagenNombre]);
 
             // PRG: redirige en GET para evitar reenvíos al refrescar la página.
             header('Location: /new-book?creado=1');
             exit;
+        }
+
+        private function validateImage(?array $file): string {
+            if ($file === null || $file['error'] === UPLOAD_ERR_NO_FILE) {
+                return 'La imagen de portada es obligatoria.';
+            }
+
+            if ($file['error'] !== UPLOAD_ERR_OK) {
+                return 'Error al subir la imagen. Intente nuevamente.';
+            }
+
+            if (!in_array($file['type'], self::IMAGE_ALLOWED_TYPES, true)) {
+                return 'Formato no permitido. Solo JPG, PNG y WebP.';
+            }
+
+            if ($file['size'] > self::IMAGE_MAX_SIZE) {
+                return 'La imagen no puede superar los 2 MB.';
+            }
+
+            $info = getimagesize($file['tmp_name']);
+            if ($info === false) {
+                return 'El archivo no es una imagen válida.';
+            }
+
+            return '';
+        }
+
+        private function saveImage(array $file): string {
+            $extension = match ($file['type']) {
+                'image/jpeg' => 'jpg',
+                'image/png'  => 'png',
+                'image/webp' => 'webp',
+                default      => 'jpg',
+            };
+
+            $filename = uniqid('libro-', true) . '.' . $extension;
+            $destino  = self::IMAGE_UPLOAD_DIR . '/' . $filename;
+
+            if (!is_dir(self::IMAGE_UPLOAD_DIR)) {
+                mkdir(self::IMAGE_UPLOAD_DIR, 0755, true);
+            }
+
+            move_uploaded_file($file['tmp_name'], $destino);
+
+            return $filename;
         }
 
         private function validate(

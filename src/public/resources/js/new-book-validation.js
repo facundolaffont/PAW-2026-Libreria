@@ -76,6 +76,9 @@
                     return 'El ISBN debe tener exactamente ' + ISBN_LENGTH + ' dígitos.';
                 return '';
 
+            case 'imagen':
+                return dragDrop ? dragDrop.validate() : '';
+
             case 'descripcion':
                 if (value.length > DESCRIPCION_MAX)
                     return 'La descripción no puede superar los ' + DESCRIPCION_MAX + ' caracteres.';
@@ -125,7 +128,9 @@
         var form = document.getElementById('form-nuevo-libro');
         if (!form) return;
 
-        var fields = ['titulo', 'autor', 'genero', 'precio', 'stock', 'isbn', 'descripcion'];
+        var dragDrop = new DragDropImage('zona-drop', 'imagen', 'imagen-error');
+
+        var fields = ['titulo', 'autor', 'genero', 'precio', 'stock', 'isbn', 'imagen', 'descripcion'];
 
         /* Attach blur listeners for real-time per-field validation */
         fields.forEach(function (name) {
@@ -158,7 +163,15 @@
             fields.forEach(function (name) {
                 var el = document.getElementById(name);
                 if (!el) return;
-                var error = validateField(name, el.value.trim());
+
+                var value;
+                if (name === 'imagen') {
+                    value = '';
+                } else {
+                    value = el.value.trim();
+                }
+
+                var error = validateField(name, value);
                 showError(el, error);
                 if (error && !firstInvalid) firstInvalid = el;
             });

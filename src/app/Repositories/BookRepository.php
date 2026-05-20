@@ -133,8 +133,8 @@
 
         public function create(array $data): int {
             $stmt = $this->db->prepare(
-                'INSERT INTO books (title, author, genre, price, stock, isbn, description)
-                 VALUES (:title, :author, :genre, :price, :stock, :isbn, :description)'
+                'INSERT INTO books (title, author, genre, price, stock, isbn, description, image)
+                 VALUES (:title, :author, :genre, :price, :stock, :isbn, :description, :image)'
             );
             $stmt->bindValue(':title',       $data['title']);
             $stmt->bindValue(':author',      $data['author']);
@@ -143,6 +143,7 @@
             $stmt->bindValue(':stock',       (int)   $data['stock'],   \PDO::PARAM_INT);
             $stmt->bindValue(':isbn',        $data['isbn'] ?? null);
             $stmt->bindValue(':description', $data['description'] ?? null);
+            $stmt->bindValue(':image',       $data['image'] ?? null);
             $stmt->execute();
             return (int) $this->db->lastInsertId();
         }

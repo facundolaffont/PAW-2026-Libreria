@@ -23,16 +23,12 @@
             presentación y mensajes varían entre Chrome, Firefox y Safari.
             La validación inline se realiza mediante new-book-validation.js,
             logrando una experiencia uniforme en todos los navegadores.
-
-            enctype="application/x-www-form-urlencoded": codificación por defecto.
-            Cuando se implemente la carga de imagen (drag & drop), deberá
-            cambiarse a multipart/form-data.
         -->
         <form
             id="form-nuevo-libro"
             action="/new-book"
             method="post"
-            enctype="application/x-www-form-urlencoded"
+            enctype="multipart/form-data"
             novalidate
         >
             <div class="campo-grupo">
@@ -143,21 +139,18 @@
                 </span>
             </div>
 
-            <!--
-                Campo imagen: se implementará como drag & drop en una iteración futura.
-                El campo está reservado a continuación (comentado) para facilitar
-                su integración. Al activarlo, cambiar enctype a multipart/form-data.
-
-                <div class="campo-grupo campo-imagen">
-                    <label for="imagen">Imagen de portada</label>
-                    <div class="zona-drop" id="zona-drop" role="button" tabindex="0"
-                         aria-label="Arrastrá o hacé clic para subir una imagen">
-                        <p>Arrastrá una imagen aquí o hacé clic para seleccionar</p>
-                    </div>
-                    <input type="file" id="imagen" name="imagen" accept="image/*" class="sr-only">
-                    <span id="imagen-error" class="campo-error" role="alert"></span>
+            <div class="campo-grupo campo-imagen">
+                <label for="imagen">Imagen de portada <span class="obligatorio" aria-hidden="true">*</span></label>
+                <div class="zona-drop" id="zona-drop" role="button" tabindex="0"
+                     aria-label="Arrastrá o hacé clic para subir una imagen"
+                     aria-describedby="imagen-error">
+                    <p>Arrastrá una imagen aquí o hacé clic para seleccionar</p>
                 </div>
-            -->
+                <input type="file" id="imagen" name="imagen" accept="image/jpeg,image/png,image/webp" class="sr-only">
+                <span id="imagen-error" class="campo-error" role="alert">
+                    <?= htmlspecialchars($context['errors']['imagen'] ?? '', ENT_QUOTES, 'UTF-8') ?>
+                </span>
+            </div>
 
             <div class="campo-grupo campo-descripcion">
                 <label for="descripcion">Descripción</label>
@@ -186,6 +179,7 @@
 
     <?php require 'components/footer.php'; ?>
 
+    <script src="resources/js/components/DragDropImage.js"></script>
     <script src="resources/js/new-book-validation.js"></script>
 
 </body>
