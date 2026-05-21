@@ -9,6 +9,7 @@
     use Paw\Errors\Exceptions\HttpErrorException;
     use Paw\Interfaces\BookRepositoryInterface;
     use Paw\Services\ContextBuilder;
+    use Paw\Services\UserSessionManager;
     use Psr\Container\ContainerInterface;
     use Psr\Log\LoggerInterface;
 
@@ -24,6 +25,16 @@
             $path   = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
             $logger->info("{$method} {$path}");
 
+            // Inicializa el usuario actual en sesión y permite alternar con ?user=admin|client.
+            UserSessionManager::bootstrapFromRequest($_GET);
+
+            // Si el rol actual es administrador, la sección de reservas no aplica.
+            // Se redirige a home para mantener una UX coherente al cambiar de rol.
+            if ($path === '/reservation' && UserSessionManager::isAdmin()) {
+                header('Location: /');
+                exit;
+            }
+
             /*
              * Las solicitudes POST corresponden al envío de formularios.
              * Los datos viajan en el cuerpo de la petición, codificados como
@@ -34,7 +45,9 @@
             if ($method === 'POST') {
                 match ($path) {
                     '/reservation' => $this->dependencyContainer->get(ReservationController::class)->handle(),
-                    '/new-book'    => $this->dependencyContainer->get(NewBookController::class)->handle(),
+                    '/new-book'    => UserSessionManager::isAdmin()
+                        ? $this->dependencyContainer->get(NewBookController::class)->handle()
+                        : throw new HttpErrorException(HttpCodeError::FORBIDDEN),
                     default        => (function () {
                         http_response_code(405);
                         header('Allow: POST /reservation, POST /new-book');
@@ -56,6 +69,10 @@
                 ->addRoute('/new-book', 'new-book', 'Nuevo libro');
             $route = $router->route($path);
             $logger->debug("Resultado del ruteo: " . print_r($route, true));
+
+            if ($path === '/new-book' && !UserSessionManager::isAdmin()) {
+                throw new HttpErrorException(HttpCodeError::FORBIDDEN);
+            }
             
             // Si route está vacío (lo que indica que no se encontró una ruta coincidente),
             // lanza una excepción.

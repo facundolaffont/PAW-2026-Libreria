@@ -1,5 +1,22 @@
 <header>
 
+    <?php
+        $isAdmin = (bool)($context['isAdmin'] ?? false);
+        $isClient = (bool)($context['isClient'] ?? true);
+        $currentUserRole = (string)($context['currentUser']['role'] ?? 'client');
+
+        $safeParams = $_GET;
+        unset($safeParams['user']);
+
+        $currentPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
+
+        // Si está en new-book, vuelve al home al cambiar de usuario para evitar un 403.
+        if ($currentPath === '/new-book') {
+            $currentPath = '/';
+            $safeParams = [];
+        }
+    ?>
+
     <div class="header-superior">
 
         <!-- Menú hamburguesa -->
@@ -43,17 +60,49 @@
             </button>
         </form>
 
-        <!-- Enlace a Mi Cuenta -->
-        <a href="#" class="mi-cuenta">
-            <img src="resources/images/mi-cuenta.png" id="mi-cuenta" alt="">
-            <p>Mi Cuenta</p>
-        </a>
+        <!-- Selector de usuario (Mi Cuenta) -->
+        <form action="<?= htmlspecialchars($currentPath, ENT_QUOTES, 'UTF-8') ?>" method="get" class="selector-usuario" aria-label="Selector de tipo de usuario">
+            <?php foreach ($safeParams as $key => $value): ?>
+                <?php if (is_array($value)): ?>
+                    <?php foreach ($value as $item): ?>
+                        <input
+                            type="hidden"
+                            name="<?= htmlspecialchars((string)$key, ENT_QUOTES, 'UTF-8') ?>[]"
+                            value="<?= htmlspecialchars((string)$item, ENT_QUOTES, 'UTF-8') ?>"
+                        >
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <input
+                        type="hidden"
+                        name="<?= htmlspecialchars((string)$key, ENT_QUOTES, 'UTF-8') ?>"
+                        value="<?= htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8') ?>"
+                    >
+                <?php endif; ?>
+            <?php endforeach; ?>
 
-        <!-- Enlace a Mis Reservas -->
-        <a href="reservation" class="mis-reservas">
-            <img src="resources/images/mis-reservas.png" id="mis-reservas" alt="">
-            <p>Mis Reservas</p>
-        </a>
+            <label for="user-role" class="selector-usuario-etiqueta">
+                <img src="resources/images/mi-cuenta.png" id="mi-cuenta" alt="">
+            </label>
+            <select
+                id="user-role"
+                name="user"
+                class="selector-usuario-control"
+                onchange="this.form.submit()"
+                aria-label="Cambiar tipo de usuario"
+            >
+                <option value="client" <?= $currentUserRole === 'client' ? 'selected' : '' ?>>Cliente</option>
+                <option value="admin" <?= $currentUserRole === 'admin' ? 'selected' : '' ?>>Administrador</option>
+            </select>
+            <noscript><button type="submit">Cambiar</button></noscript>
+        </form>
+
+        <?php if ($isClient): ?>
+            <!-- Enlace a Mis Reservas (solo clientes) -->
+            <a href="reservation" class="mis-reservas">
+                <img src="resources/images/mis-reservas.png" id="mis-reservas" alt="">
+                <p>Mis Reservas</p>
+            </a>
+        <?php endif; ?>
 
     </div>
 
@@ -62,7 +111,12 @@
         <ul>
             <li><a href="catalog"><p>Catálogo</p></a></li>
             <li><a href="promotions"><p>Promociones</p></a></li>
-            <li><a href="reservation"><p>Mis reservas</p></a></li>
+            <?php if ($isClient): ?>
+                <li><a href="reservation"><p>Mis reservas</p></a></li>
+            <?php endif; ?>
+            <?php if ($isAdmin): ?>
+                <li><a href="new-book"><p>Nuevo libro</p></a></li>
+            <?php endif; ?>
             <li><a href="about-us"><p>Acerca de nosotros</p></a></li>
         </ul>
     </nav>

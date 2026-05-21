@@ -61,7 +61,9 @@
                         </a>
                         <p><?= $book['author'] ?></p>
                         <p>$ <?= number_format($book['price'], 2, ',', '.') ?></p>
-                        <button>Reservar</button>
+                        <?php if (!($context['isAdmin'] ?? false)): ?>
+                            <button>Reservar</button>
+                        <?php endif; ?>
                     </article>
 
                     <?php endforeach; ?>

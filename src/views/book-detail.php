@@ -88,7 +88,9 @@
                         <p><?= htmlspecialchars($context['book']['genre'] ?? 'Sin género') ?></p>
                     </section>
 
-                    <button type="button" class="boton-reservar">Agregar a mis reservas</button>
+                    <?php if (!($context['isAdmin'] ?? false)): ?>
+                        <button type="button" class="boton-reservar">Agregar a mis reservas</button>
+                    <?php endif; ?>
 
                 </article>
 

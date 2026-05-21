@@ -42,6 +42,30 @@
         vertical-align: middle;
     }
 
+    .selector-usuario {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-right: 1.5rem;
+    }
+
+    .selector-usuario-etiqueta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .selector-usuario-etiqueta span {
+        color: var(--color-violeta);
+    }
+
+    .selector-usuario-control {
+        border: 1px solid var(--color-violeta);
+        color: var(--color-violeta);
+        background: var(--color-blanco);
+        padding: 0.35rem 0.6rem;
+    }
+
     .campo-buscar {
         width: clamp(10rem, 30vw, 50rem);
     }
@@ -136,6 +160,25 @@
 
     .mi-cuenta p {
         display: none;
+    }
+
+    .selector-usuario {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .selector-usuario-etiqueta span {
+        display: none;
+    }
+
+    .selector-usuario-control {
+        max-width: 9rem;
+        border: 1px solid var(--color-violeta);
+        color: var(--color-violeta);
+        background: var(--color-blanco);
+        padding: 0.2rem 0.35rem;
+        font-size: 0.9rem;
     }
 
     nav.menu-navegacion {
@@ -291,6 +334,12 @@ header form {
 }
 
 .mi-cuenta img, .mis-reservas img {
+    width: 20px;
+    height: auto;
+    vertical-align: middle;
+}
+
+.selector-usuario-etiqueta img {
     width: 20px;
     height: auto;
     vertical-align: middle;

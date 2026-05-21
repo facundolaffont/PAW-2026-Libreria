@@ -223,7 +223,9 @@
                             </a>
                             <p><?= htmlspecialchars($book['author']) ?></p>
                             <p><strong>$ <?= number_format($book['price'], 2, ',', '.') ?></strong></p>
-                            <button type="button">Reservar</button>
+                            <?php if (!($context['isAdmin'] ?? false)): ?>
+                                <button type="button">Reservar</button>
+                            <?php endif; ?>
                         </article>
                     </li>
                     <?php endforeach; ?>
