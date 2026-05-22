@@ -77,6 +77,11 @@ class ContextBuilder {
 
         return [
             'books'       => $bookRepository->findAll($offset, $perPage, $filters),
+            'allBooks'    => $bookRepository->findAll(0, PHP_INT_MAX, []),
+            'priceRange'  => [
+                'min' => $bookRepository->findPriceMin(),
+                'max' => $bookRepository->findPriceMax(),
+            ],
             'currentPage' => $currentPage,
             'totalPages'  => $totalPages,
             'genres'      => $bookRepository->findAllGenres(),

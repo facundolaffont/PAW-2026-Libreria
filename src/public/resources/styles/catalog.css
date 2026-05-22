@@ -570,3 +570,361 @@ nav[aria-label="Paginación del catálogo"] ol li a[aria-current="page"] {
   }
 
 }
+
+
+/* =============================================================================
+   COMPONENTE JS: filtros + ordenamiento + paginación client-side
+   ============================================================================= */
+
+/* --- Grilla para el fallback server-side (ya no es hijo directo de section) --- */
+
+.catalog-server-render > ul {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--gap-grilla);
+  margin-bottom: 24px;
+}
+
+@media (max-width: 1024px) {
+  .catalog-server-render > ul {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
+
+
+/* --- Visibilidad JS / no-JS --- */
+
+#catalog-lista-js,
+#catalog-paginacion-js {
+  display: none;
+}
+
+.catalog-csv-js {
+  display: none;
+}
+
+.catalog-js-active .catalog-server-render {
+  display: none;
+}
+
+.catalog-js-active #catalog-lista-js {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--gap-grilla);
+  margin-bottom: 24px;
+}
+
+.catalog-js-active #catalog-paginacion-js {
+  display: block;
+}
+
+.catalog-js-active .catalog-csv-js {
+  display: block;
+}
+
+@media (max-width: 1024px) {
+  .catalog-js-active #catalog-lista-js {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
+
+
+/* --- Backdrop --- */
+
+.catalog-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.45);
+  z-index: 99;
+}
+
+.catalog-backdrop.visible {
+  display: block;
+}
+
+
+/* --- Drawer mobile (aside) --- */
+
+.aside-cabecera {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+
+  aside#filtrar-mobile {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: min(320px, 85vw);
+    z-index: 100;
+    overflow-y: auto;
+    border-radius: 0;
+    transform: translateX(-100%);
+    transition: transform 0.28s ease;
+    /* Siempre en DOM; visibilidad controlada por transform */
+    display: block !important;
+  }
+
+  aside#filtrar-mobile.drawer-open {
+    transform: translateX(0);
+  }
+
+  .aside-cabecera {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 14px 0;
+  }
+
+  aside h2 {
+    display: block;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--color-blanco);
+    margin: 0;
+  }
+
+  #btn-cerrar-filtros {
+    background: none;
+    border: none;
+    color: var(--color-blanco);
+    font-size: 22px;
+    padding: 2px 6px;
+    line-height: 1;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+
+  #btn-cerrar-filtros:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+
+  /* Botón "Aplicar filtros" visible sólo en mobile dentro del drawer */
+  #aplicar-filtros-mobile {
+    display: block;
+    margin: 12px 14px 6px;
+    padding: 10px;
+    background-color: var(--color-blanco);
+    color: var(--color-primario);
+    border: none;
+    border-radius: var(--radio-borde);
+    font-size: 13px;
+    font-weight: 700;
+    width: calc(100% - 28px);
+  }
+}
+
+@media (min-width: 1025px) {
+  #btn-abrir-filtros {
+    display: none;
+  }
+
+  #aplicar-filtros-mobile {
+    display: none;
+  }
+}
+
+
+/* --- Badge de filtros activos --- */
+
+.filtros-activos-badge {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  background-color: var(--color-blanco);
+  color: var(--color-primario);
+  border-radius: 9px;
+  font-size: 11px;
+  font-weight: 700;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.filtros-activos-badge:not([hidden]) {
+  display: inline-flex;
+}
+
+
+/* --- Barra de controles JS (ordenar + por página + scroll) --- */
+
+.catalog-controles-barra {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+#ordenar-desktop-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#ordenar-desktop-wrap label {
+  font-size: 13px;
+  color: var(--color-texto-suave);
+  white-space: nowrap;
+}
+
+#ordenar-desktop-wrap select,
+#por-pagina {
+  padding: 6px 10px;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-borde);
+  font-size: 13px;
+  background-color: var(--color-blanco);
+  color: var(--color-texto);
+  font-family: var(--fuente-principal);
+}
+
+.catalog-vista-controles {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  flex-wrap: wrap;
+}
+
+.catalog-vista-controles label[for="por-pagina"] {
+  font-size: 13px;
+  color: var(--color-texto-suave);
+  white-space: nowrap;
+}
+
+.toggle-scroll-label {
+  font-size: 13px;
+  color: var(--color-texto-suave);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.catalog-resultado-count {
+  font-size: 12px;
+  color: var(--color-texto-suave);
+  white-space: nowrap;
+  width: 100%;
+  margin-top: -8px;
+}
+
+@media (max-width: 1024px) {
+  #ordenar-desktop-wrap {
+    display: none;
+  }
+
+  .catalog-vista-controles {
+    margin-left: 0;
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+
+/* --- Select de orden mobile (en la barra de acciones) --- */
+
+#ordenar-mobile-select {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  #ordenar-mobile-select {
+    display: block;
+    flex: 1;
+    padding: 10px 8px;
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-borde);
+    font-size: 14px;
+    background-color: var(--color-blanco);
+    color: var(--color-texto);
+    font-family: var(--fuente-principal);
+  }
+}
+
+
+/* --- Sentinel de scroll infinito --- */
+
+.catalog-sentinel {
+  height: 1px;
+  margin-top: 16px;
+}
+
+
+/* --- Paginación JS: ellipsis --- */
+
+#catalog-paginacion-js ol {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+  padding: 0;
+  list-style: none;
+}
+
+#catalog-paginacion-js ol li a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 34px;
+  padding: 0 10px;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-borde);
+  background-color: var(--color-blanco);
+  font-size: 13px;
+  color: var(--color-texto);
+  transition: background-color 0.15s, color 0.15s;
+  text-decoration: none;
+}
+
+#catalog-paginacion-js ol li a[aria-current="page"] {
+  background-color: var(--color-primario);
+  color: var(--color-blanco);
+  border-color: var(--color-primario);
+  font-weight: 700;
+}
+
+.pag-ellipsis {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 34px;
+  font-size: 13px;
+  color: var(--color-texto-suave);
+}
+
+@media (hover: hover) {
+  #catalog-paginacion-js ol li a:hover {
+    background-color: var(--color-primario);
+    color: var(--color-blanco);
+    border-color: var(--color-primario);
+  }
+}
+
+/* Botón "Limpiar filtros" — mismo estilo que el link original */
+#limpiar-filtros {
+  display: block;
+  text-align: center;
+  margin: 0 14px 12px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: underline;
+  background: none;
+  border: none;
+  font-family: inherit;
+  cursor: pointer;
+  width: calc(100% - 28px);
+}
+
+#limpiar-filtros:hover {
+  color: var(--color-blanco);
+}

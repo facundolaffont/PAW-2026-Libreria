@@ -148,6 +148,14 @@
             return (int) $this->db->lastInsertId();
         }
 
+        public function findPriceMin(): float {
+            return (float) $this->db->query('SELECT MIN(price) FROM books')->fetchColumn();
+        }
+
+        public function findPriceMax(): float {
+            return (float) $this->db->query('SELECT MAX(price) FROM books')->fetchColumn();
+        }
+
         public function existsByIsbn(string $isbn): bool {
             $stmt = $this->db->prepare('SELECT 1 FROM books WHERE isbn = :isbn LIMIT 1');
             $stmt->bindValue(':isbn', $isbn);

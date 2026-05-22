@@ -11,4 +11,6 @@
         public function countAll(array $filters = []): int;
         public function create(array $data): int;
         public function existsByIsbn(string $isbn): bool;
+        public function findPriceMin(): float;
+        public function findPriceMax(): float;
     }
