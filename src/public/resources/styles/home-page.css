@@ -66,6 +66,7 @@ section.carrusel h2 {
 .contenedor-carrusel {
     display: flex;
     gap: 20px;
+    align-items: stretch;
     overflow-x: hidden;
     scrollbar-width: none;
     padding: 10px 0;
@@ -79,6 +80,8 @@ section.carrusel h3 {
 }
 
 section.carrusel article.libro {
+    display: flex;
+    flex-direction: column;
     flex-shrink: 0;
     margin-bottom: 1rem;
     text-align: center;
@@ -86,6 +89,8 @@ section.carrusel article.libro {
 }
 
 section.carrusel article.promocion {
+    display: flex;
+    flex-direction: column;
     flex-shrink: 0;
     margin-bottom: 1rem;
     scroll-snap-align: start;
@@ -100,6 +105,19 @@ section.carrusel article img {
     margin-bottom: 0.7rem;
     border: solid 1px black;
     object-fit: cover;
+    background-color: white;
+}
+
+section.carrusel article.libro picture {
+    display: block;
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+section.carrusel article.libro picture img {
+    height: 100%;
 }
 
 section.carrusel article button {

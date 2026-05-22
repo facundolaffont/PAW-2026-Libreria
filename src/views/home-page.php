@@ -52,7 +52,7 @@
                                 >
                                 <?php endforeach; ?>
                                 <img
-                                    src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
+                                    src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2 3'%3E%3Crect width='2' height='3' fill='white'/%3E%3C/svg%3E"
                                     data-carousel-src="resources/images/<?= $fallbackSrc ?>"
                                     alt="<?= $book['title'] ?>"
                                 >
@@ -110,7 +110,7 @@
                         >
                         <?php endforeach; ?>
                         <img
-                            src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
+                            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='white'/%3E%3C/svg%3E"
                             data-carousel-src="resources/images/<?= $fallbackSrc ?>"
                             alt="<?= $promotion['description'] ?>"
                         >
