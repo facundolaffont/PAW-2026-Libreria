@@ -49,3 +49,5 @@
 
     </nav>
 </footer>
+
+<script src="resources/js/buscador-historial.js"></script>

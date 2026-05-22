@@ -772,6 +772,8 @@ nav[aria-label="Paginación del catálogo"] ol li a[aria-current="page"] {
   white-space: nowrap;
 }
 
+
+
 #ordenar-desktop-wrap select,
 #por-pagina {
   padding: 6px 10px;

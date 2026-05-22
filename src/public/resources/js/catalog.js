@@ -1,9 +1,11 @@
 (function () {
     'use strict';
 
-    var MOBILE_BP = 1024;
-    var DEBOUNCE_MS = 500;
-    var IMAGE_BASE = 'resources/images/';
+    var MOBILE_BP      = 1024;
+    var DEBOUNCE_MS    = 500;
+    var IMAGE_BASE     = 'resources/images/';
+    var STORAGE_KEY    = 'libreria_busquedas_recientes';
+    var MAX_BUSQUEDAS  = 5;
 
     // -------------------------------------------------------------------------
     // Estado
@@ -44,6 +46,8 @@
         dom.paginacionJs.hidden = false;
         dom.csvJs.hidden = false;
 
+        guardarBusqueda(state.filters.q);
+
         syncSelectsToState();
         render();
     }
@@ -78,10 +82,10 @@
         dom.scrollToggle   = document.getElementById('scroll-infinito');
         dom.badge          = document.getElementById('filtros-badge');
         dom.resultCount    = document.getElementById('resultado-count');
-        dom.csvJs          = document.querySelector('.catalog-csv-js');
-        dom.csvLinkJs      = document.getElementById('descargar-csv-js');
-        dom.form           = document.getElementById('catalog-form');
-        dom.section        = document.querySelector('section[aria-label="Listado de libros"]');
+        dom.csvJs                = document.querySelector('.catalog-csv-js');
+        dom.csvLinkJs            = document.getElementById('descargar-csv-js');
+        dom.form                 = document.getElementById('catalog-form');
+        dom.section              = document.querySelector('section[aria-label="Listado de libros"]');
     }
 
     // -------------------------------------------------------------------------
@@ -643,6 +647,29 @@
             e.preventDefault();
             first.focus();
         }
+    }
+
+    // -------------------------------------------------------------------------
+    // Búsquedas recientes (localStorage)
+    // -------------------------------------------------------------------------
+
+    function leerBusquedas() {
+        try {
+            var raw = localStorage.getItem(STORAGE_KEY);
+            return raw ? JSON.parse(raw) : [];
+        } catch (e) {
+            return [];
+        }
+    }
+
+    function guardarBusqueda(q) {
+        if (!q || !q.trim()) return;
+        q = q.trim();
+        var busquedas = leerBusquedas();
+        busquedas = busquedas.filter(function (b) { return b !== q; });
+        busquedas.unshift(q);
+        if (busquedas.length > MAX_BUSQUEDAS) busquedas = busquedas.slice(0, MAX_BUSQUEDAS);
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(busquedas)); } catch (e) {}
     }
 
     // -------------------------------------------------------------------------

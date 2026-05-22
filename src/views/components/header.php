@@ -37,7 +37,12 @@
                 class="campo-buscar"
                 placeholder="Buscar por autor, título o género"
                 value="<?= htmlspecialchars($context['filters']['q'] ?? '') ?>"
+                autocomplete="off"
+                aria-autocomplete="list"
+                aria-controls="buscador-dropdown"
+                aria-haspopup="listbox"
             >
+            <ul id="buscador-dropdown" role="listbox" aria-label="Búsquedas recientes" hidden></ul>
             <button type="submit" class="lupa-buscar" aria-label="Buscar">
                 <img src="resources/images/lupa.png" alt="">
             </button>
