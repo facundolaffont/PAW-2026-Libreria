@@ -6,42 +6,72 @@
  */
 class Carousel {
 
+    static #activeInstance = null;
+
+    #container;
+    #root;
+    #effect = 'slide';
+    #options = {
+        effect: 'slide',
+        autoPlayMs: 3500,
+    };
+    #currentIndex = 0;
+    #isDragging = false;
+    #touchStartX = 0;
+    #touchCurrentX = 0;
+    #autoPlayTimer = null;
+    #preloadedImages = 0;
+    #progressStartAt = 0;
+    #progressHideTimer = null;
+    #scrollAnimationFrame = null;
+    #items = [];
+    #totalItems = 0;
+    #prevButton;
+    #nextButton;
+    #progress;
+    #progressBar;
+    #progressLabel;
+    #thumbs;
+    #thumbButtons;
+
     /**
-     * @param {HTMLElement} container - Contenedor que ya incluye los slides.
-    * @param {{effect?: 'slide'|'block'|'disappear', autoPlayMs?: number}} options
+     * @param {HTMLElement} container - Contenedor donde se va a crear el carrusel.
+     * @param {{effect?: 'slide'|'block'|'disappear', autoPlayMs?: number}} options - Parámetros para configurar el carrusel.
      */
     constructor(container, options = {}) {
+
+        // Arroja error si el contenedor no es un elemento HTML.
         if (!(container instanceof HTMLElement)) {
             throw new Error('Carousel requiere un contenedor valido.');
         }
 
-        this.container = container;
-        this.root = container.parentElement;
-        this.effect = this.#normalizeEffect(options.effect || 'slide');
-        this.options = {
-            effect: this.effect,
+        this.#container = container;
+        this.#root = container.parentElement;
+        this.#effect = this.#normalizeEffect(options.effect || 'slide');
+        this.#options = {
+            effect: this.#effect,
             autoPlayMs: options.autoPlayMs || 3500,
         };
 
-        this.currentIndex = 0;
-        this.isDragging = false;
-        this.touchStartX = 0;
-        this.touchCurrentX = 0;
-        this.autoPlayTimer = null;
-        this.preloadedImages = 0;
-        this.progressStartAt = 0;
-        this.progressHideTimer = null;
-        this.scrollAnimationFrame = null;
+        this.#currentIndex = 0;
+        this.#isDragging = false;
+        this.#touchStartX = 0;
+        this.#touchCurrentX = 0;
+        this.#autoPlayTimer = null;
+        this.#preloadedImages = 0;
+        this.#progressStartAt = 0;
+        this.#progressHideTimer = null;
+        this.#scrollAnimationFrame = null;
 
-        this.items = Array.from(this.container.querySelectorAll('article'));
-        this.totalItems = this.items.length;
+        this.#items = Array.from(this.#container.querySelectorAll('article'));
+        this.#totalItems = this.#items.length;
 
-        if (!this.root || this.totalItems === 0) {
+        if (!this.#root || this.#totalItems === 0) {
             return;
         }
 
-        if (!Carousel.activeInstance) {
-            Carousel.activeInstance = this;
+        if (!Carousel.#activeInstance) {
+            Carousel.#activeInstance = this;
         }
 
         this.#buildUi();
@@ -51,7 +81,7 @@ class Carousel {
         // Deja que el navegador pinte la UI inicial antes de arrancar la precarga,
         // para que la barra de progreso sea perceptible en conexiones lentas.
         requestAnimationFrame(() => {
-            this.progressStartAt = performance.now();
+            this.#progressStartAt = performance.now();
             this.#activateMainImageSources();
             this.#preloadImagesAndStart();
         });
@@ -62,16 +92,16 @@ class Carousel {
      * @returns {void}
      */
     next() {
-        if (this.effect === 'block') {
+        if (this.#effect === 'block') {
             const anchors = this.#getBlockAnchors();
-            const currentAnchor = this.#closestBlockAnchor(this.currentIndex, anchors);
+            const currentAnchor = this.#closestBlockAnchor(this.#currentIndex, anchors);
             const currentAnchorPos = anchors.indexOf(currentAnchor);
             const nextAnchor = anchors[(currentAnchorPos + 1) % anchors.length];
             this.goTo(nextAnchor);
             return;
         }
 
-        this.goTo(this.currentIndex + 1);
+        this.goTo(this.#currentIndex + 1);
     }
 
     /**
@@ -79,16 +109,16 @@ class Carousel {
      * @returns {void}
      */
     prev() {
-        if (this.effect === 'block') {
+        if (this.#effect === 'block') {
             const anchors = this.#getBlockAnchors();
-            const currentAnchor = this.#closestBlockAnchor(this.currentIndex, anchors);
+            const currentAnchor = this.#closestBlockAnchor(this.#currentIndex, anchors);
             const currentAnchorPos = anchors.indexOf(currentAnchor);
             const prevPos = (currentAnchorPos - 1 + anchors.length) % anchors.length;
             this.goTo(anchors[prevPos]);
             return;
         }
 
-        this.goTo(this.currentIndex - 1);
+        this.goTo(this.#currentIndex - 1);
     }
 
     /**
@@ -99,15 +129,15 @@ class Carousel {
     goTo(index) {
 
         // Si no hay items, no hay qué mover.
-        if (!this.totalItems) return;
+        if (!this.#totalItems) return;
 
-        const normalized = (index + this.totalItems) % this.totalItems;
-        this.currentIndex = normalized;
+        const normalized = (index + this.#totalItems) % this.#totalItems;
+        this.#currentIndex = normalized;
 
-        const shouldApplyScrollEffect = this.#hasRealScrollMovement(this.currentIndex);
+        const shouldApplyScrollEffect = this.#hasRealScrollMovement(this.#currentIndex);
 
         if (shouldApplyScrollEffect) {
-            if (this.effect === 'disappear') {
+            if (this.#effect === 'disappear') {
                 this.#applyDisappearEffect();
             } else {
                 this.#applySlideEffect();
@@ -123,35 +153,35 @@ class Carousel {
      * @returns {void}
      */
     #buildUi() {
-        this.root.classList.add('carousel-root');
-        this.container.classList.add('carousel-track');
-        this.container.classList.add('carousel-effect-' + this.effect);
+        this.#root.classList.add('carousel-root');
+        this.#container.classList.add('carousel-track');
+        this.#container.classList.add('carousel-effect-' + this.#effect);
 
-        this.prevButton = document.createElement('button');
-        this.prevButton.type = 'button';
-        this.prevButton.className = 'flecha flecha-izq';
-        this.prevButton.setAttribute('aria-label', 'Imagen anterior');
+        this.#prevButton = document.createElement('button');
+        this.#prevButton.type = 'button';
+        this.#prevButton.className = 'flecha flecha-izq';
+        this.#prevButton.setAttribute('aria-label', 'Imagen anterior');
 
-        this.nextButton = document.createElement('button');
-        this.nextButton.type = 'button';
-        this.nextButton.className = 'flecha flecha-der';
-        this.nextButton.setAttribute('aria-label', 'Imagen siguiente');
+        this.#nextButton = document.createElement('button');
+        this.#nextButton.type = 'button';
+        this.#nextButton.className = 'flecha flecha-der';
+        this.#nextButton.setAttribute('aria-label', 'Imagen siguiente');
 
-        this.root.appendChild(this.prevButton);
-        this.root.appendChild(this.nextButton);
+        this.#root.appendChild(this.#prevButton);
+        this.#root.appendChild(this.#nextButton);
 
-        this.progress = document.createElement('div');
-        this.progress.className = 'carousel-progress';
-        this.progress.innerHTML =
+        this.#progress = document.createElement('div');
+        this.#progress.className = 'carousel-progress';
+        this.#progress.innerHTML =
             '<div class="carousel-progress-bar"></div><span class="carousel-progress-label">0%</span>';
-        this.progressBar = this.progress.querySelector('.carousel-progress-bar');
-        this.progressLabel = this.progress.querySelector('.carousel-progress-label');
-        this.root.appendChild(this.progress);
+        this.#progressBar = this.#progress.querySelector('.carousel-progress-bar');
+        this.#progressLabel = this.#progress.querySelector('.carousel-progress-label');
+        this.#root.appendChild(this.#progress);
 
-        this.thumbs = document.createElement('div');
-        this.thumbs.className = 'carousel-thumbs';
+        this.#thumbs = document.createElement('div');
+        this.#thumbs.className = 'carousel-thumbs';
 
-        this.thumbButtons = this.items.map((item, index) => {
+        this.#thumbButtons = this.#items.map((item, index) => {
             // Wrapper para thumb y guión
             const wrapper = document.createElement('div');
             wrapper.className = 'carousel-thumb-wrapper';
@@ -168,11 +198,11 @@ class Carousel {
 
             wrapper.appendChild(thumb);
             wrapper.appendChild(indicator);
-            this.thumbs.appendChild(wrapper);
+            this.#thumbs.appendChild(wrapper);
             return thumb;
         });
 
-        this.root.appendChild(this.thumbs);
+        this.#root.appendChild(this.#thumbs);
     }
 
     /**
@@ -180,9 +210,9 @@ class Carousel {
      * @returns {void}
      */
     #setupAccessibility() {
-        this.root.setAttribute('tabindex', '0');
-        this.container.setAttribute('tabindex', '0');
-        this.container.setAttribute('aria-live', 'polite');
+        this.#root.setAttribute('tabindex', '0');
+        this.#container.setAttribute('tabindex', '0');
+        this.#container.setAttribute('aria-live', 'polite');
     }
 
     /**
@@ -191,30 +221,30 @@ class Carousel {
      */
     #bindEvents() {
         const setAsActive = () => {
-            Carousel.activeInstance = this;
+            Carousel.#activeInstance = this;
         };
 
-        this.root.addEventListener('mouseenter', setAsActive);
-        this.root.addEventListener('pointerdown', setAsActive);
-        this.root.addEventListener('touchstart', setAsActive, { passive: true });
-        this.root.addEventListener('focusin', setAsActive);
+        this.#root.addEventListener('mouseenter', setAsActive);
+        this.#root.addEventListener('pointerdown', setAsActive);
+        this.#root.addEventListener('touchstart', setAsActive, { passive: true });
+        this.#root.addEventListener('focusin', setAsActive);
 
-        this.prevButton.addEventListener('click', () => this.prev());
-        this.nextButton.addEventListener('click', () => this.next());
+        this.#prevButton.addEventListener('click', () => this.prev());
+        this.#nextButton.addEventListener('click', () => this.next());
 
-        this.thumbButtons.forEach((thumb) => {
+        this.#thumbButtons.forEach((thumb) => {
             thumb.addEventListener('click', () => {
                 this.goTo(Number(thumb.dataset.index || 0));
             });
         });
 
-        this.container.addEventListener(
+        this.#container.addEventListener(
             'touchstart',
             (event) => {
                 if (event.touches.length !== 1) return;
-                this.isDragging = true;
-                this.touchStartX = event.touches[0].clientX;
-                this.touchCurrentX = this.touchStartX;
+                this.#isDragging = true;
+                this.#touchStartX = event.touches[0].clientX;
+                this.#touchCurrentX = this.#touchStartX;
             },
 
             // Permite que el navegador optimize el scroll nativo
@@ -224,12 +254,12 @@ class Carousel {
 
         );
 
-        this.container.addEventListener(
+        this.#container.addEventListener(
             'touchmove',
             (event) => {
-                if (!this.isDragging || event.touches.length !== 1) return;
-                this.touchCurrentX = event.touches[0].clientX;
-                const deltaX = this.touchCurrentX - this.touchStartX;
+                if (!this.#isDragging || event.touches.length !== 1) return;
+                this.#touchCurrentX = event.touches[0].clientX;
+                const deltaX = this.#touchCurrentX - this.#touchStartX;
                 if (Math.abs(deltaX) > 10) {
                     event.preventDefault();
                 }
@@ -241,10 +271,10 @@ class Carousel {
             { passive: false }
         );
 
-        this.container.addEventListener('touchend', () => {
-            if (!this.isDragging) return;
-            const deltaX = this.touchCurrentX - this.touchStartX;
-            this.isDragging = false;
+        this.#container.addEventListener('touchend', () => {
+            if (!this.#isDragging) return;
+            const deltaX = this.#touchCurrentX - this.#touchStartX;
+            this.#isDragging = false;
 
             if (Math.abs(deltaX) < 35) return;
             if (deltaX < 0) this.next();
@@ -252,7 +282,7 @@ class Carousel {
         });
 
         document.addEventListener('keydown', (event) => {
-            if (Carousel.activeInstance !== this) return;
+            if (Carousel.#activeInstance !== this) return;
 
             const target = event.target;
             if (target instanceof HTMLElement) {
@@ -277,7 +307,7 @@ class Carousel {
             }
         });
 
-        this.container.addEventListener('wheel', (event) => {
+        this.#container.addEventListener('wheel', (event) => {
             if (window.matchMedia('(min-width: 1000px)').matches && (event.shiftKey || event.deltaX !== 0)) {
                 event.preventDefault();
             }
@@ -291,7 +321,7 @@ class Carousel {
      */
     #preloadImagesAndStart() {
         // Solo cuenta las imagenes principales de cada slide (una por article).
-        const images = this.items
+        const images = this.#items
             .map((item) => item.querySelector('img'))
             .filter((img) => img instanceof HTMLImageElement);
         const totalImages = images.length;
@@ -303,12 +333,12 @@ class Carousel {
         }
 
         const onImageReady = (img, index) => {
-            this.preloadedImages += 1;
-            this.#syncThumbFromMainImage(img, index);
-            const pct = Math.min(100, Math.round((this.preloadedImages / totalImages) * 100));
+            this.#preloadedImages += 1;
+            this.#copyMainImgToThumbImg(img, index);
+            const pct = Math.min(100, Math.round((this.#preloadedImages / totalImages) * 100));
             this.#setProgress(pct);
 
-            if (this.preloadedImages >= totalImages) {
+            if (this.#preloadedImages >= totalImages) {
                 this.#finishProgressAndStart();
             }
         };
@@ -329,7 +359,7 @@ class Carousel {
      * @returns {void}
      */
     #activateMainImageSources() {
-        this.items.forEach((item) => {
+        this.#items.forEach((item) => {
             const picture = item.querySelector('picture');
             const img = item.querySelector('img');
 
@@ -354,25 +384,47 @@ class Carousel {
 
     /**
      * Copia la fuente de la imagen principal al thumbnail correspondiente.
-     * @param {HTMLImageElement} img - Imagen principal del slide.
-     * @param {number} index - Indice del slide asociado.
+     * 
+     * @param {HTMLImageElement} img - Imagen principal.
+     * @param {number} index - Indice asociado.
      * @returns {void}
      */
-    #syncThumbFromMainImage(img, index) {
-        const thumb = this.thumbButtons[index];
+    #copyMainImgToThumbImg(img, index) {
+        const thumb = this.#thumbButtons[index];
         if (!thumb || !img) return;
 
-        if (img.currentSrc) {
-            thumb.style.backgroundImage = 'url("' + img.currentSrc + '")';
-            thumb.classList.remove('is-loading');
+        const imageUrl = this.#getThumbImageUrl(img);
+        if (!imageUrl) {
             return;
         }
 
-        const src = img.getAttribute('src');
-        if (src) {
-            thumb.style.backgroundImage = 'url("' + src + '")';
-            thumb.classList.remove('is-loading');
+        thumb.style.backgroundImage = 'url("' + imageUrl + '")';
+        thumb.classList.remove('is-loading');
+    }
+
+    /**
+     * Resuelve la URL que se debe usar en el thumbnail.
+     * 
+     * @param {HTMLImageElement} img - Imagen a resolver.
+     * @returns {string}
+     */
+    #getThumbImageUrl(img) {
+        // Devuelve la imagen que terminó seleccionando el navegador (que no
+        // necesariamente es igual al valor del atributo img.src, debido a los
+        // <source> de <picture>), siempre que no sea el placeholder.
+        const currentSrc = img.currentSrc;
+        if (currentSrc && !currentSrc.startsWith('data:image/svg+xml')) {
+            return currentSrc;
         }
+
+        // Devuelve el valor de img.data-carousel-src, que a esta altura será
+        // la imagen fallback.
+        const mainSrc = img.dataset.carouselSrc;
+        if (mainSrc) {
+            return mainSrc;
+        }
+
+        return '';
     }
 
     /**
@@ -381,8 +433,8 @@ class Carousel {
      * @returns {void}
      */
     #setProgress(percent) {
-        this.progressBar.style.width = percent + '%';
-        this.progressLabel.textContent = percent + '%';
+        this.#progressBar.style.width = percent + '%';
+        this.#progressLabel.textContent = percent + '%';
     }
 
     /**
@@ -390,21 +442,21 @@ class Carousel {
      * @returns {void}
      */
     #finishProgressAndStart() {
-        const elapsed = performance.now() - this.progressStartAt;
+        const elapsed = performance.now() - this.#progressStartAt;
         const minimumVisibleMs = 700;
 
-        if (this.progressHideTimer) {
-            clearTimeout(this.progressHideTimer);
-            this.progressHideTimer = null;
+        if (this.#progressHideTimer) {
+            clearTimeout(this.#progressHideTimer);
+            this.#progressHideTimer = null;
         }
 
         const finalize = () => {
-            this.root.classList.add('carousel-ready');
+            this.#root.classList.add('carousel-ready');
             this.goTo(0);
         };
 
         if (elapsed < minimumVisibleMs) {
-            this.progressHideTimer = setTimeout(finalize, minimumVisibleMs - elapsed);
+            this.#progressHideTimer = setTimeout(finalize, minimumVisibleMs - elapsed);
             return;
         }
 
@@ -416,11 +468,11 @@ class Carousel {
      * @returns {void}
      */
     #updateThumbs() {
-        this.thumbButtons.forEach((thumb, index) => {
+        this.#thumbButtons.forEach((thumb, index) => {
             // Buscar el indicador en el wrapper padre
             const wrapper = thumb.parentElement;
             const indicator = wrapper.querySelector('.carousel-thumb-indicator');
-            if (index === this.currentIndex) {
+            if (index === this.#currentIndex) {
                 thumb.classList.add('is-active');
                 if (indicator) indicator.classList.add('is-active');
             } else {
@@ -435,16 +487,16 @@ class Carousel {
      * @returns {void}
      */
     #applySlideEffect() {
-        const target = this.items[this.currentIndex];
+        const target = this.#items[this.#currentIndex];
         if (!target) return;
 
-        if (this.scrollAnimationFrame) {
-            cancelAnimationFrame(this.scrollAnimationFrame);
-            this.scrollAnimationFrame = null;
+        if (this.#scrollAnimationFrame) {
+            cancelAnimationFrame(this.#scrollAnimationFrame);
+            this.#scrollAnimationFrame = null;
         }
 
-        const left = this.#getTargetScrollLeft(this.currentIndex);
-        this.container.scrollTo({ left: left, behavior: 'smooth' });
+        const left = this.#getTargetScrollLeft(this.#currentIndex);
+        this.#container.scrollTo({ left: left, behavior: 'smooth' });
     }
 
     /**
@@ -453,28 +505,28 @@ class Carousel {
      * @returns {void}
      */
     #applyDisappearEffect() {
-        const target = this.items[this.currentIndex];
+        const target = this.#items[this.#currentIndex];
         if (!target) return;
 
-        const targetLeft = this.#getTargetScrollLeft(this.currentIndex);
-        const currentLeft = this.container.scrollLeft;
+        const targetLeft = this.#getTargetScrollLeft(this.#currentIndex);
+        const currentLeft = this.#container.scrollLeft;
 
         if (Math.abs(targetLeft - currentLeft) < 1) {
             return;
         }
 
-        const previousSnapType = this.container.style.scrollSnapType;
-        this.container.style.scrollSnapType = 'none';
-        this.container.style.transition = 'opacity 0.35s ease';
+        const previousSnapType = this.#container.style.scrollSnapType;
+        this.#container.style.scrollSnapType = 'none';
+        this.#container.style.transition = 'opacity 0.35s ease';
 
-        this.container.style.opacity = '0';
+        this.#container.style.opacity = '0';
         setTimeout(() => {
-            this.container.scrollLeft = targetLeft;
+            this.#container.scrollLeft = targetLeft;
             setTimeout(() => {
-                this.container.style.opacity = '1';
+                this.#container.style.opacity = '1';
                 setTimeout(() => {
-                    this.container.style.transition = '';
-                    this.container.style.scrollSnapType = previousSnapType;
+                    this.#container.style.transition = '';
+                    this.#container.style.scrollSnapType = previousSnapType;
                 }, 350);
             }, 50);
         }, 350);
@@ -487,7 +539,7 @@ class Carousel {
      */
     #hasRealScrollMovement(index) {
         const targetLeft = this.#getTargetScrollLeft(index);
-        const currentLeft = this.container.scrollLeft;
+        const currentLeft = this.#container.scrollLeft;
         return Math.abs(targetLeft - currentLeft) >= 1;
     }
 
@@ -497,11 +549,11 @@ class Carousel {
      * @returns {number}
      */
     #getTargetScrollLeft(index) {
-        const target = this.items[index];
-        if (!target) return this.container.scrollLeft;
+        const target = this.#items[index];
+        if (!target) return this.#container.scrollLeft;
 
         const rawLeft = target.offsetLeft;
-        const maxLeft = Math.max(0, this.container.scrollWidth - this.container.clientWidth);
+        const maxLeft = Math.max(0, this.#container.scrollWidth - this.#container.clientWidth);
         return Math.min(Math.max(0, rawLeft), maxLeft);
     }
 
@@ -513,7 +565,7 @@ class Carousel {
         const anchors = [];
         let start = 0;
 
-        while (start < this.totalItems) {
+        while (start < this.#totalItems) {
             anchors.push(start);
             start += this.#countVisibleFromIndex(start);
         }
@@ -547,17 +599,17 @@ class Carousel {
      * @returns {number}
      */
     #countVisibleFromIndex(startIndex) {
-        const startItem = this.items[startIndex];
+        const startItem = this.#items[startIndex];
         if (!startItem) return 1;
 
-        const viewportWidth = this.container.clientWidth;
+        const viewportWidth = this.#container.clientWidth;
         if (viewportWidth <= 0) return 1;
 
         const startLeft = startItem.offsetLeft;
         let count = 0;
 
-        for (let i = startIndex; i < this.totalItems; i += 1) {
-            const item = this.items[i];
+        for (let i = startIndex; i < this.#totalItems; i += 1) {
+            const item = this.#items[i];
             if (!item) break;
 
             const relativeEnd = item.offsetLeft + item.offsetWidth - startLeft;
@@ -579,20 +631,20 @@ class Carousel {
      * @returns {void}
      */
     #animateScrollTo(targetLeft, durationMs, easingFn) {
-        if (this.scrollAnimationFrame) {
-            cancelAnimationFrame(this.scrollAnimationFrame);
-            this.scrollAnimationFrame = null;
+        if (this.#scrollAnimationFrame) {
+            cancelAnimationFrame(this.#scrollAnimationFrame);
+            this.#scrollAnimationFrame = null;
         }
 
-        const previousSnapType = this.container.style.scrollSnapType;
-        this.container.style.scrollSnapType = 'none';
+        const previousSnapType = this.#container.style.scrollSnapType;
+        this.#container.style.scrollSnapType = 'none';
 
-        const startLeft = this.container.scrollLeft;
+        const startLeft = this.#container.scrollLeft;
         const delta = targetLeft - startLeft;
 
         if (Math.abs(delta) < 1) {
-            this.container.scrollLeft = targetLeft;
-            this.container.style.scrollSnapType = previousSnapType;
+            this.#container.scrollLeft = targetLeft;
+            this.#container.style.scrollSnapType = previousSnapType;
             return;
         }
 
@@ -601,19 +653,19 @@ class Carousel {
             const elapsed = now - startAt;
             const progress = Math.min(1, elapsed / durationMs);
             const eased = easingFn(progress);
-            this.container.scrollLeft = startLeft + (delta * eased);
+            this.#container.scrollLeft = startLeft + (delta * eased);
 
             if (progress < 1) {
-                this.scrollAnimationFrame = requestAnimationFrame(tick);
+                this.#scrollAnimationFrame = requestAnimationFrame(tick);
                 return;
             }
 
-            this.container.scrollLeft = targetLeft;
-            this.container.style.scrollSnapType = previousSnapType;
-            this.scrollAnimationFrame = null;
+            this.#container.scrollLeft = targetLeft;
+            this.#container.style.scrollSnapType = previousSnapType;
+            this.#scrollAnimationFrame = null;
         };
 
-        this.scrollAnimationFrame = requestAnimationFrame(tick);
+        this.#scrollAnimationFrame = requestAnimationFrame(tick);
     }
 
     /**
@@ -632,15 +684,15 @@ class Carousel {
      * @returns {void}
      */
     #restartAutoplay() {
-        if (!this.options.autoPlayMs || this.options.autoPlayMs < 1000) {
+        if (!this.#options.autoPlayMs || this.#options.autoPlayMs < 1000) {
             return;
         }
 
-        if (this.autoPlayTimer) {
-            clearTimeout(this.autoPlayTimer);
+        if (this.#autoPlayTimer) {
+            clearTimeout(this.#autoPlayTimer);
         }
 
-        this.autoPlayTimer = setTimeout(() => this.next(), this.options.autoPlayMs);
+        this.#autoPlayTimer = setTimeout(() => this.next(), this.#options.autoPlayMs);
     }
 
 }

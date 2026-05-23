@@ -6,11 +6,32 @@
     <main>
 
         <?php
-            // Garantiza que el contexto, el cual se debería construir dinámicamente en el
-            // controlador de página según la vista solicitada, siempre estará definido.
+            
+            /**
+             * Variable que aloja los datos de contexto para la vista,
+             * construidos dinámicamente en el controlador de página.
+             * 
+             * @var array{
+             *      currentPageName: string,
+             *      booksByGenre: array<
+             *          string,
+             *          array<
+             *              int,
+             *              array{
+             *                  id: int,
+             *                  title: string,
+             *                  author: string,
+             *                  genre: string,
+             *                  price: float,
+             *                  image: string
+             *              }
+             *          >
+             *      >
+             * } $context
+             */
             $context = $context ?? [];
 
-            // Define una rotacion de efectos para asignar uno distinto a cada carrusel de libros.
+            // Define una rotacion de efectos para asignar uno distinto a cada carrusel.
             $bookCarouselEffects = ['slide', 'block', 'disappear'];
             $bookCarouselIndex = 0;
         ?>
@@ -27,9 +48,10 @@
 
             <div class="contenedor-carrusel">
 
-                    <?php foreach ($genreBooks as $book): ?>
+                <?php foreach ($genreBooks as $book): ?>
 
                     <?php
+                        // Obtiene las posibles URLs para el libro en cuestión.
                         $imageParts = explode(';', $book['image']);
                         $sources = [];
                         $fallbackSrc = '';
@@ -45,11 +67,16 @@
                     <article class="libro">
                         <a href="book-detail?id=<?= (int)$book['id'] ?>">
                             <picture>
-                                <?php foreach ($sources as $source): ?>
-                                <source
-                                    data-carousel-srcset="resources/images/<?= $source['url'] ?>"
-                                    media="( max-width: <?= $source['maxWidth'] ?>px )"
-                                >
+                                <?php foreach ($sources as $source):
+                                    // Se reemplaza source.srcset por data-carousel-srcset
+                                    // para evitar que el navegador cargue las imágenes antes de tiempo,
+                                    // y permite que data-carousel-srcset sea administrado por
+                                    // Carousel.
+                                ?>
+                                    <source
+                                        data-carousel-srcset="resources/images/<?= $source['url'] ?>"
+                                        media="( max-width: <?= $source['maxWidth'] ?>px )"
+                                    >
                                 <?php endforeach; ?>
                                 <img
                                     src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2 3'%3E%3Crect width='2' height='3' fill='white'/%3E%3C/svg%3E"
@@ -66,7 +93,7 @@
                         <?php endif; ?>
                     </article>
 
-                    <?php endforeach; ?>
+                <?php endforeach; ?>
 
             </div>
 
@@ -103,11 +130,16 @@
             <article class="promocion">
                 <a href="promotions">
                     <picture>
-                        <?php foreach ($sources as $source): ?>
-                        <source
-                            data-carousel-srcset="resources/images/<?= $source['url'] ?>"
-                            media="( max-width: <?= $source['maxWidth'] ?>px )"
-                        >
+                        <?php foreach ($sources as $source):
+                            // Se reemplaza source.srcset por data-carousel-srcset
+                            // para evitar que el navegador cargue las imágenes antes de tiempo,
+                            // y permite que data-carousel-srcset sea administrado por
+                            // Carousel.
+                        ?>
+                            <source
+                                data-carousel-srcset="resources/images/<?= $source['url'] ?>"
+                                media="( max-width: <?= $source['maxWidth'] ?>px )"
+                            >
                         <?php endforeach; ?>
                         <img
                             src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='white'/%3E%3C/svg%3E"

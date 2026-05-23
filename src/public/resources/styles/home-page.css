@@ -16,6 +16,10 @@
         width: 1200px;
     }
 
+    .carousel-thumbs {
+        justify-content: center;
+    }
+
 }
 
 /* Estilos para mobile */
@@ -44,6 +48,10 @@
 
     section.carrusel article.promocion {
         width: 80vw;
+    }
+
+    .carousel-thumbs {
+        justify-content: flex-start;
     }
 
 }
@@ -80,8 +88,7 @@ section.carrusel h3 {
 }
 
 section.carrusel article.libro {
-    display: flex;
-    flex-direction: column;
+    display: block;
     flex-shrink: 0;
     margin-bottom: 1rem;
     text-align: center;
@@ -124,7 +131,7 @@ section.carrusel article button {
     background-color: var(--color-violeta);
     color: white;
     font-weight: bold;
-    padding: 0.3rem 1.2rem;
+    padding: 0.5rem 3rem;
     border-radius: 0.3rem;
     border-style: none;
     cursor: pointer;
@@ -238,7 +245,6 @@ section.carrusel article button:hover {
 .carousel-thumbs {
     margin-top: 0.5rem;
     display: flex;
-    justify-content: center;
     gap: 8px;
     overflow-x: auto;
     scrollbar-width: thin;
