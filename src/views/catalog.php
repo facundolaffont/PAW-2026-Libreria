@@ -2,61 +2,51 @@
 
     <?php require 'components/header.php'; ?>
 
+    <!-- Backdrop para el drawer de filtros (mobile) -->
+    <div class="catalog-backdrop" id="catalog-backdrop" aria-hidden="true"></div>
+
     <main>
 
         <?php
-            // Garantiza que el contexto, el cual se debería construir dinámicamente en el
-            // controlador de página según la vista solicitada, siempre estará definido.
             $context = $context ?? [];
         ?>
 
-        <!-- Barra de acciones móvil (ordenar / filtrar) -->
+        <!-- Barra de acciones móvil -->
         <div class="acciones-mobile">
-            <button type="button" data-toggle="ordenar-opciones-mobile">Ordenar</button>
-            <button type="button" data-toggle="filtrar-mobile">Filtrar</button>
+            <button type="button" id="btn-abrir-filtros" aria-controls="filtrar-mobile" aria-expanded="false">
+                Filtrar
+                <span class="filtros-activos-badge" id="filtros-badge" hidden></span>
+            </button>
+            <select id="ordenar-mobile-select" aria-label="Ordenar por">
+                <option value="titulo-asc">Título A–Z</option>
+                <option value="titulo-desc">Título Z–A</option>
+                <option value="precio-asc">Precio: menor a mayor</option>
+                <option value="precio-desc">Precio: mayor a menor</option>
+                <option value="autor-asc">Autor A–Z</option>
+                <option value="recientes">Más recientes</option>
+            </select>
         </div>
 
-        <?php
-            // Opciones de orden para la versión móvil (lista de links).
-            // Reusa $ordenOpciones definido más abajo; lo declaramos acá para
-            // poder iterarlo antes.
-            $ordenOpcionesMobile = [
-                'titulo-asc'  => 'Título A–Z',
-                'titulo-desc' => 'Título Z–A',
-                'precio-asc'  => 'Precio: menor a mayor',
-                'precio-desc' => 'Precio: mayor a menor',
-                'autor-asc'   => 'Autor A–Z',
-                'recientes'   => 'Más recientes',
-            ];
-            $ordenActualMobile = $context['filters']['orden'] ?? '';
-            // Tomamos el query actual (sin paginación). Si ya contiene `orden`,
-            // PHP toma el último valor de query strings con clave repetida, así
-            // que al concatenar &orden=... el nuevo gana.
-            $ordenBase = $context['filterQuery'] ?? '';
-        ?>
-        <ul id="ordenar-opciones-mobile" class="ordenar-opciones-mobile">
-            <?php foreach ($ordenOpcionesMobile as $value => $label): ?>
-            <li>
-                <a
-                    href="catalog?<?= htmlspecialchars($ordenBase) ?><?= $ordenBase ? '&' : '' ?>orden=<?= $value ?>"
-                    <?= $ordenActualMobile === $value ? 'aria-current="true"' : '' ?>
-                ><?= $label ?></a>
-            </li>
-            <?php endforeach; ?>
-        </ul>
+        <!-- JSON island: todos los libros para el motor JS -->
+        <script id="catalog-data" type="application/json">
+        <?= json_encode([
+            'books'      => $context['allBooks'] ?? [],
+            'priceRange' => $context['priceRange'] ?? ['min' => 0, 'max' => 99999],
+            'initialQ'   => $context['filters']['q'] ?? '',
+        ], JSON_HEX_TAG | JSON_HEX_AMP) ?>
+        </script>
 
         <div>
 
-            <aside aria-label="Filtros de búsqueda" id="filtrar-mobile">
-                <h2>Filtros</h2>
+            <aside aria-label="Filtros de búsqueda" id="filtrar-mobile" role="dialog" aria-modal="true">
+                <div class="aside-cabecera">
+                    <h2>Filtros</h2>
+                    <button type="button" id="btn-cerrar-filtros" aria-label="Cerrar filtros">&#x2715;</button>
+                </div>
 
                 <form action="/catalog" method="get" id="catalog-form">
-                    <!--
-                        La búsqueda libre del header (parámetro `q`) y el orden
-                        viajan como hidden/select dentro de este mismo form para
-                        que se preserven al aplicar filtros.
-                    -->
                     <input type="hidden" name="q" value="<?= htmlspecialchars($context['filters']['q'] ?? '') ?>">
+
                     <details class="color-blanco">
                         <summary>Categorías</summary>
                         <nav aria-label="Filtrar por categoría">
@@ -68,7 +58,7 @@
                                             type="checkbox"
                                             name="genero[]"
                                             value="<?= htmlspecialchars($genre) ?>"
-                                            <?= in_array($genre, $context['filters']['generos']) ? 'checked' : '' ?>
+                                            <?= in_array($genre, $context['filters']['generos'] ?? []) ? 'checked' : '' ?>
                                         >
                                         <?= htmlspecialchars($genre) ?>
                                     </label>
@@ -82,18 +72,17 @@
                         <summary>Precio</summary>
                         <div>
                             <label for="precio-min">Desde</label>
-                            <input type="number" id="precio-min" name="precio_min" min=0 placeholder="$ 0" value="<?= htmlspecialchars($context['filters']['precio_min']) ?>">
+                            <input type="number" id="precio-min" name="precio_min" min="0" placeholder="$ 0" value="<?= htmlspecialchars($context['filters']['precio_min'] ?? '') ?>">
                         </div>
                         <div>
                             <label for="precio-max">Hasta</label>
-                            <input type="number" id="precio-max" name="precio_max" min=0 placeholder="$ 99999" value="<?= htmlspecialchars($context['filters']['precio_max']) ?>">
+                            <input type="number" id="precio-max" name="precio_max" min="0" placeholder="$ 99999" value="<?= htmlspecialchars($context['filters']['precio_max'] ?? '') ?>">
                         </div>
                     </details>
 
                     <details>
                         <summary>Editorial</summary>
                         <ul>
-                            <!-- Las editoriales se cargan dinámicamente desde la base de datos. -->
                             <li>
                                 <label>
                                     <input type="checkbox" name="editorial" value="ID" />
@@ -106,7 +95,6 @@
                     <details>
                         <summary>Idioma</summary>
                         <ul>
-                            <!-- Los idiomas se cargan dinámicamente desde la base de datos. -->
                             <li>
                             <label>
                                 <input type="checkbox" name="idioma" value="ID" />
@@ -119,11 +107,11 @@
                     <details class="filtro-autor">
                         <summary>Autor</summary>
                         <ul class="autor-lista" id="autor-lista">
-                            <?php 
+                            <?php
                                 $autores = $context['authors'] ?? [];
                                 $autoresVisibles = array_slice($autores, 0, 7);
                                 $autoresOcultos = array_slice($autores, 7);
-                                foreach ($autoresVisibles as $autor): 
+                                foreach ($autoresVisibles as $autor):
                             ?>
                             <li>
                                 <label>
@@ -131,7 +119,7 @@
                                         type="checkbox"
                                         name="autor[]"
                                         value="<?= htmlspecialchars($autor) ?>"
-                                        <?= in_array($autor, $context['filters']['autor']) ? 'checked' : '' ?>
+                                        <?= in_array($autor, $context['filters']['autor'] ?? []) ? 'checked' : '' ?>
                                     >
                                     <?= htmlspecialchars($autor) ?>
                                 </label>
@@ -147,7 +135,7 @@
                                         type="checkbox"
                                         name="autor[]"
                                         value="<?= htmlspecialchars($autor) ?>"
-                                        <?= in_array($autor, $context['filters']['autor']) ? 'checked' : '' ?>
+                                        <?= in_array($autor, $context['filters']['autor'] ?? []) ? 'checked' : '' ?>
                                     >
                                     <?= htmlspecialchars($autor) ?>
                                 </label>
@@ -158,8 +146,8 @@
                         <?php endif; ?>
                     </details>
 
-                    <button type="submit">Aplicar filtros</button>
-                    <a href="/catalog">Limpiar filtros</a>
+                    <button type="button" id="aplicar-filtros-mobile">Aplicar filtros</button>
+                    <button type="button" id="limpiar-filtros">Limpiar filtros</button>
 
                 </form>
             </aside>
@@ -167,94 +155,98 @@
             <section aria-label="Listado de libros">
                 <h2>Libros</h2>
 
-                <div id="ordenar-mobile">
-                    <label for="ordenar">Ordenar por:</label>
-                    <?php $ordenActual = $context['filters']['orden'] ?? ''; ?>
-                    <select
-                        id="ordenar"
-                        name="orden"
-                        form="catalog-form"
-                        onchange="document.getElementById('catalog-form').submit()"
-                    >
-                        <?php
-                            $ordenOpciones = [
-                                'titulo-asc'  => 'Título A–Z',
-                                'titulo-desc' => 'Título Z–A',
-                                'precio-asc'  => 'Precio: menor a mayor',
-                                'precio-desc' => 'Precio: mayor a menor',
-                                'autor-asc'   => 'Autor A–Z',
-                                'recientes'   => 'Más recientes',
-                            ];
-                            foreach ($ordenOpciones as $value => $label):
-                        ?>
-                        <option value="<?= $value ?>" <?= $ordenActual === $value ? 'selected' : '' ?>><?= $label ?></option>
-                        <?php endforeach; ?>
-                    </select>
+                <!-- Barra de controles JS -->
+                <div class="catalog-controles-barra">
+                    <div id="ordenar-desktop-wrap">
+                        <label for="ordenar">Ordenar por:</label>
+                        <select id="ordenar" name="orden">
+                            <option value="titulo-asc">Título A–Z</option>
+                            <option value="titulo-desc">Título Z–A</option>
+                            <option value="precio-asc">Precio: menor a mayor</option>
+                            <option value="precio-desc">Precio: mayor a menor</option>
+                            <option value="autor-asc">Autor A–Z</option>
+                            <option value="recientes">Más recientes</option>
+                        </select>
+                    </div>
+                    <div class="catalog-vista-controles">
+                        <label for="por-pagina">Por página:</label>
+                        <select id="por-pagina">
+                            <option value="12">12</option>
+                            <option value="24">24</option>
+                            <option value="48">48</option>
+                        </select>
+                        <label class="toggle-scroll-label">
+                            <input type="checkbox" id="scroll-infinito"> Scroll infinito
+                        </label>
+                    </div>
+                    <p class="catalog-resultado-count" id="resultado-count" aria-live="polite"></p>
                 </div>
 
-                <ul>
+                <!-- Listado renderizado por JS -->
+                <ul id="catalog-lista-js" hidden></ul>
+                <div id="catalog-sentinel" class="catalog-sentinel" aria-hidden="true"></div>
+                <nav id="catalog-paginacion-js" aria-label="Paginación del catálogo" hidden></nav>
 
-                    <?php foreach ($context['books'] as $book): ?>
-                    <?php
-                        $imageParts  = explode(';', $book['image']);
-                        $sources     = [];
-                        $fallbackSrc = '';
-                        foreach ($imageParts as $part) {
-                            if (preg_match('/^(\d+):(.+)$/', $part, $m)) {
-                                $sources[] = ['maxWidth' => (int)$m[1], 'url' => $m[2]];
-                            } else {
-                                $fallbackSrc = $part;
+                <!-- Fallback server-side (oculto cuando JS activo) -->
+                <div class="catalog-server-render">
+                    <ul>
+                        <?php foreach ($context['books'] ?? [] as $book): ?>
+                        <?php
+                            $imageParts  = explode(';', $book['image']);
+                            $sources     = [];
+                            $fallbackSrc = '';
+                            foreach ($imageParts as $part) {
+                                if (preg_match('/^(\d+):(.+)$/', $part, $m)) {
+                                    $sources[] = ['maxWidth' => (int)$m[1], 'url' => $m[2]];
+                                } else {
+                                    $fallbackSrc = $part;
+                                }
                             }
-                        }
-                    ?>
-                    <li>
-                        <article>
-                            <a href="book-detail?id=<?= (int)$book['id'] ?>">
-                                <picture>
-                                    <?php foreach ($sources as $source): ?>
-                                    <source
-                                        srcset="resources/images/<?= htmlspecialchars($source['url']) ?>"
-                                        media="( max-width: <?= $source['maxWidth'] ?>px )"
-                                    >
-                                    <?php endforeach; ?>
-                                    <img src="resources/images/<?= htmlspecialchars($fallbackSrc) ?>" alt="<?= htmlspecialchars($book['title']) ?>">
-                                </picture>
-                                <h3><?= htmlspecialchars($book['title']) ?></h3>
-                            </a>
-                            <p><?= htmlspecialchars($book['author']) ?></p>
-                            <p><strong>$ <?= number_format($book['price'], 2, ',', '.') ?></strong></p>
-                            <?php if (!($context['isAdmin'] ?? false)): ?>
-                                <button type="button">Reservar</button>
-                            <?php endif; ?>
-                        </article>
-                    </li>
+                        ?>
+                        <li>
+                            <article>
+                                <a href="book-detail?id=<?= (int)$book['id'] ?>">
+                                    <picture>
+                                        <?php foreach ($sources as $source): ?>
+                                            <source
+                                                srcset="resources/images/<?= htmlspecialchars($source['url']) ?>"
+                                                media="( max-width: <?= $source['maxWidth'] ?>px )"
+                                            >
+                                        <?php endforeach; ?>
+                                        <img src="resources/images/<?= htmlspecialchars($fallbackSrc) ?>" alt="<?= htmlspecialchars($book['title']) ?>">
+                                    </picture>
+                                    <h3><?= htmlspecialchars($book['title']) ?></h3>
+                                </a>
+                                <p><?= htmlspecialchars($book['author']) ?></p>
+                                <p><strong>$ <?= number_format($book['price'], 2, ',', '.') ?></strong></p>
+                                <?php if (!($context['isAdmin'] ?? false)): ?>
+                                    <button type="button">Reservar</button>
+                                <?php endif; ?>
+                            </article>
+                        </li>
                     <?php endforeach; ?>
 
                 </ul>
-
                     <nav aria-label="Paginación del catálogo">
                         <ol>
                             <?php
-                                $fq = $context['filterQuery'] ? '&' . $context['filterQuery'] : '';
+                                $fq = ($context['filterQuery'] ?? '') ? '&' . $context['filterQuery'] : '';
                             ?>
-
-                            <?php if ($context['currentPage'] > 1): ?>
+                            <?php if (($context['currentPage'] ?? 1) > 1): ?>
                             <li>
                                 <a href="catalog?pagina=<?= $context['currentPage'] - 1 ?><?= $fq ?>" aria-label="Página anterior">Anterior</a>
                             </li>
                             <?php endif; ?>
-
-                            <?php for ($i = 1; $i <= $context['totalPages']; $i++): ?>
+                            <?php for ($i = 1; $i <= ($context['totalPages'] ?? 1); $i++): ?>
                             <li>
                                 <a
                                     href="catalog?pagina=<?= $i ?><?= $fq ?>"
                                     aria-label="Página <?= $i ?>"
-                                    <?= $i === $context['currentPage'] ? 'aria-current="page"' : '' ?>
+                                    <?= $i === ($context['currentPage'] ?? 1) ? 'aria-current="page"' : '' ?>
                                 ><?= $i ?></a>
                             </li>
                             <?php endfor; ?>
-
-                            <?php if ($context['currentPage'] < $context['totalPages']): ?>
+                            <?php if (($context['currentPage'] ?? 1) < ($context['totalPages'] ?? 1)): ?>
                             <li>
                                 <a href="catalog?pagina=<?= $context['currentPage'] + 1 ?><?= $fq ?>" aria-label="Página siguiente">Siguiente</a>
                             </li>
@@ -264,10 +256,17 @@
 
                     <p class="descargar-csv-wrapper">
                         <a
-                            href="catalog?<?= htmlspecialchars($context['filterQuery']) ?><?= $context['filterQuery'] ? '&' : '' ?>format=csv"
+                            href="catalog?<?= htmlspecialchars($context['filterQuery'] ?? '') ?><?= ($context['filterQuery'] ?? '') ? '&' : '' ?>format=csv"
+                            id="descargar-csv"
                             class="descargar-csv"
                         >Descargar vista actual en CSV</a>
                     </p>
+                </div>
+
+                <!-- CSV link accesible desde JS -->
+                <p class="descargar-csv-wrapper catalog-csv-js" hidden>
+                    <a href="/catalog?format=csv" id="descargar-csv-js" class="descargar-csv">Descargar vista actual en CSV</a>
+                </p>
 
             </section>
 
@@ -277,28 +276,6 @@
 
     <?php require 'components/footer.php'; ?>
 
-    <script>
-        // Toggle mobile de "Ordenar" / "Filtrar" — togglea la clase mobile-visible
-        // sobre el bloque al que apunta data-toggle.
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.acciones-mobile [data-toggle]').forEach(button => {
-                button.addEventListener('click', () => {
-                    const target = document.getElementById(button.dataset.toggle);
-                    if (target) target.classList.toggle('mobile-visible');
-                });
-            });
-
-            // Toggle "Ver todos" en filtro de autor
-            const verTodosBtn = document.getElementById('autor-ver-todos');
-            const listaOculta = document.getElementById('autor-lista-oculta');
-            if (verTodosBtn && listaOculta) {
-                verTodosBtn.addEventListener('click', () => {
-                    const estaVisible = listaOculta.style.display !== 'none';
-                    listaOculta.style.display = estaVisible ? 'none' : 'block';
-                    verTodosBtn.textContent = estaVisible ? 'Ver todos' : 'Ver menos';
-                });
-            }
-        });
-    </script>
+    <script src="resources/js/catalog.js"></script>
 
 </body>

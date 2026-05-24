@@ -388,6 +388,42 @@ nav.breadcrumbs li > a {
     padding-left: 0;
 }
 
+
+/* --- Buscador: dropdown de búsquedas recientes --- */
+
+#buscador-dropdown {
+    display: none;
+    position: fixed;
+    background-color: var(--color-blanco);
+    border: 1px solid var(--color-gris-claro);
+    border-top: none;
+    border-radius: 0 0 6px 6px;
+    list-style: none;
+    padding: 4px 0;
+    margin: 0;
+    z-index: 200;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+#buscador-dropdown:not([hidden]) {
+    display: block;
+}
+
+#buscador-dropdown li {
+    padding: 9px 14px;
+    font-size: 13px;
+    font-family: sans-serif;
+    color: var(--color-negro);
+    cursor: pointer;
+    outline: none;
+    text-align: left;
+}
+
+#buscador-dropdown li:hover,
+#buscador-dropdown li:focus {
+    background-color: var(--color-gris-oscuro);
+}
+
 nav.breadcrumbs a {
     line-height: 0;
 }
