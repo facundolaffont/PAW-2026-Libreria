@@ -80,30 +80,6 @@
                         </div>
                     </details>
 
-                    <details>
-                        <summary>Editorial</summary>
-                        <ul>
-                            <li>
-                                <label>
-                                    <input type="checkbox" name="editorial" value="ID" />
-                                    Nombre editorial
-                                </label>
-                            </li>
-                        </ul>
-                    </details>
-
-                    <details>
-                        <summary>Idioma</summary>
-                        <ul>
-                            <li>
-                            <label>
-                                <input type="checkbox" name="idioma" value="ID" />
-                                Nombre idioma
-                            </label>
-                            </li>
-                        </ul>
-                    </details>
-
                     <details class="filtro-autor">
                         <summary>Autor</summary>
                         <ul class="autor-lista" id="autor-lista">
