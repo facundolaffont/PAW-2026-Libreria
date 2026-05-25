@@ -1,5 +1,6 @@
-
-// Clase para manejar el menú hamburguesa.
+/**
+ * Clase para manejar el menú hamburguesa.
+ */
 class HamburgerMenu {
 
     /**

@@ -1,4 +1,4 @@
-<body>
+<body data-page="<?= htmlspecialchars($context['page'] ?? '') ?>">
 
     <?php require 'components/header.php'; ?>
 
@@ -7,9 +7,7 @@
 
     <main>
 
-        <?php
-            $context = $context ?? [];
-        ?>
+        <?php $context = $context ?? []; ?>
 
         <!-- Barra de acciones móvil -->
         <div class="acciones-mobile">
@@ -27,13 +25,24 @@
             </select>
         </div>
 
-        <!-- JSON island: todos los libros para el motor JS -->
         <script id="catalog-data" type="application/json">
-        <?= json_encode([
-            'books'      => $context['allBooks'] ?? [],
-            'priceRange' => $context['priceRange'] ?? ['min' => 0, 'max' => 99999],
-            'initialQ'   => $context['filters']['q'] ?? '',
-        ], JSON_HEX_TAG | JSON_HEX_AMP) ?>
+            <?php // JSON island: todos los libros para el motor JS.  ?>
+            <?=
+                json_encode([
+                    'books'      => $context['allBooks'] ?? [],
+                    'priceRange' => $context['priceRange'] ?? ['min' => 0, 'max' => 99999],
+                    'initialQ'   => $context['filters']['q'] ?? '',
+                ],
+                
+                // Transforma los símbolos '<' y '>' en sus representaciones hexadecimales de Unicode.
+                // Evita que el navegador ejecute código JavaScript si viene embebido en los datos en un nuevo
+                // <script>.
+                JSON_HEX_TAG | 
+                
+                // Transforma el símbolo '&' en su representación hexadecimal de Unicode.
+                // Evita que el navegador confunda un carácter ampersand con el inicio de una entidad HTML.
+                JSON_HEX_AMP) 
+            ?>
         </script>
 
         <div>
@@ -52,17 +61,16 @@
                         <nav aria-label="Filtrar por categoría">
                             <ul>
                                 <?php foreach ($context['genres'] ?? [] as $genre): ?>
-                                <li>
-                                    <label>
-                                        <input
-                                            type="checkbox"
-                                            name="genero[]"
-                                            value="<?= htmlspecialchars($genre) ?>"
-                                            <?= in_array($genre, $context['filters']['generos'] ?? []) ? 'checked' : '' ?>
-                                        >
-                                        <?= htmlspecialchars($genre) ?>
-                                    </label>
-                                </li>
+                                    <li>
+                                        <label>
+                                            <input
+                                                type="checkbox"
+                                                name="genero[]"
+                                                value="<?= htmlspecialchars($genre) ?>"
+                                                <?= in_array($genre, $context['filters']['generos'] ?? []) ? 'checked' : '' ?>>
+                                            <?= htmlspecialchars($genre) ?>
+                                        </label>
+                                    </li>
                                 <?php endforeach; ?>
                             </ul>
                         </nav>
@@ -84,41 +92,39 @@
                         <summary>Autor</summary>
                         <ul class="autor-lista" id="autor-lista">
                             <?php
-                                $autores = $context['authors'] ?? [];
-                                $autoresVisibles = array_slice($autores, 0, 7);
-                                $autoresOcultos = array_slice($autores, 7);
-                                foreach ($autoresVisibles as $autor):
+                            $autores = $context['authors'] ?? [];
+                            $autoresVisibles = array_slice($autores, 0, 7);
+                            $autoresOcultos = array_slice($autores, 7);
+                            foreach ($autoresVisibles as $autor):
                             ?>
-                            <li>
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        name="autor[]"
-                                        value="<?= htmlspecialchars($autor) ?>"
-                                        <?= in_array($autor, $context['filters']['autor'] ?? []) ? 'checked' : '' ?>
-                                    >
-                                    <?= htmlspecialchars($autor) ?>
-                                </label>
-                            </li>
+                                <li>
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            name="autor[]"
+                                            value="<?= htmlspecialchars($autor) ?>"
+                                            <?= in_array($autor, $context['filters']['autor'] ?? []) ? 'checked' : '' ?>>
+                                        <?= htmlspecialchars($autor) ?>
+                                    </label>
+                                </li>
                             <?php endforeach; ?>
                         </ul>
                         <?php if (count($autoresOcultos) > 0): ?>
-                        <ul class="autor-lista autor-lista-oculta" id="autor-lista-oculta" style="display: none;">
-                            <?php foreach ($autoresOcultos as $autor): ?>
-                            <li>
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        name="autor[]"
-                                        value="<?= htmlspecialchars($autor) ?>"
-                                        <?= in_array($autor, $context['filters']['autor'] ?? []) ? 'checked' : '' ?>
-                                    >
-                                    <?= htmlspecialchars($autor) ?>
-                                </label>
-                            </li>
-                            <?php endforeach; ?>
-                        </ul>
-                        <button type="button" class="autor-ver-todos" id="autor-ver-todos">Ver todos</button>
+                            <ul class="autor-lista autor-lista-oculta" id="autor-lista-oculta" style="display: none;">
+                                <?php foreach ($autoresOcultos as $autor): ?>
+                                    <li>
+                                        <label>
+                                            <input
+                                                type="checkbox"
+                                                name="autor[]"
+                                                value="<?= htmlspecialchars($autor) ?>"
+                                                <?= in_array($autor, $context['filters']['autor'] ?? []) ? 'checked' : '' ?>>
+                                            <?= htmlspecialchars($autor) ?>
+                                        </label>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                            <button type="button" class="autor-ver-todos" id="autor-ver-todos">Ver todos</button>
                         <?php endif; ?>
                     </details>
 
@@ -167,7 +173,7 @@
                 <div class="catalog-server-render">
                     <ul>
                         <?php foreach ($context['books'] ?? [] as $book): ?>
-                        <?php
+                            <?php
                             $imageParts  = explode(';', $book['image']);
                             $sources     = [];
                             $fallbackSrc = '';
@@ -178,54 +184,52 @@
                                     $fallbackSrc = $part;
                                 }
                             }
-                        ?>
-                        <li>
-                            <article>
-                                <a href="book-detail?id=<?= (int)$book['id'] ?>">
-                                    <picture>
-                                        <?php foreach ($sources as $source): ?>
-                                            <source
-                                                srcset="resources/images/<?= htmlspecialchars($source['url']) ?>"
-                                                media="( max-width: <?= $source['maxWidth'] ?>px )"
-                                            >
-                                        <?php endforeach; ?>
-                                        <img src="resources/images/<?= htmlspecialchars($fallbackSrc) ?>" alt="<?= htmlspecialchars($book['title']) ?>">
-                                    </picture>
-                                    <h3><?= htmlspecialchars($book['title']) ?></h3>
-                                </a>
-                                <p><?= htmlspecialchars($book['author']) ?></p>
-                                <p><strong>$ <?= number_format($book['price'], 2, ',', '.') ?></strong></p>
-                                <?php if (!($context['isAdmin'] ?? false)): ?>
-                                    <button type="button">Reservar</button>
-                                <?php endif; ?>
-                            </article>
-                        </li>
-                    <?php endforeach; ?>
+                            ?>
+                            <li>
+                                <article>
+                                    <a href="book-detail?id=<?= (int)$book['id'] ?>">
+                                        <picture>
+                                            <?php foreach ($sources as $source): ?>
+                                                <source
+                                                    srcset="resources/images/<?= htmlspecialchars($source['url']) ?>"
+                                                    media="( max-width: <?= $source['maxWidth'] ?>px )">
+                                            <?php endforeach; ?>
+                                            <img src="resources/images/<?= htmlspecialchars($fallbackSrc) ?>" alt="<?= htmlspecialchars($book['title']) ?>">
+                                        </picture>
+                                        <h3><?= htmlspecialchars($book['title']) ?></h3>
+                                    </a>
+                                    <p><?= htmlspecialchars($book['author']) ?></p>
+                                    <p><strong>$ <?= number_format($book['price'], 2, ',', '.') ?></strong></p>
+                                    <?php if (!($context['isAdmin'] ?? false)): ?>
+                                        <button type="button">Reservar</button>
+                                    <?php endif; ?>
+                                </article>
+                            </li>
+                        <?php endforeach; ?>
 
-                </ul>
+                    </ul>
                     <nav aria-label="Paginación del catálogo">
                         <ol>
                             <?php
-                                $fq = ($context['filterQuery'] ?? '') ? '&' . $context['filterQuery'] : '';
+                            $fq = ($context['filterQuery'] ?? '') ? '&' . $context['filterQuery'] : '';
                             ?>
                             <?php if (($context['currentPage'] ?? 1) > 1): ?>
-                            <li>
-                                <a href="catalog?pagina=<?= $context['currentPage'] - 1 ?><?= $fq ?>" aria-label="Página anterior">Anterior</a>
-                            </li>
+                                <li>
+                                    <a href="catalog?pagina=<?= $context['currentPage'] - 1 ?><?= $fq ?>" aria-label="Página anterior">Anterior</a>
+                                </li>
                             <?php endif; ?>
                             <?php for ($i = 1; $i <= ($context['totalPages'] ?? 1); $i++): ?>
-                            <li>
-                                <a
-                                    href="catalog?pagina=<?= $i ?><?= $fq ?>"
-                                    aria-label="Página <?= $i ?>"
-                                    <?= $i === ($context['currentPage'] ?? 1) ? 'aria-current="page"' : '' ?>
-                                ><?= $i ?></a>
-                            </li>
+                                <li>
+                                    <a
+                                        href="catalog?pagina=<?= $i ?><?= $fq ?>"
+                                        aria-label="Página <?= $i ?>"
+                                        <?= $i === ($context['currentPage'] ?? 1) ? 'aria-current="page"' : '' ?>><?= $i ?></a>
+                                </li>
                             <?php endfor; ?>
                             <?php if (($context['currentPage'] ?? 1) < ($context['totalPages'] ?? 1)): ?>
-                            <li>
-                                <a href="catalog?pagina=<?= $context['currentPage'] + 1 ?><?= $fq ?>" aria-label="Página siguiente">Siguiente</a>
-                            </li>
+                                <li>
+                                    <a href="catalog?pagina=<?= $context['currentPage'] + 1 ?><?= $fq ?>" aria-label="Página siguiente">Siguiente</a>
+                                </li>
                             <?php endif; ?>
                         </ol>
                     </nav>
@@ -234,8 +238,7 @@
                         <a
                             href="catalog?<?= htmlspecialchars($context['filterQuery'] ?? '') ?><?= ($context['filterQuery'] ?? '') ? '&' : '' ?>format=csv"
                             id="descargar-csv"
-                            class="descargar-csv"
-                        >Descargar vista actual en CSV</a>
+                            class="descargar-csv">Descargar vista actual en CSV</a>
                     </p>
                 </div>
 
@@ -251,7 +254,5 @@
     </main>
 
     <?php require 'components/footer.php'; ?>
-
-    <script src="resources/js/catalog.js"></script>
 
 </body>

@@ -50,6 +50,16 @@
 
         syncSelectsToState();
         render();
+
+        var verTodosBtn = document.getElementById('autor-ver-todos');
+        var listaOculta = document.getElementById('autor-lista-oculta');
+        if (verTodosBtn && listaOculta) {
+            verTodosBtn.addEventListener('click', function () {
+                var estaVisible = listaOculta.style.display !== 'none';
+                listaOculta.style.display = estaVisible ? 'none' : 'block';
+                verTodosBtn.textContent = estaVisible ? 'Ver todos' : 'Ver menos';
+            });
+        }
     }
 
     // -------------------------------------------------------------------------
@@ -672,22 +682,6 @@
         try { localStorage.setItem(STORAGE_KEY, JSON.stringify(busquedas)); } catch (e) {}
     }
 
-    // -------------------------------------------------------------------------
-    // Arranque
-    // -------------------------------------------------------------------------
-    document.addEventListener('DOMContentLoaded', init);
-
-    // Toggle "Ver todos" en filtro de autor (preservado del inline script original)
-    document.addEventListener('DOMContentLoaded', function () {
-        var verTodosBtn = document.getElementById('autor-ver-todos');
-        var listaOculta = document.getElementById('autor-lista-oculta');
-        if (verTodosBtn && listaOculta) {
-            verTodosBtn.addEventListener('click', function () {
-                var estaVisible = listaOculta.style.display !== 'none';
-                listaOculta.style.display = estaVisible ? 'none' : 'block';
-                verTodosBtn.textContent = estaVisible ? 'Ver todos' : 'Ver menos';
-            });
-        }
-    });
+    init();
 
 }());

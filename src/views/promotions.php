@@ -12,7 +12,7 @@
             <li>
                 <article aria-label="Promoción Banco Nación">
                     <figure>
-                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 3 2'%3E%3Crect width='3' height='2' fill='white'/%3E%3C/svg%3E" alt="Logo Banco" >
+                <img src="resources/images/placeholder-promocion-logo.png" alt="Logo Banco" >
                 </figure>
                     <p>[Banco y texto explicativo de la promoción]</p>
                     <h3>Explicación de los detalles:</h3>
@@ -26,7 +26,7 @@
             <li>
                 <article aria-label="Promoción Banco Provincia">
                     <figure>
-                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 3 2'%3E%3Crect width='3' height='2' fill='white'/%3E%3C/svg%3E" alt="Logo Banco" >
+                <img src="resources/images/placeholder-promocion-logo.png" alt="Logo Banco" >
                 </figure>
                     <p>[Banco y texto explicativo de la promoción]</p>
                     <h3>Explicación de los detalles:</h3>
@@ -40,7 +40,7 @@
             <li>
                 <article aria-label="Promoción Banco Galicia">
                     <figure>
-                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 3 2'%3E%3Crect width='3' height='2' fill='white'/%3E%3C/svg%3E" alt="Logo Banco" >
+                <img src="resources/images/placeholder-promocion-logo.png" alt="Logo Banco" >
                 </figure>
                     <p>[Banco y texto explicativo de la promoción]</p>
                     <h3>Explicación de los detalles:</h3>
@@ -54,7 +54,7 @@
             <li>
                 <article aria-label="Promoción Banco Macro">
                     <figure>
-                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 3 2'%3E%3Crect width='3' height='2' fill='white'/%3E%3C/svg%3E" alt="Logo Banco">
+                <img src="resources/images/placeholder-promocion-logo.png" alt="Logo Banco">
                 </figure>
                     <p>[Banco y texto explicativo de la promoción]</p>
                     <h3>Explicación de los detalles:</h3>

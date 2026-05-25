@@ -6,17 +6,20 @@ use Paw\Enums\HttpCodeError;
 use Paw\Errors\Exceptions\HttpErrorException;
 use Paw\Interfaces\BookRepositoryInterface;
 use Paw\Interfaces\PromotionRepositoryInterface;
+use Psr\Log\LoggerInterface;
 
 class ContextBuilder {
 
     public function __construct(
         private BookRepositoryInterface $bookRepository,
-        private PromotionRepositoryInterface $promotionRepository
+        private PromotionRepositoryInterface $promotionRepository,
+        private LoggerInterface $logger
     ) {}
 
     public function build(string $title, string $page, array $queryParams = []): array {
         $context = [];
         $context['currentPageName'] = $title;
+        $context['page'] = $page;
 
         match ($page) {
             'home-page' => $context += $this->buildHomePageContext(
@@ -34,6 +37,10 @@ class ContextBuilder {
             default => [],
         };
 
+        $this->logger->debug(
+            "Contexto construido para la página '{$page}' con título '{$title}'",
+            ['context' => $context]
+        );
         return $context;
     }
 

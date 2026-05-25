@@ -1,4 +1,4 @@
-<body>
+<body data-page="<?= htmlspecialchars($context['page'] ?? '') ?>">
     
     <?php require 'components/header.php'; ?>
 
@@ -157,18 +157,5 @@
     </section>
 
     <?php require 'components/footer.php'; ?>
-
-    <script src="resources/js/components/Carousel.js"></script>
-    <script>
-
-        // Inicializa los carruseles con unicamente su contenedor.
-        // El efecto se define por argumento (tomado del data-effect de cada seccion).
-        document.querySelectorAll('section.carrusel').forEach(carrusel => {
-            const container = carrusel.querySelector('.contenedor-carrusel');
-            const effect = carrusel.dataset.effect || 'slide';
-            new Carousel(container, { effect: effect, autoPlayMs: 4000 });
-        });
-
-    </script>
 
 </body>

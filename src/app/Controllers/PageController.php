@@ -8,23 +8,24 @@
 
     class PageController {
         
-        public function __construct() {}
+        public function __construct(
+            private ContextBuilder $contextBuilder, 
+            private LoggerInterface $logger
+        ) {}
 
         public function show(
-            ContextBuilder $contextBuilder, 
             string $title, 
-            string $page, 
-            LoggerInterface $logger
+            string $page
         ): void {
-            $logger->debug(
+            $this->logger->debug(
                 "",
                 compact('title', 'page')
             );
 
             // Construye el contexto específico para la página solicitada.
-            $context = $contextBuilder->build($title, $page, $_GET);
+            $context = $this->contextBuilder->build($title, $page, $_GET);
 
             // Renderiza la vista correspondiente, pasando el contexto construido.
-            View::render($page, $title, $logger, $context);
+            View::render($page, $title, $this->logger, $context);
         }
     }

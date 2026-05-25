@@ -91,10 +91,8 @@
             $this->dependencyContainer
                 ->get(PageController::class)
                 ->show(
-                    $this->dependencyContainer->get(ContextBuilder::class),
                     $title,
-                    $page,
-                    $logger
+                    $page
                 );
         }
 
