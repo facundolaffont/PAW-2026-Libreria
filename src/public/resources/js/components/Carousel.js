@@ -24,14 +24,17 @@ class Carousel {
     #progressStartAt = 0;
     #progressHideTimer = null;
     #scrollAnimationFrame = null;
+
+    /** Aloja los artículos del carrusel @type {HTMLElement[]} */
     #items = [];
+
     #totalItems = 0;
     #prevButton;
     #nextButton;
     #progress;
     #progressBar;
     #progressLabel;
-    #thumbs;
+    #thumbsContainer;
     #thumbButtons;
 
     /**
@@ -94,7 +97,7 @@ class Carousel {
     next() {
         if (this.#effect === 'block') {
             const anchors = this.#getBlockAnchors();
-            const currentAnchor = this.#closestBlockAnchor(this.#currentIndex, anchors);
+            const currentAnchor = this.#getCurrentAnchor(this.#currentIndex, anchors);
             const currentAnchorPos = anchors.indexOf(currentAnchor);
             const nextAnchor = anchors[(currentAnchorPos + 1) % anchors.length];
             this.goTo(nextAnchor);
@@ -111,7 +114,7 @@ class Carousel {
     prev() {
         if (this.#effect === 'block') {
             const anchors = this.#getBlockAnchors();
-            const currentAnchor = this.#closestBlockAnchor(this.#currentIndex, anchors);
+            const currentAnchor = this.#getCurrentAnchor(this.#currentIndex, anchors);
             const currentAnchorPos = anchors.indexOf(currentAnchor);
             const prevPos = (currentAnchorPos - 1 + anchors.length) % anchors.length;
             this.goTo(anchors[prevPos]);
@@ -122,17 +125,20 @@ class Carousel {
     }
 
     /**
-     * Navega a un índice de slide y aplica el efecto configurado.
-     * @param {number} index - Indice destino (se normaliza en rango válido).
+     * Navega a un índice del carrusel y aplica el efecto configurado.
+     *
+     * @param {number} index - Índice destino (se normaliza en rango válido).
      * @returns {void}
      */
     goTo(index) {
-
         // Si no hay items, no hay qué mover.
         if (!this.#totalItems) return;
 
-        const normalized = (index + this.#totalItems) % this.#totalItems;
-        this.#currentIndex = normalized;
+        // Normaliza el índice al que hay que dirigirse y lo guarda ya
+        // como índice actual.j
+        this.#currentIndex =
+            ((index % this.#totalItems) + this.#totalItems) // Transforma el potencial index negativo en valor positivo.
+            % this.#totalItems;
 
         const shouldApplyScrollEffect = this.#hasRealScrollMovement(this.#currentIndex);
 
@@ -150,6 +156,7 @@ class Carousel {
 
     /**
      * Construye la UI interna del carrusel: flechas, progreso y thumbnails.
+     *
      * @returns {void}
      */
     #buildUi() {
@@ -157,66 +164,83 @@ class Carousel {
         this.#container.classList.add('carousel-track');
         this.#container.classList.add('carousel-effect-' + this.#effect);
 
-        this.#prevButton = document.createElement('button');
-        this.#prevButton.type = 'button';
-        this.#prevButton.className = 'flecha flecha-izq';
-        this.#prevButton.setAttribute('aria-label', 'Imagen anterior');
+        this.#prevButton = Utilities.newElement('button', "", {
+            type: 'button',
+            'class': 'flecha flecha-izq',
+            'aria-label': 'Imagen anterior'
+        });
 
-        this.#nextButton = document.createElement('button');
-        this.#nextButton.type = 'button';
-        this.#nextButton.className = 'flecha flecha-der';
-        this.#nextButton.setAttribute('aria-label', 'Imagen siguiente');
+        this.#nextButton = Utilities.newElement('button', "", {
+            type: 'button',
+            'class': 'flecha flecha-der',
+            'aria-label': 'Imagen siguiente'
+        });
 
         this.#root.appendChild(this.#prevButton);
         this.#root.appendChild(this.#nextButton);
 
-        this.#progress = document.createElement('div');
-        this.#progress.className = 'carousel-progress';
-        this.#progress.innerHTML =
-            '<div class="carousel-progress-bar"></div><span class="carousel-progress-label">0%</span>';
+        this.#progress = Utilities.newElement('div',
+            '<div class="carousel-progress-bar"></div><span class="carousel-progress-label">0%</span>',
+            {
+                'class': 'carousel-progress'
+            },
+            true
+        );
         this.#progressBar = this.#progress.querySelector('.carousel-progress-bar');
         this.#progressLabel = this.#progress.querySelector('.carousel-progress-label');
         this.#root.appendChild(this.#progress);
 
-        this.#thumbs = document.createElement('div');
-        this.#thumbs.className = 'carousel-thumbs';
+        this.#thumbsContainer = Utilities.newElement('div', '', {
+            'class': 'carousel-thumbs'
+        });
 
         this.#thumbButtons = this.#items.map((item, index) => {
-            // Wrapper para thumb y guión
-            const wrapper = document.createElement('div');
-            wrapper.className = 'carousel-thumb-wrapper';
+            // Contenedor para un thumb y su marca de selección.
+            const thumbWrapper = Utilities.newElement('div', '', {
+                'class': 'carousel-thumb-wrapper'
+            });
 
-            const thumb = document.createElement('button');
-            thumb.type = 'button';
-            thumb.className = 'carousel-thumb is-loading';
-            thumb.setAttribute('aria-label', 'Ir a imagen ' + (index + 1));
-            thumb.dataset.index = String(index);
+            // Crea el botón del thumb.
+            const thumb = Utilities.newElement('button', '', {
+                type: 'button',
+                'class': 'carousel-thumb is-loading',
+                'aria-label': 'Ir a imagen ' + (index + 1),
+                'data-index': String(index)
+            });
 
-            // Indicador visual (guión)
-            const indicator = document.createElement('span');
-            indicator.className = 'carousel-thumb-indicator';
+            // Crea la marca de selección.
+            const indicator = Utilities.newElement('span', '', {
+                'class': 'carousel-thumb-indicator'
+            });
 
-            wrapper.appendChild(thumb);
-            wrapper.appendChild(indicator);
-            this.#thumbs.appendChild(wrapper);
+            thumbWrapper.appendChild(thumb);
+            thumbWrapper.appendChild(indicator);
+            this.#thumbsContainer.appendChild(thumbWrapper);
             return thumb;
         });
 
-        this.#root.appendChild(this.#thumbs);
+        this.#root.appendChild(this.#thumbsContainer);
     }
 
     /**
      * Configura atributos de accesibilidad para navegacion y anuncios de cambios.
+     *
      * @returns {void}
      */
     #setupAccessibility() {
+        // Habilita el tab en la secuencia en que aparecen los
+        // elementos en el documento.
         this.#root.setAttribute('tabindex', '0');
         this.#container.setAttribute('tabindex', '0');
+
+        // Informa al usuario de tecnologías asistivas cuando haya
+        // un cambio, sin interrumpir la acción actual.
         this.#container.setAttribute('aria-live', 'polite');
     }
 
     /**
-     * Registra los listeners de interaccion: click, touch, teclado y wheel.
+     * Registra los listeners de interacción: click, touch, teclado y wheel.
+     *
      * @returns {void}
      */
     #bindEvents() {
@@ -228,7 +252,6 @@ class Carousel {
         this.#root.addEventListener('pointerdown', setAsActive);
         this.#root.addEventListener('touchstart', setAsActive, { passive: true });
         this.#root.addEventListener('focusin', setAsActive);
-
         this.#prevButton.addEventListener('click', () => this.prev());
         this.#nextButton.addEventListener('click', () => this.next());
 
@@ -241,7 +264,10 @@ class Carousel {
         this.#container.addEventListener(
             'touchstart',
             (event) => {
+
+                // Si hay más de un punto de toque, no hace nada.
                 if (event.touches.length !== 1) return;
+
                 this.#isDragging = true;
                 this.#touchStartX = event.touches[0].clientX;
                 this.#touchCurrentX = this.#touchStartX;
@@ -257,12 +283,12 @@ class Carousel {
         this.#container.addEventListener(
             'touchmove',
             (event) => {
+
+                // Si no se está arrastrando o si el toque es con más de un
+                // punto, no hace nada.
                 if (!this.#isDragging || event.touches.length !== 1) return;
+
                 this.#touchCurrentX = event.touches[0].clientX;
-                const deltaX = this.#touchCurrentX - this.#touchStartX;
-                if (Math.abs(deltaX) > 10) {
-                    event.preventDefault();
-                }
             },
             
             // Le indica al navegador que este manejador podría cancelar el
@@ -272,18 +298,26 @@ class Carousel {
         );
 
         this.#container.addEventListener('touchend', () => {
+            // Si no estaba arrastrando, no hace nada.
             if (!this.#isDragging) return;
-            const deltaX = this.#touchCurrentX - this.#touchStartX;
+
+            const distanceX = this.#touchCurrentX - this.#touchStartX;
             this.#isDragging = false;
 
-            if (Math.abs(deltaX) < 35) return;
-            if (deltaX < 0) this.next();
-            if (deltaX > 0) this.prev();
+            // Especifica un mínimo de arrastre para ejecutar la acción,
+            // y determina, luego de ese mínimo, en si el movimiento es
+            // hacia la izquierda o hacia la derecha.
+            if (Math.abs(distanceX) < 35) return;
+            if (distanceX < 0) this.next();
+            if (distanceX > 0) this.prev();
         });
 
         document.addEventListener('keydown', (event) => {
             if (Carousel.#activeInstance !== this) return;
 
+            // Permite que el usuario pueda moverse
+            // en los campos mencionados cuando el foco
+            // está en ellos.
             const target = event.target;
             if (target instanceof HTMLElement) {
                 const tag = target.tagName;
@@ -297,6 +331,8 @@ class Carousel {
                 }
             }
 
+            // Asigna las respectivas acciones para las
+            // teclas de flecha.
             if (event.key === 'ArrowLeft') {
                 event.preventDefault();
                 this.prev();
@@ -306,12 +342,6 @@ class Carousel {
                 this.next();
             }
         });
-
-        this.#container.addEventListener('wheel', (event) => {
-            if (window.matchMedia('(min-width: 1000px)').matches && (event.shiftKey || event.deltaX !== 0)) {
-                event.preventDefault();
-            }
-        }, { passive: false });
     }
 
     /**
@@ -533,8 +563,9 @@ class Carousel {
     }
 
     /**
-     * Determina si un indice objetivo implica movimiento real de scroll.
-     * @param {number} index - Indice del item objetivo.
+     * Determina si un índice objetivo implica movimiento real de scroll.
+     *
+     * @param {number} index - Índice del ítem objetivo.
      * @returns {boolean}
      */
     #hasRealScrollMovement(index) {
@@ -544,8 +575,13 @@ class Carousel {
     }
 
     /**
-     * Calcula el scrollLeft efectivo para un indice, limitado al rango valido.
-     * @param {number} index - Indice del item objetivo.
+     * Calcula el scrollLeft efectivo para un índice, limitado al rango válido.
+     *
+     * Utiliza:
+     * - this.#items.
+     * - this.#container.
+     *
+     * @param {number} index - Índice del ítem objetivo.
      * @returns {number}
      */
     #getTargetScrollLeft(index) {
@@ -553,18 +589,25 @@ class Carousel {
         if (!target) return this.#container.scrollLeft;
 
         const rawLeft = target.offsetLeft;
-        const maxLeft = Math.max(0, this.#container.scrollWidth - this.#container.clientWidth);
+        
+        // Guarda la cantidad de píxeles que quedan por mostrar en pantalla.
+        const maxLeft = this.#container.scrollWidth - this.#container.clientWidth;
+        //const maxLeft = Math.max(0, this.#container.scrollWidth - this.#container.clientWidth);
+
         return Math.min(Math.max(0, rawLeft), maxLeft);
     }
 
     /**
-     * Calcula los anclajes de inicio para navegacion por bloques.
-     * @returns {number[]}
+     * Obtiene los índices que funcionarán como anclajes de bloque para
+     * la navegacion por bloques. Cada índice será un inicio de bloque.
+     *
+     * @returns {number[]} - Índices de comienzo de bloque.
      */
     #getBlockAnchors() {
-        const anchors = [];
+        const anchors = []; // Guardará los índices de los comienzos de bloque.
         let start = 0;
 
+        // Guarda los índices de comienzo de bloque.
         while (start < this.#totalItems) {
             anchors.push(start);
             start += this.#countVisibleFromIndex(start);
@@ -574,12 +617,14 @@ class Carousel {
     }
 
     /**
-     * Obtiene el anclaje de bloque que contiene al indice actual.
-     * @param {number} index - Indice de referencia actual.
+     * Obtiene el anclaje de bloque que contiene al índice pasado por
+     * parámetro.
+     *
+     * @param {number} index - Índice de referencia actual.
      * @param {number[]} anchors - Lista de inicios de bloque.
      * @returns {number}
      */
-    #closestBlockAnchor(index, anchors) {
+    #getCurrentAnchor(index, anchors) {
         let closest = anchors[0];
 
         for (const anchor of anchors) {
@@ -594,25 +639,31 @@ class Carousel {
     }
 
     /**
-     * Cuenta cuantos items entran en viewport desde un indice de inicio.
-     * @param {number} startIndex - Indice desde donde comienza el bloque.
-     * @returns {number}
+     * Cuenta cuántos ítems entran en viewport desde un índice de inicio.
+     * @param {number} startIndex - Índice desde donde comienza el bloque
+     * (se asume que el elemento señalado por este índice no desborda el
+     * viewport).
+     * @returns {number} - La cantidad de elementos que no desbordan el view
+     * port (asume que el índice no desborda).
      */
     #countVisibleFromIndex(startIndex) {
         const startItem = this.#items[startIndex];
-        if (!startItem) return 1;
-
         const viewportWidth = this.#container.clientWidth;
-        if (viewportWidth <= 0) return 1;
-
         const startLeft = startItem.offsetLeft;
+
+        // Para almacenar la cantidad de elementos adicionales que no
+        // desbordan el viewport.
         let count = 0;
 
         for (let i = startIndex; i < this.#totalItems; i += 1) {
             const item = this.#items[i];
-            if (!item) break;
 
+            // Guarda el tamaño en píxeles desde el comienzo del primer item
+            // hasta el final del ítem actual.
             const relativeEnd = item.offsetLeft + item.offsetWidth - startLeft;
+
+            // Si el elemento excede los límites del viewport del contenedor,
+            // termina el bucle.
             if (count > 0 && relativeEnd > viewportWidth + 1) {
                 break;
             }
@@ -669,7 +720,8 @@ class Carousel {
     }
 
     /**
-     * Normaliza nombres de efectos para mantener compatibilidad hacia atras.
+     * Normaliza nombres de efectos.
+     *
      * @param {string} effect - Nombre solicitado para el efecto.
      * @returns {'slide'|'block'|'disappear'}
      */
@@ -680,11 +732,11 @@ class Carousel {
 
     /**
      * Reinicia el autoplay con el intervalo configurado.
-     * No activa temporizador si el valor es invalido o demasiado bajo.
+     *
      * @returns {void}
      */
     #restartAutoplay() {
-        if (!this.#options.autoPlayMs || this.#options.autoPlayMs < 1000) {
+        if (!this.#options.autoPlayMs) {
             return;
         }
 
