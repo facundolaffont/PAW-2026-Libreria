@@ -4,9 +4,7 @@ Repositorio del trabajo práctico que se desarrolla en la cursada de la materia 
 
 Temática: Librería.
 
-## Integrantes
-
-Ver [authors.txt](https://raw.githubusercontent.com/facundolaffont/PAW-2026-Libreria/refs/heads/main/authors.txt).
+Integrantes: ver [authors.txt](https://raw.githubusercontent.com/facundolaffont/PAW-2026-Libreria/refs/heads/main/authors.txt).
 
 ## Instalación del proyecto
 
@@ -15,14 +13,19 @@ Situarse vía terminal en la carpeta donde se va a descargar la carpeta del proy
 ```shell
 git clone https://github.com/facundolaffont/PAW-2026-Libreria.git
 ```
+## Configuración del proyecto
+
+Ingresar en la carpeta creada durante la instalación, crear el archivo `.env` en la raíz del proyecto y completarlo según las indicaciones del archivo `.env.example`.
 
 ## Ejecución del proyecto
 
-Situarse vía terminal en la carpeta del proyecto y ejecutar:
+Una vez configurado el proyecto, situarse vía terminal en la carpeta raíz y ejecutar:
 
 ```shell
 docker compose up -d
 ```
+
+**Nota**: la opción `-d` es para que el proceso corra en segundo plano; si se desea ver la salida del docker compose, no utilizar dicha opción.
 
 Luego, ingresar a través del navegador web al sitio `localhost:8000`.
 
@@ -34,7 +37,7 @@ A continuación se detallará la información sobre cada entrega que se va solic
 
 [Consigas del trabajo práctico 1](https://raw.githubusercontent.com/facundolaffont/PAW-2026-Libreria/refs/tags/entrega-1/tps/tp1.pdf).
 
-#### Archivos de la entrega
+**Entregables**:
 
 * [Sitemap](https://raw.githubusercontent.com/facundolaffont/PAW-2026-Libreria/refs/tags/entrega-1/Sitemap.png).
 * [Wireframes](https://raw.githubusercontent.com/facundolaffont/PAW-2026-Libreria/refs/tags/entrega-1/Librer%C3%ADa%20-%20Wireframes.pdf).
@@ -50,29 +53,26 @@ A continuación se detallará la información sobre cada entrega que se va solic
 
 [Consigas del trabajo práctico 2](https://raw.githubusercontent.com/facundolaffont/PAW-2026-Libreria/refs/tags/entrega2/tps/tp2/Trabajo%20Pr%C3%A1ctico%20N%C2%BA%202.pdf).
 
-#### Archivos de la entrega
+**Entregables**:
 
 * Wireframes: [carpeta wireframes](https://github.com/facundolaffont/PAW-2026-Libreria/tree/entrega2/wireframes).
 * Maquetado: [maquetado-html](https://github.com/facundolaffont/PAW-2026-Libreria/tree/entrega2/maquetado-html).
 
+**Prueba del sistema**: ver sección "Ejecución del proyecto".
+
 ### 3ra entrega (04/05/26)
 
-[Consignas del trabajo práctico 3](https://raw.githubusercontent.com/facundolaffont/PAW-2026-Libreria/refs/heads/main/tps/tp3.pdf).
+[Consignas del trabajo práctico 3](https://github.com/facundolaffont/PAW-2026-Libreria/raw/0110cfd355932f3ea84a994bdca501e0e7ccc57f/tps/tp3.pdf).
 
-#### Archivos de la entrega
+**Entregables**:
 
-* [Informe de arquitectura](https://raw.githubusercontent.com/facundolaffont/PAW-2026-Libreria/refs/heads/main/site-info/Informe%20de%20arquitectura.pdf).
+* [Informe de arquitectura](https://github.com/facundolaffont/PAW-2026-Libreria/raw/0110cfd355932f3ea84a994bdca501e0e7ccc57f/site-info/Informe%20de%20arquitectura.pdf).
 
-Para ejecutar la aplicación, primero clonar el repositorio:
+**Prueba del sistema**: ver sección "Ejecución del proyecto".
 
-```sh
-git clone https://github.com/facundolaffont/PAW-2026-Libreria.git
-```
+### 4ta entrega (26/05/26)
 
-Luego, ingresar en la carpeta creada, crear el archivo `.env`, tal como indica el archivo `.env.example`, completarlo y luego ejecutar:
+[Consignas del trabajo práctico 4](https://github.com/facundolaffont/PAW-2026-Libreria/raw/13fe4dcbe12440979d149204a5fa71095ff6ed01/tps/tp4.pdf).
 
-```sh
-docker compose up
-```
+**Prueba del sistema**: ver sección "Ejecución del proyecto".
 
-Finalmente, ingresar a través del navegador a `localhost:3000`.
