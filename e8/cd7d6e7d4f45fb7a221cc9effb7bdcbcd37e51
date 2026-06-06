@@ -1,0 +1,71 @@
+src/public/resources/js/new-book-validation.js
+  s_574654319c2cef::t_107fe65471cd3a 80-83
+  s_574654319c2cef::t_e346e6c10cbc41 129-130,136
+src/app/Services/ContextBuilder.php
+  s_574654319c2cef::t_530a4d792882ac 39-42
+  s_574654319c2cef::t_6ccbc5ca256c43 15-18
+  s_574654319c2cef::t_e4ccf73e7c5c91 9
+  s_574654319c2cef::t_a345cedead1dbf 102-120
+src/public/resources/styles/orders.css
+  s_574654319c2cef::t_8ef8cc61235271 1-212
+src/public/resources/js/catalog.js
+  s_574654319c2cef::t_dcf9ead4364fcf 4-7,13-19,21-22,30,32,44,46,58,67-85,94-95,98-101,103,117,211,239-240,252,265,267-277,280-293,295-299,303,308-312,314-316,318-328,330-334,337-351,358,371,414,417,423,428,435-455,467,486,492,501-502,508,534,536-538,548,555
+src/app/Repositories/BookRepository.php
+  s_574654319c2cef::t_0c4a9ab4b75f2d 124-125
+src/views/new-book.php
+  s_574654319c2cef::t_35b0da80e6b997 134,140,144-145
+  s_574654319c2cef::t_e5ca573f6a7eb9 186
+src/config/container.php
+  s_574654319c2cef::t_1d38e583f0d93d 5,9
+  s_574654319c2cef::t_d43e7a7663f6be 67-70
+src/app/Interfaces/ReservationRepositoryInterface.php
+  s_574654319c2cef::t_9daaa8e7d87c74 1-9
+src/app/Controllers/ReservationController.php
+  s_574654319c2cef::t_e20224033374ca 5
+  s_574654319c2cef::t_66617e061ab083 59-60,62,64-65
+  s_574654319c2cef::t_ec9ba0ffd74b2a 25-27
+src/views/components/header.php
+  s_574654319c2cef::t_f7d02ea5773aff 124
+src/views/orders.php
+  s_574654319c2cef::t_289c53d91a8f57 1-112
+src/db/migrations/20260606000000_create_reservations_table.php
+  s_574654319c2cef::t_bc2212312ca526 1-17
+src/app/Application.php
+  s_574654319c2cef::t_78d77a076856a8 75-76
+  s_574654319c2cef::t_f3441b245e3b39 60-65
+  s_574654319c2cef::t_55260a35c4b746 83-86
+  s_574654319c2cef::t_6f66d0a9a815f3 110-132
+src/app/Controllers/NewBookController.php
+  s_574654319c2cef::t_a952d75c3ee75e 99-138
+  s_574654319c2cef::t_6199a9a10494b9 55-62,79
+  s_574654319c2cef::t_1c589085b57e50 30-31
+  s_574654319c2cef::t_a2121129f3d308 6
+src/public/resources/js/open-library.js
+  s_574654319c2cef::t_3400d24d5a15dd 11
+  s_574654319c2cef::t_41868b5643b599 110
+  s_574654319c2cef::t_827d193d1bbdb6 34-44,46
+  s_574654319c2cef::t_747a5c8e139e86 105-106
+  s_574654319c2cef::t_18f6c42a9b543f 1-10,12-33,45,47-104,107-109,111-163
+src/app/Repositories/ReservationRepository.php
+  s_574654319c2cef::t_6c29aec5860631 1-44
+Dockerfile
+  s_574654319c2cef::t_234b0521917e11 4-6
+src/app/Services/OpenLibraryService.php
+  s_574654319c2cef::t_6922b955f3ae8b 1-55
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "e8cd7d6e7d4f45fb7a221cc9effb7bdcbcd37e51",
+  "prompts": {},
+  "sessions": {
+    "s_574654319c2cef": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "37b250b0-8bc5-438b-a1a8-8726b5eef22e",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "rrobles_meli <renzo.robles@mercadolibre.com>"
+    }
+  }
+}
