@@ -77,7 +77,10 @@
                 return '';
 
             case 'imagen':
-                return dragDrop ? dragDrop.validate() : '';
+                // Imagen opcional: el servidor usa Open Library si hay ISBN.
+                // Solo validar tipo/tamaño si el usuario eligió un archivo.
+                if (!dragDrop || !dragDrop.getFile()) return '';
+                return dragDrop.validate();
 
             case 'descripcion':
                 if (value.length > DESCRIPCION_MAX)
@@ -123,12 +126,14 @@
     /* Inicialización                                                       */
     /* ------------------------------------------------------------------ */
 
+    var dragDrop = null;
+
     document.addEventListener('DOMContentLoaded', function () {
 
         var form = document.getElementById('form-nuevo-libro');
         if (!form) return;
 
-        var dragDrop = new DragDropImage('zona-drop', 'imagen', 'imagen-error');
+        dragDrop = new DragDropImage('zona-drop', 'imagen', 'imagen-error');
 
         var fields = ['titulo', 'autor', 'genero', 'precio', 'stock', 'isbn', 'imagen', 'descripcion'];
 

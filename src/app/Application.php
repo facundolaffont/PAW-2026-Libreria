@@ -57,6 +57,12 @@
                 return;
             }
 
+            // API JSON del catálogo (búsqueda y filtrado server-side).
+            if ($path === '/api/catalog') {
+                $this->emitCatalogJson($logger);
+                return;
+            }
+
             // Configura las rutas.
             $router = new Router($logger);
             $router
@@ -66,11 +72,16 @@
                 ->addRoute('/book-detail', 'book-detail', 'Detalles de libro')
                 ->addRoute('/reservation', 'reservation', 'Reserva')
                 ->addRoute('/about-us', 'about-us', 'Acerca de nosotros')
-                ->addRoute('/new-book', 'new-book', 'Nuevo libro');
+                ->addRoute('/new-book', 'new-book', 'Nuevo libro')
+                ->addRoute('/orders',   'orders',   'Pedidos');
             $route = $router->route($path);
             $logger->debug("Resultado del ruteo: " . print_r($route, true));
 
             if ($path === '/new-book' && !UserSessionManager::isAdmin()) {
+                throw new HttpErrorException(HttpCodeError::FORBIDDEN);
+            }
+
+            if ($path === '/orders' && !UserSessionManager::isAdmin()) {
                 throw new HttpErrorException(HttpCodeError::FORBIDDEN);
             }
             
@@ -94,6 +105,29 @@
                     $title,
                     $page
                 );
+        }
+
+        private function emitCatalogJson(LoggerInterface $logger): void {
+            $logger->info("API catálogo JSON.", ['query' => $_GET]);
+
+            $repo        = $this->dependencyContainer->get(BookRepositoryInterface::class);
+            $filters     = ContextBuilder::buildCatalogFilters($_GET);
+            $perPage     = max(1, min(48, (int)($_GET['por_pagina'] ?? 12)));
+            $currentPage = max(1, (int)($_GET['pagina'] ?? 1));
+            $total       = $repo->countAll($filters);
+            $totalPages  = max(1, (int) ceil($total / $perPage));
+            $currentPage = min($currentPage, $totalPages);
+            $offset      = ($currentPage - 1) * $perPage;
+
+            header('Content-Type: application/json; charset=utf-8');
+            header('Cache-Control: no-store');
+
+            echo json_encode([
+                'books'       => $repo->findAll($offset, $perPage, $filters),
+                'currentPage' => $currentPage,
+                'totalPages'  => $totalPages,
+                'total'       => $total,
+            ], JSON_HEX_TAG | JSON_HEX_AMP);
         }
 
         /**

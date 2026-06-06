@@ -1,25 +1,25 @@
 (function () {
     'use strict';
 
-    var MOBILE_BP      = 1024;
-    var DEBOUNCE_MS    = 500;
-    var IMAGE_BASE     = 'resources/images/';
-    var STORAGE_KEY    = 'libreria_busquedas_recientes';
-    var MAX_BUSQUEDAS  = 5;
+    var DEBOUNCE_MS   = 500;
+    var IMAGE_BASE    = 'resources/images/';
+    var STORAGE_KEY   = 'libreria_busquedas_recientes';
+    var MAX_BUSQUEDAS = 5;
 
     // -------------------------------------------------------------------------
     // Estado
     // -------------------------------------------------------------------------
     var state = {
-        allBooks: [],
-        filtered: [],
-        filters: { generos: [], autor: [], precioMin: '', precioMax: '', q: '' },
-        orden: 'titulo-asc',
-        currentPage: 1,
-        perPage: 12,
-        infiniteScroll: false,
+        filters:            { generos: [], autor: [], precioMin: '', precioMax: '', q: '' },
+        orden:              'titulo-asc',
+        currentPage:        1,
+        totalPages:         1,
+        total:              0,
+        perPage:            12,
+        infiniteScroll:     false,
         infiniteScrollPage: 1,
-        drawerOpen: false,
+        drawerOpen:         false,
+        loading:            false,
     };
 
     // -------------------------------------------------------------------------
@@ -27,27 +27,25 @@
     // -------------------------------------------------------------------------
     var dom = {};
 
-    var scrollObserver = null;
+    var scrollObserver     = null;
     var priceDebounceTimer = null;
-    var isSyncingSelects = false;
+    var isSyncingSelects   = false;
 
     // -------------------------------------------------------------------------
     // Init
     // -------------------------------------------------------------------------
     function init() {
-        loadData();
         cacheDom();
         readUrlState();
         bindEvents();
 
         // Activar modo JS: oculta el fallback server-side
         document.querySelector('main').classList.add('catalog-js-active');
-        dom.listaJs.hidden = false;
+        dom.listaJs.hidden      = false;
         dom.paginacionJs.hidden = false;
-        dom.csvJs.hidden = false;
+        dom.csvJs.hidden        = false;
 
         guardarBusqueda(state.filters.q);
-
         syncSelectsToState();
         render();
 
@@ -57,45 +55,34 @@
             verTodosBtn.addEventListener('click', function () {
                 var estaVisible = listaOculta.style.display !== 'none';
                 listaOculta.style.display = estaVisible ? 'none' : 'block';
-                verTodosBtn.textContent = estaVisible ? 'Ver todos' : 'Ver menos';
+                verTodosBtn.textContent   = estaVisible ? 'Ver todos' : 'Ver menos';
             });
         }
-    }
-
-    // -------------------------------------------------------------------------
-    // Carga de datos desde JSON island
-    // -------------------------------------------------------------------------
-    function loadData() {
-        var el = document.getElementById('catalog-data');
-        if (!el) return;
-        var payload = JSON.parse(el.textContent);
-        state.allBooks = payload.books || [];
-        state.priceRange = payload.priceRange || { min: 0, max: 99999 };
     }
 
     // -------------------------------------------------------------------------
     // Referencias DOM
     // -------------------------------------------------------------------------
     function cacheDom() {
-        dom.listaJs        = document.getElementById('catalog-lista-js');
-        dom.paginacionJs   = document.getElementById('catalog-paginacion-js');
-        dom.sentinel       = document.getElementById('catalog-sentinel');
-        dom.backdrop       = document.getElementById('catalog-backdrop');
-        dom.drawer         = document.getElementById('filtrar-mobile');
-        dom.btnAbrir       = document.getElementById('btn-abrir-filtros');
-        dom.btnCerrar      = document.getElementById('btn-cerrar-filtros');
-        dom.btnAplicar     = document.getElementById('aplicar-filtros-mobile');
-        dom.btnLimpiar     = document.getElementById('limpiar-filtros');
-        dom.selectDesktop  = document.getElementById('ordenar');
-        dom.selectMobile   = document.getElementById('ordenar-mobile-select');
-        dom.porPagina      = document.getElementById('por-pagina');
-        dom.scrollToggle   = document.getElementById('scroll-infinito');
-        dom.badge          = document.getElementById('filtros-badge');
-        dom.resultCount    = document.getElementById('resultado-count');
-        dom.csvJs                = document.querySelector('.catalog-csv-js');
-        dom.csvLinkJs            = document.getElementById('descargar-csv-js');
-        dom.form                 = document.getElementById('catalog-form');
-        dom.section              = document.querySelector('section[aria-label="Listado de libros"]');
+        dom.listaJs       = document.getElementById('catalog-lista-js');
+        dom.paginacionJs  = document.getElementById('catalog-paginacion-js');
+        dom.sentinel      = document.getElementById('catalog-sentinel');
+        dom.backdrop      = document.getElementById('catalog-backdrop');
+        dom.drawer        = document.getElementById('filtrar-mobile');
+        dom.btnAbrir      = document.getElementById('btn-abrir-filtros');
+        dom.btnCerrar     = document.getElementById('btn-cerrar-filtros');
+        dom.btnAplicar    = document.getElementById('aplicar-filtros-mobile');
+        dom.btnLimpiar    = document.getElementById('limpiar-filtros');
+        dom.selectDesktop = document.getElementById('ordenar');
+        dom.selectMobile  = document.getElementById('ordenar-mobile-select');
+        dom.porPagina     = document.getElementById('por-pagina');
+        dom.scrollToggle  = document.getElementById('scroll-infinito');
+        dom.badge         = document.getElementById('filtros-badge');
+        dom.resultCount   = document.getElementById('resultado-count');
+        dom.csvJs         = document.querySelector('.catalog-csv-js');
+        dom.csvLinkJs     = document.getElementById('descargar-csv-js');
+        dom.form          = document.getElementById('catalog-form');
+        dom.section       = document.querySelector('section[aria-label="Listado de libros"]');
     }
 
     // -------------------------------------------------------------------------
@@ -104,18 +91,17 @@
     function readUrlState() {
         var params = new URLSearchParams(location.search);
 
-        state.filters.generos  = params.getAll('genero[]');
-        state.filters.autor    = params.getAll('autor[]');
+        state.filters.generos   = params.getAll('genero[]');
+        state.filters.autor     = params.getAll('autor[]');
         state.filters.precioMin = params.get('precio_min') || '';
         state.filters.precioMax = params.get('precio_max') || '';
-        state.filters.q        = params.get('q') || '';
-        state.orden            = params.get('orden') || 'titulo-asc';
-        state.currentPage      = Math.max(1, parseInt(params.get('pagina') || '1', 10));
-        state.perPage          = parseInt(params.get('por_pagina') || '12', 10);
+        state.filters.q         = params.get('q') || '';
+        state.orden             = params.get('orden') || 'titulo-asc';
+        state.currentPage       = Math.max(1, parseInt(params.get('pagina') || '1', 10));
+        state.perPage           = parseInt(params.get('por_pagina') || '12', 10);
         if ([12, 24, 48].indexOf(state.perPage) === -1) state.perPage = 12;
-        state.infiniteScroll   = params.get('scroll') === '1';
+        state.infiniteScroll    = params.get('scroll') === '1';
 
-        // Sincronizar checkboxes según el estado leído de la URL
         dom.form.querySelectorAll('input[name="genero[]"]').forEach(function (cb) {
             cb.checked = state.filters.generos.indexOf(cb.value) !== -1;
         });
@@ -128,7 +114,7 @@
         if (precioMaxEl) precioMaxEl.value = state.filters.precioMax;
 
         if (dom.scrollToggle) dom.scrollToggle.checked = state.infiniteScroll;
-        if (dom.porPagina) dom.porPagina.value = String(state.perPage);
+        if (dom.porPagina)    dom.porPagina.value = String(state.perPage);
     }
 
     // -------------------------------------------------------------------------
@@ -222,11 +208,7 @@
                 e.preventDefault();
                 var page = parseInt(a.dataset.page, 10);
                 if (!isNaN(page)) {
-                    state.currentPage = page;
-                    renderPage();
-                    renderPagination();
-                    pushUrl();
-                    dom.section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    fetchAndRenderPage(page);
                 }
             });
         }
@@ -254,27 +236,20 @@
         var precioMinEl = document.getElementById('precio-min');
         var precioMaxEl = document.getElementById('precio-max');
 
-        state.filters.generos  = generos;
-        state.filters.autor    = autores;
+        state.filters.generos   = generos;
+        state.filters.autor     = autores;
         state.filters.precioMin = precioMinEl ? precioMinEl.value : '';
         state.filters.precioMax = precioMaxEl ? precioMaxEl.value : '';
     }
 
-    // -------------------------------------------------------------------------
-    // Sincronizar selects al estado (sin disparar eventos)
-    // -------------------------------------------------------------------------
     function syncSelectsToState() {
         if (dom.selectDesktop) dom.selectDesktop.value = state.orden;
         if (dom.selectMobile)  dom.selectMobile.value  = state.orden;
     }
 
-    // -------------------------------------------------------------------------
-    // Limpiar filtros
-    // -------------------------------------------------------------------------
     function clearFilters() {
         state.filters = { generos: [], autor: [], precioMin: '', precioMax: '', q: '' };
-        state.orden = 'titulo-asc';
-        state.currentPage = 1;
+        state.orden   = 'titulo-asc';
 
         dom.form.querySelectorAll('input[type="checkbox"]').forEach(function (cb) { cb.checked = false; });
         var precioMinEl = document.getElementById('precio-min');
@@ -287,94 +262,100 @@
     }
 
     // -------------------------------------------------------------------------
-    // Motor de filtrado (función pura)
+    // API: construye parámetros y ejecuta XHR contra /api/catalog
     // -------------------------------------------------------------------------
-    function applyFilters(books, filters) {
-        return books.filter(function (book) {
-            if (filters.generos.length > 0 && filters.generos.indexOf(book.genre) === -1) return false;
-            if (filters.autor.length > 0 && filters.autor.indexOf(book.author) === -1) return false;
-            if (filters.precioMin !== '' && parseFloat(book.price) < parseFloat(filters.precioMin)) return false;
-            if (filters.precioMax !== '' && parseFloat(book.price) > parseFloat(filters.precioMax)) return false;
-            if (filters.q) {
-                var q = filters.q.toLowerCase();
-                var haystack = (book.title + ' ' + book.author + ' ' + book.genre).toLowerCase();
-                if (haystack.indexOf(q) === -1) return false;
+    function buildApiParams(page) {
+        var params = new URLSearchParams();
+        state.filters.generos.forEach(function (g) { params.append('genero[]', g); });
+        state.filters.autor.forEach(function (a)   { params.append('autor[]', a); });
+        if (state.filters.precioMin) params.set('precio_min', state.filters.precioMin);
+        if (state.filters.precioMax) params.set('precio_max', state.filters.precioMax);
+        if (state.filters.q)        params.set('q', state.filters.q);
+        if (state.orden)            params.set('orden', state.orden);
+        params.set('pagina',     String(page));
+        params.set('por_pagina', String(state.perPage));
+        return params;
+    }
+
+    function fetchBooks(page, callback) {
+        var url = '/api/catalog?' + buildApiParams(page).toString();
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url);
+        xhr.setRequestHeader('Accept', 'application/json');
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                try {
+                    callback(null, JSON.parse(xhr.responseText));
+                } catch (e) {
+                    callback(e, null);
+                }
+            } else {
+                callback(new Error('HTTP ' + xhr.status), null);
             }
-            return true;
-        });
+        };
+        xhr.onerror = function () {
+            callback(new Error('Error de red'), null);
+        };
+        xhr.send();
     }
 
     // -------------------------------------------------------------------------
-    // Motor de ordenamiento (función pura)
-    // -------------------------------------------------------------------------
-    function applySort(books, orden) {
-        var sorted = books.slice();
-        sorted.sort(function (a, b) {
-            switch (orden) {
-                case 'titulo-desc':
-                    return b.title.localeCompare(a.title, 'es');
-                case 'precio-asc':
-                    return parseFloat(a.price) - parseFloat(b.price);
-                case 'precio-desc':
-                    return parseFloat(b.price) - parseFloat(a.price);
-                case 'autor-asc':
-                    var cmpAutor = a.author.localeCompare(b.author, 'es');
-                    return cmpAutor !== 0 ? cmpAutor : a.title.localeCompare(b.title, 'es');
-                case 'recientes':
-                    return b.id - a.id;
-                default: // titulo-asc
-                    return a.title.localeCompare(b.title, 'es');
-            }
-        });
-        return sorted;
-    }
-
-    // -------------------------------------------------------------------------
-    // Render orquestador
+    // Render orquestador: llama a la API y actualiza el DOM
     // -------------------------------------------------------------------------
     function render() {
         teardownSentinel();
 
-        state.filtered = applySort(applyFilters(state.allBooks, state.filters), state.orden);
+        fetchBooks(1, function (err, data) {
+            if (err) {
+                dom.listaJs.innerHTML = '<li class="catalog-error">No se pudieron cargar los libros.</li>';
+                return;
+            }
 
-        // Siempre volver a página 1 al cambiar filtros/orden/perPage
-        state.currentPage = 1;
+            state.currentPage  = data.currentPage;
+            state.totalPages   = data.totalPages;
+            state.total        = data.total;
 
-        if (state.infiniteScroll) {
-            state.infiniteScrollPage = 1;
-            renderInfiniteFirstPage();
-            setupSentinel();
-        } else {
-            renderPage();
-            renderPagination();
-        }
+            if (state.infiniteScroll) {
+                state.infiniteScrollPage = 1;
+                dom.listaJs.innerHTML    = '';
+                data.books.forEach(function (book) { dom.listaJs.appendChild(buildCard(book)); });
+                dom.paginacionJs.innerHTML = '';
+                if (state.total > state.perPage) setupSentinel();
+            } else {
+                dom.listaJs.innerHTML = '';
+                data.books.forEach(function (book) { dom.listaJs.appendChild(buildCard(book)); });
+                renderPagination(data.currentPage, data.totalPages);
+            }
 
-        updateResultCount();
-        updateBadge();
-        syncCsvHref();
-        pushUrl();
+            updateResultCount(data.total);
+            updateBadge();
+            syncCsvHref();
+            pushUrl();
+        });
     }
 
-    // -------------------------------------------------------------------------
-    // Renderizar página actual (paginación tradicional)
-    // -------------------------------------------------------------------------
-    function renderPage() {
-        var start = (state.currentPage - 1) * state.perPage;
-        var slice = state.filtered.slice(start, start + state.perPage);
-        dom.listaJs.innerHTML = '';
-        slice.forEach(function (book) {
-            dom.listaJs.appendChild(buildCard(book));
+    // Carga una página específica sin resetear filtros (para paginación tradicional)
+    function fetchAndRenderPage(page) {
+        fetchBooks(page, function (err, data) {
+            if (err) return;
+
+            state.currentPage = data.currentPage;
+            state.totalPages  = data.totalPages;
+            state.total       = data.total;
+
+            dom.listaJs.innerHTML = '';
+            data.books.forEach(function (book) { dom.listaJs.appendChild(buildCard(book)); });
+            renderPagination(data.currentPage, data.totalPages);
+            updateResultCount(data.total);
+            pushUrl();
+            dom.section.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
     }
 
     // -------------------------------------------------------------------------
     // Renderizar controles de paginación
     // -------------------------------------------------------------------------
-    function renderPagination() {
-        var total = state.filtered.length;
-        var totalPages = Math.max(1, Math.ceil(total / state.perPage));
-        var cur = state.currentPage;
-
+    function renderPagination(cur, totalPages) {
         if (state.infiniteScroll) {
             dom.paginacionJs.innerHTML = '';
             return;
@@ -386,9 +367,8 @@
             ol.appendChild(makePagLink('Anterior', cur - 1, 'Página anterior'));
         }
 
-        // Ventana deslizante: máx 7 números visibles
         var windowSize = 7;
-        var half = Math.floor(windowSize / 2);
+        var half  = Math.floor(windowSize / 2);
         var start = Math.max(1, cur - half);
         var end   = Math.min(totalPages, start + windowSize - 1);
         if (end - start + 1 < windowSize) start = Math.max(1, end - windowSize + 1);
@@ -431,49 +411,46 @@
     }
 
     function makePagEllipsis() {
-        var li = document.createElement('li');
+        var li   = document.createElement('li');
         var span = document.createElement('span');
         span.textContent = '…';
-        span.className = 'pag-ellipsis';
+        span.className   = 'pag-ellipsis';
         li.appendChild(span);
         return li;
     }
 
     // -------------------------------------------------------------------------
-    // Scroll infinito
+    // Scroll infinito: cada vez que el sentinel es visible, pide la página siguiente
     // -------------------------------------------------------------------------
-    function renderInfiniteFirstPage() {
-        var slice = state.filtered.slice(0, state.perPage);
-        dom.listaJs.innerHTML = '';
-        slice.forEach(function (book) {
-            dom.listaJs.appendChild(buildCard(book));
-        });
-        dom.paginacionJs.innerHTML = '';
-    }
-
-    function appendInfinitePage() {
-        var page = state.infiniteScrollPage;
-        var start = page * state.perPage;
-        var slice = state.filtered.slice(start, start + state.perPage);
-        slice.forEach(function (book) {
-            dom.listaJs.appendChild(buildCard(book));
-        });
-        state.infiniteScrollPage++;
-
-        var totalLoaded = state.infiniteScrollPage * state.perPage;
-        if (totalLoaded >= state.filtered.length) {
-            teardownSentinel();
-        }
-    }
-
     function setupSentinel() {
         if (!dom.sentinel || !window.IntersectionObserver) return;
         scrollObserver = new IntersectionObserver(function (entries) {
-            if (entries[0].isIntersecting) {
+            if (entries[0].isIntersecting && !state.loading) {
                 appendInfinitePage();
             }
         }, { rootMargin: '200px' });
         scrollObserver.observe(dom.sentinel);
+    }
+
+    function appendInfinitePage() {
+        var nextPage = state.infiniteScrollPage + 1;
+        if (nextPage > state.totalPages) {
+            teardownSentinel();
+            return;
+        }
+
+        state.loading = true;
+        fetchBooks(nextPage, function (err, data) {
+            state.loading = false;
+            if (err) return;
+
+            data.books.forEach(function (book) { dom.listaJs.appendChild(buildCard(book)); });
+            state.infiniteScrollPage = nextPage;
+            state.currentPage        = data.currentPage;
+            state.totalPages         = data.totalPages;
+
+            if (state.infiniteScrollPage >= state.totalPages) teardownSentinel();
+        });
     }
 
     function teardownSentinel() {
@@ -487,10 +464,9 @@
     // Construir tarjeta de libro
     // -------------------------------------------------------------------------
     function buildCard(book) {
-        var li = document.createElement('li');
+        var li      = document.createElement('li');
         var article = document.createElement('article');
 
-        // Enlace + imagen + título
         var a = document.createElement('a');
         a.href = 'book-detail?id=' + encodeURIComponent(book.id);
 
@@ -502,21 +478,18 @@
         a.appendChild(h3);
         article.appendChild(a);
 
-        // Autor
         var pAutor = document.createElement('p');
         pAutor.textContent = book.author;
         article.appendChild(pAutor);
 
-        // Precio
         var pPrecio = document.createElement('p');
-        var strong = document.createElement('strong');
+        var strong  = document.createElement('strong');
         strong.textContent = '$ ' + formatPrecio(book.price);
         pPrecio.appendChild(strong);
         article.appendChild(pPrecio);
 
-        // Botón reservar
         var btn = document.createElement('button');
-        btn.type = 'button';
+        btn.type        = 'button';
         btn.textContent = 'Reservar';
         article.appendChild(btn);
 
@@ -525,14 +498,14 @@
     }
 
     function buildPicture(imageStr, alt) {
-        var picture = document.createElement('picture');
-        var parts = (imageStr || '').split(';');
+        var picture     = document.createElement('picture');
+        var parts       = (imageStr || '').split(';');
         var fallbackSrc = '';
 
         parts.forEach(function (part) {
             var m = part.match(/^(\d+):(.+)$/);
             if (m) {
-                var source = document.createElement('source');
+                var source    = document.createElement('source');
                 source.srcset = IMAGE_BASE + m[2];
                 source.media  = '(max-width: ' + m[1] + 'px)';
                 picture.appendChild(source);
@@ -558,10 +531,11 @@
     // -------------------------------------------------------------------------
     // Conteo de resultados y badge
     // -------------------------------------------------------------------------
-    function updateResultCount() {
+    function updateResultCount(total) {
         if (!dom.resultCount) return;
-        var total = state.filtered.length;
-        dom.resultCount.textContent = total === 1 ? '1 libro encontrado' : total + ' libros encontrados';
+        dom.resultCount.textContent = total === 1
+            ? '1 libro encontrado'
+            : total + ' libros encontrados';
     }
 
     function updateBadge() {
@@ -571,14 +545,14 @@
             (state.filters.precioMax !== '' ? 1 : 0);
         if (count > 0) {
             dom.badge.textContent = count;
-            dom.badge.hidden = false;
+            dom.badge.hidden      = false;
         } else {
             dom.badge.hidden = true;
         }
     }
 
     // -------------------------------------------------------------------------
-    // Sincronizar href del link CSV con los filtros JS actuales
+    // Sincronizar href del link CSV con los filtros actuales
     // -------------------------------------------------------------------------
     function syncCsvHref() {
         if (!dom.csvLinkJs) return;
@@ -624,7 +598,6 @@
         document.body.style.overflow = 'hidden';
         dom.drawer.addEventListener('keydown', trapFocus);
 
-        // Foco al primer elemento interactivo del drawer
         var first = dom.drawer.querySelector('button, input, select, [tabindex]:not([tabindex="-1"])');
         if (first) first.focus();
     }
@@ -662,7 +635,6 @@
     // -------------------------------------------------------------------------
     // Búsquedas recientes (localStorage)
     // -------------------------------------------------------------------------
-
     function leerBusquedas() {
         try {
             var raw = localStorage.getItem(STORAGE_KEY);

@@ -3,6 +3,7 @@
     namespace Paw\Controllers;
 
     use Paw\Interfaces\BookRepositoryInterface;
+    use Paw\Services\OpenLibraryService;
     use Paw\View;
     use Psr\Log\LoggerInterface;
 
@@ -26,7 +27,8 @@
 
         public function __construct(
             private BookRepositoryInterface $bookRepository,
-            private LoggerInterface         $logger
+            private LoggerInterface         $logger,
+            private OpenLibraryService      $openLibrary
         ) {}
 
         public function show(): void {
@@ -50,9 +52,14 @@
 
             $errors = $this->validate($titulo, $autor, $genero, $precio, $stock, $isbn, $descripcion);
 
-            $imagenError = $this->validateImage($_FILES['imagen'] ?? null);
-            if ($imagenError) {
-                $errors['imagen'] = $imagenError;
+            $file = $_FILES['imagen'] ?? null;
+            $tieneArchivo = $file && ($file['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_OK;
+
+            if ($tieneArchivo) {
+                $imagenError = $this->validateImage($file);
+                if ($imagenError) {
+                    $errors['imagen'] = $imagenError;
+                }
             }
 
             if (!empty($errors)) {
@@ -69,7 +76,7 @@
                 return;
             }
 
-            $imagenNombre = $this->saveImage($_FILES['imagen']);
+            $imagenNombre = $this->resolveImage($tieneArchivo ? $file : null, $isbn);
 
             $id = $this->bookRepository->create([
                 'title'       => $titulo,
@@ -87,6 +94,46 @@
             // PRG: redirige en GET para evitar reenvíos al refrescar la página.
             header('Location: /new-book?creado=1');
             exit;
+        }
+
+        /**
+         * Determina la imagen definitiva del libro:
+         * 1. Si el usuario subió una imagen → la guarda.
+         * 2. Si no hay imagen pero hay ISBN → descarga la tapa desde Open Library.
+         * 3. Fallback → placeholder genérico.
+         */
+        private function resolveImage(?array $file, string $isbn): string {
+            if ($file !== null) {
+                return $this->saveImage($file);
+            }
+
+            if ($isbn !== '') {
+                $coverData = $this->openLibrary->fetchCover($isbn);
+                if ($coverData !== null) {
+                    return $this->saveCoverData($coverData);
+                }
+            }
+
+            return '599:placeholder-libro-chica.png;placeholder-libro-grande.png';
+        }
+
+        private function saveCoverData(string $data): string {
+            $info      = getimagesizefromstring($data);
+            $extension = match ($info[2] ?? IMAGETYPE_JPEG) {
+                IMAGETYPE_PNG  => 'png',
+                IMAGETYPE_WEBP => 'webp',
+                default        => 'jpg',
+            };
+
+            $filename = uniqid('ol-', true) . '.' . $extension;
+            $path     = self::IMAGE_UPLOAD_DIR . '/' . $filename;
+
+            if (!is_dir(self::IMAGE_UPLOAD_DIR)) {
+                mkdir(self::IMAGE_UPLOAD_DIR, 0755, true);
+            }
+
+            file_put_contents($path, $data);
+            return 'libros/' . $filename;
         }
 
         private function validateImage(?array $file): string {

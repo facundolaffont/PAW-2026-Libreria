@@ -121,6 +121,7 @@
             <?php endif; ?>
             <?php if ($isAdmin): ?>
                 <li><a href="new-book"><p>Nuevo libro</p></a></li>
+                <li><a href="orders"><p>Pedidos</p></a></li>
             <?php endif; ?>
             <li><a href="about-us"><p>Acerca de nosotros</p></a></li>
         </ul>

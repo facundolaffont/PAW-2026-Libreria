@@ -6,14 +6,16 @@ use Paw\Enums\HttpCodeError;
 use Paw\Errors\Exceptions\HttpErrorException;
 use Paw\Interfaces\BookRepositoryInterface;
 use Paw\Interfaces\PromotionRepositoryInterface;
+use Paw\Interfaces\ReservationRepositoryInterface;
 use Psr\Log\LoggerInterface;
 
 class ContextBuilder {
 
     public function __construct(
-        private BookRepositoryInterface $bookRepository,
-        private PromotionRepositoryInterface $promotionRepository,
-        private LoggerInterface $logger
+        private BookRepositoryInterface        $bookRepository,
+        private PromotionRepositoryInterface   $promotionRepository,
+        private ReservationRepositoryInterface $reservationRepository,
+        private LoggerInterface                $logger
     ) {}
 
     public function build(string $title, string $page, array $queryParams = []): array {
@@ -32,6 +34,10 @@ class ContextBuilder {
             ),
             'book-detail' => $context += $this->buildBookDetailContext(
                 $this->bookRepository,
+                $queryParams
+            ),
+            'orders' => $context += $this->buildOrdersContext(
+                $this->reservationRepository,
                 $queryParams
             ),
             default => [],
@@ -84,17 +90,31 @@ class ContextBuilder {
 
         return [
             'books'       => $bookRepository->findAll($offset, $perPage, $filters),
-            'allBooks'    => $bookRepository->findAll(0, PHP_INT_MAX, []),
-            'priceRange'  => [
-                'min' => $bookRepository->findPriceMin(),
-                'max' => $bookRepository->findPriceMax(),
-            ],
             'currentPage' => $currentPage,
             'totalPages'  => $totalPages,
             'genres'      => $bookRepository->findAllGenres(),
             'authors'     => $bookRepository->findAllAuthors(),
             'filters'     => $filters,
             'filterQuery' => $filterQuery,
+        ];
+    }
+
+    private function buildOrdersContext(
+        ReservationRepositoryInterface $reservationRepository,
+        array $queryParams
+    ): array {
+        $perPage     = 20;
+        $currentPage = max(1, (int)($queryParams['pagina'] ?? 1));
+        $total       = $reservationRepository->countAll();
+        $totalPages  = max(1, (int) ceil($total / $perPage));
+        $currentPage = min($currentPage, $totalPages);
+        $offset      = ($currentPage - 1) * $perPage;
+
+        return [
+            'orders'      => $reservationRepository->findAll($offset, $perPage),
+            'currentPage' => $currentPage,
+            'totalPages'  => $totalPages,
+            'total'       => $total,
         ];
     }
 
