@@ -36,5 +36,25 @@
     </main>
 
     <?php require 'components/footer.php'; ?>
-    
+
+    <script type="application/ld+json"><?= json_encode([
+        '@context' => 'https://schema.org',
+        '@type'    => 'BookStore',
+        'name'     => 'PAWPrints',
+        'description' => 'Librería local con catálogo online. Refugio para los amantes de las buenas historias desde 2015.',
+        'image'    => 'resources/images/fachada1.jpg',
+        'email'    => 'pawprints@example.com',
+        'telephone' => '+1234567890',
+        'address'  => [
+            '@type' => 'PostalAddress',
+            'streetAddress' => 'Dirección 1234',
+            'addressCountry' => 'AR',
+        ],
+        'sameAs'   => [
+            'http://www.instagram.com/',
+            'http://www.facebook.com/',
+            'http://www.x.com/',
+        ],
+    ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_THROW_ON_ERROR) ?></script>
+
 </body>

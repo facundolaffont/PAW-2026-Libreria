@@ -255,4 +255,36 @@
 
     <?php require 'components/footer.php'; ?>
 
+    <?php
+    $listItems = [];
+    foreach ($context['books'] ?? [] as $i => $book) {
+        $imageParts = explode(';', $book['image'] ?? '');
+        $fb = 'default.jpg';
+        foreach ($imageParts as $part) {
+            if (!preg_match('/^\d+:.+$/', $part)) {
+                $fb = $part;
+                break;
+            }
+        }
+
+        $listItems[] = [
+            '@type'    => 'ListItem',
+            'position' => $i + 1,
+            'item'     => [
+                '@type'  => 'Book',
+                'name'   => $book['title'],
+                'author' => $book['author'],
+                'image'  => 'resources/images/' . $fb,
+                'url'    => 'book-detail?id=' . (int)$book['id'],
+            ],
+        ];
+    }
+    ?>
+    <script type="application/ld+json"><?= json_encode([
+        '@context' => 'https://schema.org',
+        '@type'    => 'ItemList',
+        'name'     => 'Catálogo de libros',
+        'itemListElement' => $listItems,
+    ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_THROW_ON_ERROR) ?></script>
+
 </body>

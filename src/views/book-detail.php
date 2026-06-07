@@ -94,6 +94,22 @@
 
                 </article>
 
+                <script type="application/ld+json"><?= json_encode([
+                    '@context' => 'https://schema.org',
+                    '@type'    => 'Book',
+                    'name'     => $context['book']['title'],
+                    'author'   => $context['book']['author'],
+                    'description' => $context['book']['description'] ?? '',
+                    'genre'    => $context['book']['genre'] ?? '',
+                    'image'    => 'resources/images/' . $fallbackSrc,
+                    'offers'   => [
+                        '@type'         => 'Offer',
+                        'price'         => (string)$context['book']['price'],
+                        'priceCurrency' => 'ARS',
+                        'availability'  => 'https://schema.org/InStock',
+                    ],
+                ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_THROW_ON_ERROR) ?></script>
+
             <?php else: ?>
 
                 <!-- Estado de error: mensaje cuando no hay libro disponible -->

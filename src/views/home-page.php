@@ -44,7 +44,7 @@
             data-effect="<?= $bookCarouselEffects[$bookCarouselIndex % count($bookCarouselEffects)] ?>"
         >
 
-            <h2><?= $genre ?></h2>
+            <h2><?= htmlspecialchars($genre, ENT_QUOTES, 'UTF-8') ?></h2>
 
             <div class="contenedor-carrusel">
 
@@ -74,19 +74,19 @@
                                     // Carousel.
                                 ?>
                                     <source
-                                        data-carousel-srcset="resources/images/<?= $source['url'] ?>"
-                                        media="( max-width: <?= $source['maxWidth'] ?>px )"
+                                        data-carousel-srcset="resources/images/<?= htmlspecialchars($source['url'], ENT_QUOTES, 'UTF-8') ?>"
+                                        media="( max-width: <?= (int)$source['maxWidth'] ?>px )"
                                     >
                                 <?php endforeach; ?>
                                 <img
                                     src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2 3'%3E%3Crect width='2' height='3' fill='white'/%3E%3C/svg%3E"
-                                    data-carousel-src="resources/images/<?= $fallbackSrc ?>"
-                                    alt="<?= $book['title'] ?>"
+                                    data-carousel-src="resources/images/<?= htmlspecialchars($fallbackSrc, ENT_QUOTES, 'UTF-8') ?>"
+                                    alt="<?= htmlspecialchars($book['title'], ENT_QUOTES, 'UTF-8') ?>"
                                 >
                             </picture>
-                            <h3><?= $book['title'] ?></h3>
+                            <h3><?= htmlspecialchars($book['title'], ENT_QUOTES, 'UTF-8') ?></h3>
                         </a>
-                        <p><?= $book['author'] ?></p>
+                        <p><?= htmlspecialchars($book['author'], ENT_QUOTES, 'UTF-8') ?></p>
                         <p>$ <?= number_format($book['price'], 2, ',', '.') ?></p>
                         <?php if (!($context['isAdmin'] ?? false)): ?>
                             <button>Reservar</button>
@@ -137,14 +137,14 @@
                             // Carousel.
                         ?>
                             <source
-                                data-carousel-srcset="resources/images/<?= $source['url'] ?>"
-                                media="( max-width: <?= $source['maxWidth'] ?>px )"
+                                data-carousel-srcset="resources/images/<?= htmlspecialchars($source['url'], ENT_QUOTES, 'UTF-8') ?>"
+                                media="( max-width: <?= (int)$source['maxWidth'] ?>px )"
                             >
                         <?php endforeach; ?>
                         <img
                             src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='white'/%3E%3C/svg%3E"
-                            data-carousel-src="resources/images/<?= $fallbackSrc ?>"
-                            alt="<?= $promotion['description'] ?>"
+                            data-carousel-src="resources/images/<?= htmlspecialchars($fallbackSrc, ENT_QUOTES, 'UTF-8') ?>"
+                            alt="<?= htmlspecialchars($promotion['description'], ENT_QUOTES, 'UTF-8') ?>"
                         >
                     </picture>
                 </a>
@@ -157,5 +157,41 @@
     </section>
 
     <?php require 'components/footer.php'; ?>
+
+    <?php if (!empty($context['booksByGenre'])): ?>
+    <?php foreach ($context['booksByGenre'] as $genre => $genreBooks): ?>
+    <?php
+    $items = [];
+    foreach ($genreBooks as $i => $book) {
+        $imageParts = explode(';', $book['image'] ?? '');
+        $fb = 'default.jpg';
+        foreach ($imageParts as $part) {
+            if (!preg_match('/^\d+:.+$/', $part)) {
+                $fb = $part;
+                break;
+            }
+        }
+
+        $items[] = [
+            '@type'    => 'ListItem',
+            'position' => $i + 1,
+            'item'     => [
+                '@type'  => 'Book',
+                'name'   => $book['title'],
+                'author' => $book['author'],
+                'image'  => 'resources/images/' . $fb,
+                'url'    => 'book-detail?id=' . (int)$book['id'],
+            ],
+        ];
+    }
+    ?>
+    <script type="application/ld+json"><?= json_encode([
+        '@context' => 'https://schema.org',
+        '@type'    => 'ItemList',
+        'name'     => 'Libros de ' . $genre,
+        'itemListElement' => $items,
+    ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_THROW_ON_ERROR) ?></script>
+    <?php endforeach; ?>
+    <?php endif; ?>
 
 </body>

@@ -2,7 +2,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $title ?? 'PAWPrints' ?></title>
+    <title><?= htmlspecialchars($title ?? 'PAWPrints', ENT_QUOTES, 'UTF-8') ?></title>
 
     <!-- Reset CSS -->
     <link rel="stylesheet" href="resources/styles/reset.css">
