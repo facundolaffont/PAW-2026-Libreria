@@ -46,8 +46,14 @@
         h3.textContent = item.title;
         var pAutor = document.createElement('p');
         pAutor.textContent = item.author;
+        var pPrecio = document.createElement('p');
+        pPrecio.className = 'reservation-item-precio';
+        var precioUnit = parseFloat(item.price || 0);
+        var subtotal   = precioUnit * (parseInt(item.quantity, 10) || 0);
+        pPrecio.textContent = '$ ' + formatPrecio(subtotal);
         info.appendChild(h3);
         info.appendChild(pAutor);
+        info.appendChild(pPrecio);
         article.appendChild(info);
 
         var qtyWrap = document.createElement('div');
@@ -95,15 +101,27 @@
     function syncHiddenInputs(items) {
         hiddenWrap.innerHTML = '';
         items.forEach(function (item, i) {
-            ['titulo', 'autor', 'cantidad'].forEach(function (field) {
+            var fields = {
+                book_id:         String(item.id),
+                titulo:          item.title,
+                autor:           item.author,
+                cantidad:        String(item.quantity),
+                precio_unitario: String(item.price || 0)
+            };
+            Object.keys(fields).forEach(function (field) {
                 var input = document.createElement('input');
                 input.type = 'hidden';
                 input.name = 'libros[' + i + '][' + field + ']';
-                input.value = field === 'titulo' ? item.title
-                            : field === 'autor'  ? item.author
-                            : String(item.quantity);
+                input.value = fields[field];
                 hiddenWrap.appendChild(input);
             });
+        });
+    }
+
+    function formatPrecio(value) {
+        return parseFloat(value || 0).toLocaleString('es-AR', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
         });
     }
 
@@ -120,6 +138,21 @@
             });
         }
         syncHiddenInputs(items);
+        renderTotal(items);
+    }
+
+    function renderTotal(items) {
+        var totalEl = document.getElementById('reservation-total');
+        if (!totalEl) return;
+        if (!items.length) {
+            totalEl.hidden = true;
+            return;
+        }
+        var total = items.reduce(function (acc, it) {
+            return acc + (parseFloat(it.price || 0) * (parseInt(it.quantity, 10) || 0));
+        }, 0);
+        totalEl.hidden = false;
+        totalEl.querySelector('.reservation-total-valor').textContent = '$ ' + formatPrecio(total);
     }
 
     // Delegación: +, −, eliminar

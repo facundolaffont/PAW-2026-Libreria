@@ -32,6 +32,11 @@
             </p>
 
             <ul id="reservation-lista" aria-live="polite"></ul>
+
+            <p id="reservation-total" class="reservation-total" hidden>
+                <span>Total:</span>
+                <span class="reservation-total-valor">$ 0,00</span>
+            </p>
         </section>
 
         <section>

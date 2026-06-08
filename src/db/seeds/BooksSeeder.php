@@ -6,7 +6,11 @@ class BooksSeeder extends AbstractSeed
 {
     public function run(): void
     {
-        $this->execute('TRUNCATE TABLE books');
+        // DELETE en vez de TRUNCATE para respetar las FKs salientes de reserva_libros.
+        // Con ON DELETE SET NULL, los items históricos quedan con book_id = NULL
+        // pero conservan el snapshot de título/autor.
+        $this->execute('DELETE FROM books');
+        $this->execute('ALTER TABLE books AUTO_INCREMENT = 1');
 
         $books = [
             // Novela

@@ -2,9 +2,11 @@
 
     use Paw\Interfaces\BookRepositoryInterface;
     use Paw\Interfaces\PromotionRepositoryInterface;
+    use Paw\Interfaces\ReservationRepositoryInterface;
     use Paw\Logging\AppLogFormatter;
     use Paw\Repositories\BookRepository;
     use Paw\Repositories\PromotionRepository;
+    use Paw\Repositories\ReservationRepository;
     use Paw\Services\EmailService;
     use Monolog\Handler\StreamHandler;
     use Monolog\Level;
@@ -62,8 +64,9 @@
             return $logger;
         }),
 
-        BookRepositoryInterface::class      => autowire(BookRepository::class),
-        PromotionRepositoryInterface::class => autowire(PromotionRepository::class),
-        EmailService::class                 => autowire(EmailService::class),
+        BookRepositoryInterface::class        => autowire(BookRepository::class),
+        PromotionRepositoryInterface::class   => autowire(PromotionRepository::class),
+        ReservationRepositoryInterface::class => autowire(ReservationRepository::class),
+        EmailService::class                   => autowire(EmailService::class),
 
     ];
