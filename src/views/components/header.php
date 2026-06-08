@@ -104,7 +104,10 @@
         <?php if ($isClient): ?>
             <!-- Enlace a Mis Reservas (solo clientes) -->
             <a href="reservation" class="mis-reservas">
-                <img src="resources/images/mis-reservas.png" id="mis-reservas" alt="">
+                <span class="mis-reservas-icono-wrap">
+                    <img src="resources/images/mis-reservas.png" id="mis-reservas" alt="">
+                    <span class="mis-reservas-badge" id="mis-reservas-badge" aria-live="polite" hidden>0</span>
+                </span>
                 <p>Mis Reservas</p>
             </a>
         <?php endif; ?>

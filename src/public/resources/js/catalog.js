@@ -237,6 +237,46 @@
             syncSelectsToState();
             render();
         });
+
+        // Botón "Reservar" en cards (JS render) — delegado
+        if (dom.listaJs) {
+            dom.listaJs.addEventListener('click', function (e) {
+                var btn = e.target.closest('button.boton-reservar-card');
+                if (!btn) return;
+                var id = btn.dataset.bookId;
+                var book = findBookById(id);
+                if (book && window.Cart) {
+                    window.Cart.add({
+                        id: book.id,
+                        title: book.title,
+                        author: book.author,
+                        image: book.image,
+                        price: book.price
+                    });
+                    flashAddedFeedback(btn);
+                }
+            });
+        }
+    }
+
+    function findBookById(id) {
+        for (var i = 0; i < state.allBooks.length; i++) {
+            if (String(state.allBooks[i].id) === String(id)) return state.allBooks[i];
+        }
+        return null;
+    }
+
+    function flashAddedFeedback(btn) {
+        if (btn.dataset.flashing === '1') return;
+        var original = btn.textContent;
+        btn.dataset.flashing = '1';
+        btn.textContent = 'Agregado';
+        btn.disabled = true;
+        setTimeout(function () {
+            btn.textContent = original;
+            btn.disabled = false;
+            delete btn.dataset.flashing;
+        }, 1200);
     }
 
     // -------------------------------------------------------------------------
@@ -518,6 +558,8 @@
         var btn = document.createElement('button');
         btn.type = 'button';
         btn.textContent = 'Reservar';
+        btn.className = 'boton-reservar-card';
+        btn.dataset.bookId = book.id;
         article.appendChild(btn);
 
         li.appendChild(article);

@@ -50,4 +50,5 @@
     </nav>
 </footer>
 
+<script src="resources/js/cart.js"></script>
 <script src="resources/js/buscador-historial.js"></script>

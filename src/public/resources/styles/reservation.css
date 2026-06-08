@@ -122,6 +122,51 @@ main section article > button {
     padding: 0.5rem;
 }
 
+.reservation-vacia {
+    color: var(--color-negro);
+    background-color: var(--color-gris-oscuro);
+    padding: 1rem;
+    text-align: center;
+    border-radius: 0.4rem;
+}
+
+.reservation-cantidad {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: none;
+}
+
+.reservation-btn-cantidad {
+    background: var(--color-blanco);
+    border: 1px solid var(--color-violeta, #5c068c);
+    color: var(--color-violeta, #5c068c);
+    font-size: 1.1rem;
+    line-height: 1;
+    width: 1.9rem;
+    height: 1.9rem;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    padding: 0;
+}
+
+.reservation-btn-cantidad:hover {
+    background: var(--color-violeta, #5c068c);
+    color: var(--color-blanco);
+}
+
+.reservation-cantidad-valor {
+    min-width: 1.5rem;
+    text-align: center;
+    font-weight: bold;
+    color: var(--color-negro);
+}
+
+#reservation-confirmar:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 
 /* --- Formulario de datos personales --- */
 

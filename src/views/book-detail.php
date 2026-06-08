@@ -1,4 +1,4 @@
-<body>
+<body data-page="book-detail">
 
     <!-- Inclusión del encabezado global del sitio -->
     <?php require 'components/header.php'; ?>
@@ -89,7 +89,15 @@
                     </section>
 
                     <?php if (!($context['isAdmin'] ?? false)): ?>
-                        <button type="button" class="boton-reservar">Agregar a mis reservas</button>
+                        <button
+                            type="button"
+                            class="boton-reservar"
+                            data-book-id="<?= (int)($context['book']['id'] ?? 0) ?>"
+                            data-title="<?= htmlspecialchars($context['book']['title'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                            data-author="<?= htmlspecialchars($context['book']['author'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                            data-image="<?= htmlspecialchars($context['book']['image'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                            data-price="<?= htmlspecialchars((string)($context['book']['price'] ?? ''), ENT_QUOTES, 'UTF-8') ?>"
+                        >Agregar a mis reservas</button>
                     <?php endif; ?>
 
                 </article>

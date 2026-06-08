@@ -89,7 +89,15 @@
                         <p><?= $book['author'] ?></p>
                         <p>$ <?= number_format($book['price'], 2, ',', '.') ?></p>
                         <?php if (!($context['isAdmin'] ?? false)): ?>
-                            <button>Reservar</button>
+                            <button
+                                type="button"
+                                class="boton-reservar-card"
+                                data-book-id="<?= (int)$book['id'] ?>"
+                                data-title="<?= htmlspecialchars($book['title'], ENT_QUOTES, 'UTF-8') ?>"
+                                data-author="<?= htmlspecialchars($book['author'], ENT_QUOTES, 'UTF-8') ?>"
+                                data-image="<?= htmlspecialchars($book['image'], ENT_QUOTES, 'UTF-8') ?>"
+                                data-price="<?= htmlspecialchars((string)$book['price'], ENT_QUOTES, 'UTF-8') ?>"
+                            >Reservar</button>
                         <?php endif; ?>
                     </article>
 

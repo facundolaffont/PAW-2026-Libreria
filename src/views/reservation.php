@@ -1,4 +1,4 @@
-<body>
+<body data-page="reservation">
 
     <?php require 'components/header.php'; ?>
 
@@ -27,38 +27,11 @@
         <section>
             <h2>Libros seleccionados</h2>
 
-            <ul>
-                <li>
-                    <article>
-                        <img src="resources/images/portada-harry-potter.jpg" alt="Portada de Harry potter y la piedra filosofal">
-                        <div>
-                            <h3>Harry potter y la piedra filosofal</h3>
-                            <p>J. K. Rowling</p>
-                        </div>
-                        <button type="button" aria-label="Eliminar Harry potter y la piedra filosofal de la reserva"><img class="boton-eliminar" src="resources/images/ícono-eliminar.png" alt=""></button>
-                    </article>
-                </li>
-                <li>
-                    <article>
-                        <img src="resources/images/portada-harry-potter.jpg" alt="Portada de Harry potter y la piedra filosofal">
-                        <div>
-                            <h3>Harry potter y la piedra filosofal</h3>
-                            <p>J. K. Rowling</p>
-                        </div>
-                        <button type="button" aria-label="Eliminar Harry potter y la piedra filosofal de la reserva"><img class="boton-eliminar" src="resources/images/ícono-eliminar.png" alt=""></button>
-                    </article>
-                </li>
-                <li>
-                    <article>
-                        <img src="resources/images/portada-harry-potter.jpg" alt="Portada de Harry potter y la piedra filosofal">
-                        <div>
-                            <h3>Harry potter y la piedra filosofal</h3>
-                            <p>J. K. Rowling</p>
-                        </div>
-                        <button type="button" aria-label="Eliminar Harry potter y la piedra filosofal de la reserva"><img class="boton-eliminar" src="resources/images/ícono-eliminar.png" alt=""></button>
-                    </article>
-                </li>
-            </ul>
+            <p id="reservation-vacia" class="reservation-vacia" hidden>
+                Tu reserva está vacía. Agregá libros desde el <a href="catalog">catálogo</a>.
+            </p>
+
+            <ul id="reservation-lista" aria-live="polite"></ul>
         </section>
 
         <section>
@@ -74,16 +47,12 @@
                 Alternativa para archivos: multipart/form-data.
             -->
             <form
+                id="reservation-form"
                 action="/reservation"
                 method="post"
                 enctype="application/x-www-form-urlencoded"
             >
-                <input type="hidden" name="libros[0][titulo]" value="Harry potter y la piedra filosofal">
-                <input type="hidden" name="libros[0][autor]"  value="J. K. Rowling">
-                <input type="hidden" name="libros[1][titulo]" value="Harry potter y la piedra filosofal">
-                <input type="hidden" name="libros[1][autor]"  value="J. K. Rowling">
-                <input type="hidden" name="libros[2][titulo]" value="Harry potter y la piedra filosofal">
-                <input type="hidden" name="libros[2][autor]"  value="J. K. Rowling">
+                <div id="reservation-libros-hidden"></div>
                 <div>
                     <label for="nombre">Nombre completo</label>
                     <input
@@ -148,7 +117,7 @@
                     <?php endif; ?>
                 </div>
 
-                <button type="submit">Confirmar reserva</button>
+                <button type="submit" id="reservation-confirmar">Confirmar reserva</button>
             </form>
         </section>
 
