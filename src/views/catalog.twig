@@ -1,0 +1,235 @@
+{% extends 'base.twig' %}
+
+{#
+    Variables esperadas:
+    - context.allBooks: array<book> (definida en ContextBuilder->buildCatalogContext()).
+    - context.priceRange.min: number (definida en ContextBuilder->buildCatalogContext()).
+    - context.priceRange.max: number (definida en ContextBuilder->buildCatalogContext()).
+    - context.filters.q: string (definida en ContextBuilder->buildCatalogContext()).
+    - context.filters.generos: array<string> (definida en ContextBuilder->buildCatalogContext()).
+    - context.filters.precio_min: string|number (definida en ContextBuilder->buildCatalogContext()).
+    - context.filters.precio_max: string|number (definida en ContextBuilder->buildCatalogContext()).
+    - context.filters.autor: array<string> (definida en ContextBuilder->buildCatalogContext()).
+    - context.genres: array<string> (definida en ContextBuilder->buildCatalogContext()).
+    - context.authors: array<string> (definida en ContextBuilder->buildCatalogContext()).
+    - context.books: array<book> (definida en ContextBuilder->buildCatalogContext()).
+    - context.filterQuery: string (definida en ContextBuilder->buildCatalogContext()).
+    - context.currentPage: int (definida en ContextBuilder->buildCatalogContext()).
+    - context.totalPages: int (definida en ContextBuilder->buildCatalogContext()).
+    
+    - context.isAdmin: bool (definida en ContextBuiler::addSharedContext()).
+#}
+
+{% block content %}
+<div class="catalog-backdrop" id="catalog-backdrop" aria-hidden="true"></div>
+
+<main>
+    <div class="acciones-mobile">
+        <button type="button" id="btn-abrir-filtros" aria-controls="filtrar-mobile" aria-expanded="false">
+            Filtrar
+            <span class="filtros-activos-badge" id="filtros-badge" hidden></span>
+        </button>
+        <select id="ordenar-mobile-select" aria-label="Ordenar por">
+            <option value="titulo-asc">Título A–Z</option>
+            <option value="titulo-desc">Título Z–A</option>
+            <option value="precio-asc">Precio: menor a mayor</option>
+            <option value="precio-desc">Precio: mayor a menor</option>
+            <option value="autor-asc">Autor A–Z</option>
+            <option value="recientes">Más recientes</option>
+        </select>
+    </div>
+
+    <script id="catalog-data" type="application/json">{{ {
+        'books': context.allBooks|default([]),
+        'priceRange': context.priceRange|default({ 'min': 0, 'max': 99999 }),
+        'initialQ': context.filters.q|default('')
+    }|json_encode(constant('JSON_HEX_TAG') b-or constant('JSON_HEX_AMP'))|raw }}</script>
+
+    <div>
+        <aside aria-label="Filtros de búsqueda" id="filtrar-mobile" role="dialog" aria-modal="true">
+            <div class="aside-cabecera">
+                <h2>Filtros</h2>
+                <button type="button" id="btn-cerrar-filtros" aria-label="Cerrar filtros">&#x2715;</button>
+            </div>
+
+            <form action="/catalog" method="get" id="catalog-form">
+                <input type="hidden" name="q" value="{{ context.filters.q|default('') }}">
+
+                <details class="color-blanco">
+                    <summary>Categorías</summary>
+                    <nav aria-label="Filtrar por categoría">
+                        <ul>
+                            {% for genre in context.genres|default([]) %}
+                                <li>
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            name="genero[]"
+                                            value="{{ genre }}"
+                                            {% if genre in context.filters.generos|default([]) %}checked{% endif %}
+                                        >
+                                        {{ genre }}
+                                    </label>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </nav>
+                </details>
+
+                <details>
+                    <summary>Precio</summary>
+                    <div>
+                        <label for="precio-min">Desde</label>
+                        <input type="number" id="precio-min" name="precio_min" min="0" placeholder="$ 0" value="{{ context.filters.precio_min|default('') }}">
+                    </div>
+                    <div>
+                        <label for="precio-max">Hasta</label>
+                        <input type="number" id="precio-max" name="precio_max" min="0" placeholder="$ 99999" value="{{ context.filters.precio_max|default('') }}">
+                    </div>
+                </details>
+
+                <details class="filtro-autor">
+                    <summary>Autor</summary>
+                    {% set autores = context.authors|default([]) %}
+                    {% set autoresVisibles = autores|slice(0, 7) %}
+                    {% set autoresOcultos = autores|slice(7) %}
+
+                    <ul class="autor-lista" id="autor-lista">
+                        {% for autor in autoresVisibles %}
+                            <li>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        name="autor[]"
+                                        value="{{ autor }}"
+                                        {% if autor in context.filters.autor|default([]) %}checked{% endif %}
+                                    >
+                                    {{ autor }}
+                                </label>
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    {% if autoresOcultos|length > 0 %}
+                        <ul class="autor-lista autor-lista-oculta" id="autor-lista-oculta" style="display: none;">
+                            {% for autor in autoresOcultos %}
+                                <li>
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            name="autor[]"
+                                            value="{{ autor }}"
+                                            {% if autor in context.filters.autor|default([]) %}checked{% endif %}
+                                        >
+                                        {{ autor }}
+                                    </label>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <button type="button" class="autor-ver-todos" id="autor-ver-todos">Ver todos</button>
+                    {% endif %}
+                </details>
+
+                <button type="button" id="aplicar-filtros-mobile">Aplicar filtros</button>
+                <button type="button" id="limpiar-filtros">Limpiar filtros</button>
+            </form>
+        </aside>
+
+        <section aria-label="Listado de libros">
+            <h2>Libros</h2>
+
+            <div class="catalog-controles-barra">
+                <div id="ordenar-desktop-wrap">
+                    <label for="ordenar">Ordenar por:</label>
+                    <select id="ordenar" name="orden">
+                        <option value="titulo-asc">Título A–Z</option>
+                        <option value="titulo-desc">Título Z–A</option>
+                        <option value="precio-asc">Precio: menor a mayor</option>
+                        <option value="precio-desc">Precio: mayor a menor</option>
+                        <option value="autor-asc">Autor A–Z</option>
+                        <option value="recientes">Más recientes</option>
+                    </select>
+                </div>
+                <div class="catalog-vista-controles">
+                    <label for="por-pagina">Por página:</label>
+                    <select id="por-pagina">
+                        <option value="12">12</option>
+                        <option value="24">24</option>
+                        <option value="48">48</option>
+                    </select>
+                    <label class="toggle-scroll-label">
+                        <input type="checkbox" id="scroll-infinito"> Scroll infinito
+                    </label>
+                </div>
+                <p class="catalog-resultado-count" id="resultado-count" aria-live="polite"></p>
+            </div>
+
+            <ul id="catalog-lista-js" hidden></ul>
+            <div id="catalog-sentinel" class="catalog-sentinel" aria-hidden="true"></div>
+            <nav id="catalog-paginacion-js" aria-label="Paginación del catálogo" hidden></nav>
+
+            <div class="catalog-server-render">
+                <ul>
+                    {% for book in context.books|default([]) %}
+                        <li>
+                            <article>
+                                <a href="book-detail?id={{ book.id }}">
+                                    <picture>
+                                        {% for source in book.responsiveImage.sources|default([]) %}
+                                            <source srcset="resources/images/{{ source.url }}" media="( max-width: {{ source.maxWidth }}px )">
+                                        {% endfor %}
+                                        <img src="resources/images/{{ book.responsiveImage.fallbackSrc|default('') }}" alt="{{ book.title }}">
+                                    </picture>
+                                    <h3>{{ book.title }}</h3>
+                                </a>
+                                <p>{{ book.author }}</p>
+                                <p><strong>$ {{ book.price|number_format(2, ',', '.') }}</strong></p>
+                                {% if not context.isAdmin|default(false) %}
+                                    <button type="button">Reservar</button>
+                                {% endif %}
+                            </article>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <nav aria-label="Paginación del catálogo">
+                    <ol>
+                        {% set fq = context.filterQuery|default('') ? '&' ~ context.filterQuery : '' %}
+                        {% if context.currentPage|default(1) > 1 %}
+                            <li>
+                                <a href="catalog?pagina={{ context.currentPage - 1 }}{{ fq }}" aria-label="Página anterior">Anterior</a>
+                            </li>
+                        {% endif %}
+                        {% for i in 1..(context.totalPages|default(1)) %}
+                            <li>
+                                <a
+                                    href="catalog?pagina={{ i }}{{ fq }}"
+                                    aria-label="Página {{ i }}"
+                                    {% if i == context.currentPage|default(1) %}aria-current="page"{% endif %}
+                                >{{ i }}</a>
+                            </li>
+                        {% endfor %}
+                        {% if context.currentPage|default(1) < context.totalPages|default(1) %}
+                            <li>
+                                <a href="catalog?pagina={{ context.currentPage + 1 }}{{ fq }}" aria-label="Página siguiente">Siguiente</a>
+                            </li>
+                        {% endif %}
+                    </ol>
+                </nav>
+
+                <p class="descargar-csv-wrapper">
+                    <a
+                        href="catalog?{{ context.filterQuery|default('') }}{{ context.filterQuery|default('') ? '&' : '' }}format=csv"
+                        id="descargar-csv"
+                        class="descargar-csv"
+                    >Descargar vista actual en CSV</a>
+                </p>
+            </div>
+
+            <p class="descargar-csv-wrapper catalog-csv-js" hidden>
+                <a href="/catalog?format=csv" id="descargar-csv-js" class="descargar-csv">Descargar vista actual en CSV</a>
+            </p>
+        </section>
+    </div>
+</main>
+{% endblock %}

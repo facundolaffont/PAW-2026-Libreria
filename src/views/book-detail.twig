@@ -1,0 +1,62 @@
+{% extends 'base.twig' %}
+
+{#
+    Variables esperadas:
+    - context.book: book (definida en ContextBuilder->buildBookDetailContext()).
+    - context.isAdmin: bool (definida en ContextBuilder::addSharedContext()).
+#}
+
+{% block content %}
+<main>
+    <nav aria-label="Migas de pan">
+        <ol>
+            <li><a href="#">Detalle de libro</a></li>
+        </ol>
+    </nav>
+
+    <section class="contenido-detalle">
+        <h2>Detalle del libro</h2>
+
+        {% if context.book|default(false) %}
+            <figure class="portada">
+                <picture>
+                    {% for source in context.book.responsiveImage.sources|default([]) %}
+                        <source
+                            srcset="resources/images/{{ source.url }}"
+                            media="(max-width: {{ source.maxWidth }}px)"
+                        >
+                    {% endfor %}
+
+                    <img
+                        src="resources/images/{{ context.book.responsiveImage.fallbackSrc|default('default.jpg') }}"
+                        alt="Portada del libro {{ context.book.title }}"
+                    >
+                </picture>
+            </figure>
+
+            <article class="info-libro">
+                <h3 class="titulo-libro">{{ context.book.title }}</h3>
+                <p class="autor">por {{ context.book.author }}</p>
+
+                <section class="seccion-descripcion">
+                    <h4>Descripción</h4>
+                    <p>{{ context.book.description|default('Sin descripción.')|nl2br }}</p>
+                </section>
+
+                <section class="seccion-generos">
+                    <h4>Géneros</h4>
+                    <p>{{ context.book.genre|default('Sin género') }}</p>
+                </section>
+
+                {% if not context.isAdmin|default(false) %}
+                    <button type="button" class="boton-reservar">Agregar a mis reservas</button>
+                {% endif %}
+            </article>
+        {% else %}
+            <p class="error-libro-no-encontrado" role="alert">
+                El libro solicitado no existe o no se encuentra disponible.
+            </p>
+        {% endif %}
+    </section>
+</main>
+{% endblock %}

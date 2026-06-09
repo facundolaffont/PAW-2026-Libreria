@@ -1,0 +1,80 @@
+{% extends 'base.twig' %}
+
+{#
+    Variables esperadas:
+    - context.booksByGenre: array<string, array<book>> (definida en ContextBuilder->buildHomePageContext()).
+    - context.promotions: array<promotion> (definida en ContextBuilder->buildHomePageContext()).
+    - context.isAdmin: bool (definida en ContextBuilder->addSharedContext()).
+#}
+
+{% block content %}
+<main>
+    {% set bookCarouselEffects = ['slide', 'block', 'disappear'] %}
+    {% set bookCarouselIndex = 0 %}
+
+    {% for genre, genreBooks in context.booksByGenre|default({}) %}
+    <section
+        class="carrusel"
+        data-effect="{{ bookCarouselEffects[bookCarouselIndex % bookCarouselEffects|length] }}"
+    >
+        <h2>{{ genre }}</h2>
+
+        <div class="contenedor-carrusel">
+            {% for book in genreBooks %}
+                <article class="libro">
+                    <a href="book-detail?id={{ book.id }}">
+                        <picture>
+                            {% for source in book.responsiveImage.sources|default([]) %}
+                                <source
+                                    data-carousel-srcset="resources/images/{{ source.url }}"
+                                    media="( max-width: {{ source.maxWidth }}px )"
+                                >
+                            {% endfor %}
+                            <img
+                                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2 3'%3E%3Crect width='2' height='3' fill='white'/%3E%3C/svg%3E"
+                                data-carousel-src="resources/images/{{ book.responsiveImage.fallbackSrc|default('') }}"
+                                alt="{{ book.title }}"
+                            >
+                        </picture>
+                        <h3>{{ book.title }}</h3>
+                    </a>
+                    <p>{{ book.author }}</p>
+                    <p>$ {{ book.price|number_format(2, ',', '.') }}</p>
+                    {% if not context.isAdmin|default(false) %}
+                        <button>Reservar</button>
+                    {% endif %}
+                </article>
+            {% endfor %}
+        </div>
+    </section>
+
+    {% set bookCarouselIndex = bookCarouselIndex + 1 %}
+    {% endfor %}
+</main>
+
+<section class="carrusel" data-effect="block">
+    <h2>Promociones</h2>
+
+    <div class="contenedor-carrusel">
+        {% for promotion in context.promotions|default([]) %}
+        <article class="promocion">
+            <a href="promotions">
+                <picture>
+                    {% for source in promotion.responsiveImage.sources|default([]) %}
+                        <source
+                            data-carousel-srcset="resources/images/{{ source.url }}"
+                            media="( max-width: {{ source.maxWidth }}px )"
+                        >
+                    {% endfor %}
+                    <img
+                        src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='white'/%3E%3C/svg%3E"
+                        data-carousel-src="resources/images/{{ promotion.responsiveImage.fallbackSrc|default('') }}"
+                        alt="{{ promotion.description }}"
+                    >
+                </picture>
+            </a>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
