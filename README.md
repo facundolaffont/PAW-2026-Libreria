@@ -77,7 +77,14 @@ A continuación se detallará la información sobre cada entrega que se va solic
 
 **Prueba del sistema**: ver sección "Ejecución del proyecto".
 
-## Respuestas teóricas
+### 5ta entrega (08/06/26)
+
+[Consignas del trabajo práctico 5]
+
+**Prueba del sistema**: ver sección "Ejecución del proyecto".
+**Preguntas teóricas**: ver sección "Preguntas teóricas".
+
+## Preguntas teóricas
 
 ### ¿Qué es un ataque de inyección SQL?
 
