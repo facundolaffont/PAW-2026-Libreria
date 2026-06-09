@@ -121,8 +121,8 @@
                 $where[] = 'author IN (' . implode(', ', $placeholders) . ')';
             }
             if (!empty($filters['q'])) {
-                $where[]     = '(title LIKE :q OR author LIKE :q OR genre LIKE :q)';
-                $params[':q'] = '%' . $filters['q'] . '%';
+                $where[]      = '(title LIKE :q OR author LIKE :q OR genre LIKE :q)';
+                $params[':q'] = '%' . addcslashes($filters['q'], '%_\\') . '%';
             }
 
             return [

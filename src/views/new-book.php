@@ -131,16 +131,18 @@
                     placeholder="Ej: 9789877358100"
                     maxlength="13"
                     value="<?= htmlspecialchars($context['isbn'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
-                    aria-describedby="isbn-error"
+                    aria-describedby="isbn-error ol-status"
                     <?= !empty($context['errors']['isbn']) ? 'aria-invalid="true"' : '' ?>
                 >
                 <span id="isbn-error" class="campo-error" role="alert">
                     <?= htmlspecialchars($context['errors']['isbn'] ?? '', ENT_QUOTES, 'UTF-8') ?>
                 </span>
+                <span id="ol-status" class="ol-status" role="status" hidden></span>
             </div>
 
             <div class="campo-grupo campo-imagen">
-                <label for="imagen">Imagen de portada <span class="obligatorio" aria-hidden="true">*</span></label>
+                <label for="imagen">Imagen de portada</label>
+                <p class="campo-ayuda">Opcional. Si ingresaste un ISBN, la tapa se buscará automáticamente en Open Library.</p>
                 <div class="zona-drop" id="zona-drop" role="button" tabindex="0"
                      aria-label="Arrastrá o hacé clic para subir una imagen"
                      aria-describedby="imagen-error">
@@ -181,5 +183,6 @@
 
     <script src="resources/js/components/DragDropImage.js"></script>
     <script src="resources/js/new-book-validation.js"></script>
+    <script src="resources/js/open-library.js"></script>
 
 </body>

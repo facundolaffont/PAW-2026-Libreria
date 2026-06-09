@@ -2,6 +2,7 @@
 
     namespace Paw\Controllers;
 
+    use Paw\Interfaces\ReservationRepositoryInterface;
     use Paw\Services\EmailService;
     use Paw\View;
     use Psr\Log\LoggerInterface;
@@ -21,8 +22,9 @@
         private const TELEFONO_PATTERN = '/^[0-9+\-\s]+$/';
 
         public function __construct(
-            private EmailService    $emailService,
-            private LoggerInterface $logger
+            private EmailService                  $emailService,
+            private ReservationRepositoryInterface $reservationRepository,
+            private LoggerInterface               $logger
         ) {}
 
         /**
@@ -54,20 +56,13 @@
                 return;
             }
 
-            $enviado = $this->emailService->sendReservationNotification($nombre, $email, $telefono, $libros);
+            $id = $this->reservationRepository->save($nombre, $email, $telefono, $libros);
+            $this->logger->info("Reserva guardada.", ['id' => $id, 'email' => $email]);
 
-            if ($enviado) {
-                // PRG: redirige en GET para evitar reenvíos al refrescar la página.
-                header('Location: /reservation?enviada=1');
-                exit;
-            }
+            $this->emailService->sendReservationNotification($nombre, $email, $telefono, $libros);
 
-            View::render('reservation', 'Reserva', $this->logger, [
-                'errors'   => ['general' => 'Hubo un problema al enviar la reserva. Por favor, intentá nuevamente.'],
-                'nombre'   => $nombre,
-                'email'    => $email,
-                'telefono' => $telefono,
-            ]);
+            header('Location: /reservation?enviada=1');
+            exit;
         }
 
         private function validate(string $nombre, string $email, string $telefono): array {

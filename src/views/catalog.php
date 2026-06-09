@@ -25,26 +25,6 @@
             </select>
         </div>
 
-        <script id="catalog-data" type="application/json">
-            <?php // JSON island: todos los libros para el motor JS.  ?>
-            <?=
-                json_encode([
-                    'books'      => $context['allBooks'] ?? [],
-                    'priceRange' => $context['priceRange'] ?? ['min' => 0, 'max' => 99999],
-                    'initialQ'   => $context['filters']['q'] ?? '',
-                ],
-                
-                // Transforma los símbolos '<' y '>' en sus representaciones hexadecimales de Unicode.
-                // Evita que el navegador ejecute código JavaScript si viene embebido en los datos en un nuevo
-                // <script>.
-                JSON_HEX_TAG | 
-                
-                // Transforma el símbolo '&' en su representación hexadecimal de Unicode.
-                // Evita que el navegador confunda un carácter ampersand con el inicio de una entidad HTML.
-                JSON_HEX_AMP) 
-            ?>
-        </script>
-
         <div>
 
             <aside aria-label="Filtros de búsqueda" id="filtrar-mobile" role="dialog" aria-modal="true">
