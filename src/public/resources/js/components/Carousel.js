@@ -164,13 +164,13 @@ class Carousel {
         this.#container.classList.add('carousel-track');
         this.#container.classList.add('carousel-effect-' + this.#effect);
 
-        this.#prevButton = Utilities.newElement('button', "", {
+        this.#prevButton = this.#newElement('button', "", {
             type: 'button',
             'class': 'flecha flecha-izq',
             'aria-label': 'Imagen anterior'
         });
 
-        this.#nextButton = Utilities.newElement('button', "", {
+        this.#nextButton = this.#newElement('button', "", {
             type: 'button',
             'class': 'flecha flecha-der',
             'aria-label': 'Imagen siguiente'
@@ -179,7 +179,7 @@ class Carousel {
         this.#root.appendChild(this.#prevButton);
         this.#root.appendChild(this.#nextButton);
 
-        this.#progress = Utilities.newElement('div',
+        this.#progress = this.#newElement('div',
             '<div class="carousel-progress-bar"></div><span class="carousel-progress-label">0%</span>',
             {
                 'class': 'carousel-progress'
@@ -190,18 +190,18 @@ class Carousel {
         this.#progressLabel = this.#progress.querySelector('.carousel-progress-label');
         this.#root.appendChild(this.#progress);
 
-        this.#thumbsContainer = Utilities.newElement('div', '', {
+        this.#thumbsContainer = this.#newElement('div', '', {
             'class': 'carousel-thumbs'
         });
 
         this.#thumbButtons = this.#items.map((item, index) => {
             // Contenedor para un thumb y su marca de selección.
-            const thumbWrapper = Utilities.newElement('div', '', {
+            const thumbWrapper = this.#newElement('div', '', {
                 'class': 'carousel-thumb-wrapper'
             });
 
             // Crea el botón del thumb.
-            const thumb = Utilities.newElement('button', '', {
+            const thumb = this.#newElement('button', '', {
                 type: 'button',
                 'class': 'carousel-thumb is-loading',
                 'aria-label': 'Ir a imagen ' + (index + 1),
@@ -209,7 +209,7 @@ class Carousel {
             });
 
             // Crea la marca de selección.
-            const indicator = Utilities.newElement('span', '', {
+            const indicator = this.#newElement('span', '', {
                 'class': 'carousel-thumb-indicator'
             });
 
@@ -220,6 +220,30 @@ class Carousel {
         });
 
         this.#root.appendChild(this.#thumbsContainer);
+    }
+
+    /**
+     * Crea un elemento HTML con atributos y contenido opcional.
+     *
+     * @param {string} tagName - Etiqueta del elemento a crear.
+     * @param {string} content - Texto o HTML según allowHtml.
+     * @param {Record<string, string>} attributes - Atributos a setear.
+     * @param {boolean} allowHtml - Si true, interpreta content como HTML.
+     * @returns {HTMLElement}
+     */
+    #newElement(tagName, content = '', attributes = {}, allowHtml = false) {
+        const element = document.createElement(tagName);
+
+        Object.entries(attributes).forEach(([name, value]) => {
+            element.setAttribute(name, value);
+        });
+
+        if (content) {
+            if (allowHtml) element.innerHTML = content;
+            else element.textContent = content;
+        }
+
+        return element;
     }
 
     /**

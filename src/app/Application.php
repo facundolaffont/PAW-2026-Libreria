@@ -26,7 +26,7 @@
             $logger->info("{$method} {$path}");
 
             // Inicializa el usuario actual en sesión y permite alternar con ?user=admin|client.
-            UserSessionManager::bootstrapFromRequest($_GET);
+            UserSessionManager::ensureUserSession($_GET);
 
             // Si el rol actual es administrador, la sección de reservas no aplica.
             // Se redirige a home para mantener una UX coherente al cambiar de rol.

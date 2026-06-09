@@ -1,0 +1,171 @@
+{% extends 'base.twig' %}
+
+{#
+    Variables esperadas:
+    - context.query.creado: string (definida en el render de la vista).
+    - context.errors.general: string (definida en el render de la vista).
+    - context.errors.titulo: string (definida en el render de la vista).
+    - context.errors.autor: string (definida en el render de la vista).
+    - context.errors.genero: string (definida en el render de la vista).
+    - context.errors.precio: string (definida en el render de la vista).
+    - context.errors.stock: string (definida en el render de la vista).
+    - context.errors.isbn: string (definida en el render de la vista).
+    - context.errors.imagen: string (definida en el render de la vista).
+    - context.errors.descripcion: string (definida en el render de la vista).
+    - context.titulo: string (definida en el render de la vista).
+    - context.autor: string (definida en el render de la vista).
+    - context.genero: string (definida en el render de la vista).
+    - context.precio: string|number (definida en el render de la vista).
+    - context.stock: string|number (definida en el render de la vista).
+    - context.isbn: string (definida en el render de la vista).
+    - context.descripcion: string (definida en el render de la vista).
+#}
+
+{% block content %}
+<main>
+    <h1>Cargar nuevo libro</h1>
+
+    {% if context.query.creado|default('') == '1' %}
+        <div class="alerta alerta-exito" role="alert">
+            <p>¡El libro fue dado de alta correctamente!</p>
+        </div>
+    {% endif %}
+
+    {% if context.errors.general|default('') %}
+        <div class="alerta alerta-error" role="alert">
+            <p>{{ context.errors.general }}</p>
+        </div>
+    {% endif %}
+
+    <form id="form-nuevo-libro" action="/new-book" method="post" enctype="multipart/form-data" novalidate>
+        <div class="campo-grupo">
+            <label for="titulo">Título <span class="obligatorio" aria-hidden="true">*</span></label>
+            <input
+                type="text"
+                id="titulo"
+                name="titulo"
+                placeholder="Ej: Cien años de soledad"
+                maxlength="255"
+                value="{{ context.titulo|default('') }}"
+                aria-describedby="titulo-error"
+                aria-required="true"
+                {% if context.errors.titulo|default('') %}aria-invalid="true"{% endif %}
+            >
+            <span id="titulo-error" class="campo-error" role="alert">{{ context.errors.titulo|default('') }}</span>
+        </div>
+
+        <div class="campo-grupo">
+            <label for="autor">Autor <span class="obligatorio" aria-hidden="true">*</span></label>
+            <input
+                type="text"
+                id="autor"
+                name="autor"
+                placeholder="Ej: Gabriel García Márquez"
+                minlength="2"
+                maxlength="255"
+                value="{{ context.autor|default('') }}"
+                aria-describedby="autor-error"
+                aria-required="true"
+                {% if context.errors.autor|default('') %}aria-invalid="true"{% endif %}
+            >
+            <span id="autor-error" class="campo-error" role="alert">{{ context.errors.autor|default('') }}</span>
+        </div>
+
+        <div class="campo-grupo">
+            <label for="genero">Género</label>
+            <input
+                type="text"
+                id="genero"
+                name="genero"
+                placeholder="Ej: Realismo mágico"
+                maxlength="100"
+                value="{{ context.genero|default('') }}"
+                aria-describedby="genero-error"
+                {% if context.errors.genero|default('') %}aria-invalid="true"{% endif %}
+            >
+            <span id="genero-error" class="campo-error" role="alert">{{ context.errors.genero|default('') }}</span>
+        </div>
+
+        <div class="campo-grupo">
+            <label for="precio">Precio <span class="obligatorio" aria-hidden="true">*</span></label>
+            <input
+                type="text"
+                inputmode="decimal"
+                id="precio"
+                name="precio"
+                placeholder="Ej: 1500.00"
+                value="{{ context.precio|default('') }}"
+                aria-describedby="precio-error"
+                aria-required="true"
+                {% if context.errors.precio|default('') %}aria-invalid="true"{% endif %}
+            >
+            <span id="precio-error" class="campo-error" role="alert">{{ context.errors.precio|default('') }}</span>
+        </div>
+
+        <div class="campo-grupo">
+            <label for="stock">Stock <span class="obligatorio" aria-hidden="true">*</span></label>
+            <input
+                type="text"
+                inputmode="numeric"
+                id="stock"
+                name="stock"
+                placeholder="Ej: 10"
+                value="{{ context.stock|default('') }}"
+                aria-describedby="stock-error"
+                aria-required="true"
+                {% if context.errors.stock|default('') %}aria-invalid="true"{% endif %}
+            >
+            <span id="stock-error" class="campo-error" role="alert">{{ context.errors.stock|default('') }}</span>
+        </div>
+
+        <div class="campo-grupo">
+            <label for="isbn">ISBN</label>
+            <input
+                type="text"
+                inputmode="numeric"
+                id="isbn"
+                name="isbn"
+                placeholder="Ej: 9789877358100"
+                maxlength="13"
+                value="{{ context.isbn|default('') }}"
+                aria-describedby="isbn-error"
+                {% if context.errors.isbn|default('') %}aria-invalid="true"{% endif %}
+            >
+            <span id="isbn-error" class="campo-error" role="alert">{{ context.errors.isbn|default('') }}</span>
+        </div>
+
+        <div class="campo-grupo campo-imagen">
+            <label for="imagen">Imagen de portada <span class="obligatorio" aria-hidden="true">*</span></label>
+            <div class="zona-drop" id="zona-drop" role="button" tabindex="0" aria-label="Arrastrá o hacé clic para subir una imagen" aria-describedby="imagen-error">
+                <p>Arrastrá una imagen aquí o hacé clic para seleccionar</p>
+            </div>
+            <input type="file" id="imagen" name="imagen" accept="image/jpeg,image/png,image/webp" class="sr-only">
+            <span id="imagen-error" class="campo-error" role="alert">{{ context.errors.imagen|default('') }}</span>
+        </div>
+
+        <div class="campo-grupo campo-descripcion">
+            <label for="descripcion">Descripción</label>
+            <textarea
+                id="descripcion"
+                name="descripcion"
+                rows="5"
+                maxlength="2000"
+                placeholder="Sinopsis o descripción del libro"
+                aria-describedby="descripcion-error descripcion-contador"
+                {% if context.errors.descripcion|default('') %}aria-invalid="true"{% endif %}
+            >{{ context.descripcion|default('') }}</textarea>
+            <span id="descripcion-contador" class="campo-contador" aria-live="polite"></span>
+            <span id="descripcion-error" class="campo-error" role="alert">{{ context.errors.descripcion|default('') }}</span>
+        </div>
+
+        <p class="leyenda-obligatorio"><span class="obligatorio" aria-hidden="true">*</span> Campos obligatorios</p>
+
+        <button type="submit">Guardar libro</button>
+    </form>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script src="resources/js/components/DragDropImage.js"></script>
+<script src="resources/js/new-book-validation.js"></script>
+{% endblock %}

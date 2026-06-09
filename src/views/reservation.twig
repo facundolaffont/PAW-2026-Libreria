@@ -1,0 +1,146 @@
+{% extends 'base.twig' %}
+
+{#
+    Variables esperadas:
+    - context.query.enviada: string (definida en el render de la vista).
+    - context.errors.general: string (definida en el render de la vista).
+    - context.errors.nombre: string (definida en el render de la vista).
+    - context.errors.email: string (definida en el render de la vista).
+    - context.errors.telefono: string (definida en el render de la vista).
+    - context.nombre: string (definida en el render de la vista).
+    - context.email: string (definida en el render de la vista).
+    - context.telefono: string (definida en el render de la vista).
+#}
+
+{% block content %}
+<main>
+    <nav aria-label="Migas de pan">
+        <ol>
+            <li><a href="#">Reserva de libros</a></li>
+        </ol>
+    </nav>
+
+    <h1>Mi reserva</h1>
+
+    {% if context.query.enviada|default('') == '1' %}
+        <div class="alerta alerta-exito" role="alert">
+            <p>¡Tu reserva fue enviada con éxito! Nos comunicaremos contigo a la brevedad.</p>
+        </div>
+    {% endif %}
+
+    {% if context.errors.general|default('') %}
+        <div class="alerta alerta-error" role="alert">
+            <p>{{ context.errors.general }}</p>
+        </div>
+    {% endif %}
+
+    <section>
+        <h2>Libros seleccionados</h2>
+        <ul>
+            <li>
+                <article>
+                    <img src="resources/images/portada-harry-potter.jpg" alt="Portada de Harry potter y la piedra filosofal">
+                    <div>
+                        <h3>Harry potter y la piedra filosofal</h3>
+                        <p>J. K. Rowling</p>
+                    </div>
+                    <button type="button" aria-label="Eliminar Harry potter y la piedra filosofal de la reserva"><img class="boton-eliminar" src="resources/images/ícono-eliminar.png" alt=""></button>
+                </article>
+            </li>
+            <li>
+                <article>
+                    <img src="resources/images/portada-harry-potter.jpg" alt="Portada de Harry potter y la piedra filosofal">
+                    <div>
+                        <h3>Harry potter y la piedra filosofal</h3>
+                        <p>J. K. Rowling</p>
+                    </div>
+                    <button type="button" aria-label="Eliminar Harry potter y la piedra filosofal de la reserva"><img class="boton-eliminar" src="resources/images/ícono-eliminar.png" alt=""></button>
+                </article>
+            </li>
+            <li>
+                <article>
+                    <img src="resources/images/portada-harry-potter.jpg" alt="Portada de Harry potter y la piedra filosofal">
+                    <div>
+                        <h3>Harry potter y la piedra filosofal</h3>
+                        <p>J. K. Rowling</p>
+                    </div>
+                    <button type="button" aria-label="Eliminar Harry potter y la piedra filosofal de la reserva"><img class="boton-eliminar" src="resources/images/ícono-eliminar.png" alt=""></button>
+                </article>
+            </li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Datos personales</h2>
+
+        <form action="/reservation" method="post" enctype="application/x-www-form-urlencoded">
+            <input type="hidden" name="libros[0][titulo]" value="Harry potter y la piedra filosofal">
+            <input type="hidden" name="libros[0][autor]" value="J. K. Rowling">
+            <input type="hidden" name="libros[1][titulo]" value="Harry potter y la piedra filosofal">
+            <input type="hidden" name="libros[1][autor]" value="J. K. Rowling">
+            <input type="hidden" name="libros[2][titulo]" value="Harry potter y la piedra filosofal">
+            <input type="hidden" name="libros[2][autor]" value="J. K. Rowling">
+
+            <div>
+                <label for="nombre">Nombre completo</label>
+                <input
+                    type="text"
+                    id="nombre"
+                    name="nombre"
+                    placeholder="Ej: Juan Garcia"
+                    required
+                    minlength="2"
+                    maxlength="100"
+                    pattern="[A-Za-záéíóúüñÁÉÍÓÚÜÑ\s]+"
+                    value="{{ context.nombre|default('') }}"
+                    aria-describedby="nombre-error"
+                    {% if context.errors.nombre|default('') %}aria-invalid="true"{% endif %}
+                >
+                {% if context.errors.nombre|default('') %}
+                    <span id="nombre-error" class="campo-error" role="alert">{{ context.errors.nombre }}</span>
+                {% endif %}
+            </div>
+
+            <div>
+                <label for="email">Email</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Ej: mi_correo@gmail.com"
+                    required
+                    maxlength="254"
+                    value="{{ context.email|default('') }}"
+                    aria-describedby="email-error"
+                    {% if context.errors.email|default('') %}aria-invalid="true"{% endif %}
+                >
+                {% if context.errors.email|default('') %}
+                    <span id="email-error" class="campo-error" role="alert">{{ context.errors.email }}</span>
+                {% endif %}
+            </div>
+
+            <div>
+                <label for="telefono">Teléfono</label>
+                <input
+                    type="tel"
+                    id="telefono"
+                    name="telefono"
+                    placeholder="Ej: 1126660206"
+                    required
+                    minlength="8"
+                    maxlength="20"
+                    pattern="[0-9+\-\s]+"
+                    value="{{ context.telefono|default('') }}"
+                    aria-describedby="telefono-error"
+                    {% if context.errors.telefono|default('') %}aria-invalid="true"{% endif %}
+                >
+                {% if context.errors.telefono|default('') %}
+                    <span id="telefono-error" class="campo-error" role="alert">{{ context.errors.telefono }}</span>
+                {% endif %}
+            </div>
+
+            <button type="submit">Confirmar reserva</button>
+        </form>
+    </section>
+</main>
+{% endblock %}
