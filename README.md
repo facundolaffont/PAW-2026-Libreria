@@ -79,7 +79,7 @@ A continuación se detallará la información sobre cada entrega que se va solic
 
 ### 5ta entrega (08/06/26)
 
-[Consignas del trabajo práctico 5]
+[Consignas del trabajo práctico 5](https://github.com/facundolaffont/PAW-2026-Libreria/raw/9bf6baba593327fc5c809753605a19f8e3a390c7/tps/tp5.pdf).
 
 **Prueba del sistema**: ver sección "Ejecución del proyecto".
 **Preguntas teóricas**: ver sección "Preguntas teóricas".
