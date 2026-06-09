@@ -2,64 +2,35 @@
 
 {% block content %}
 <main>
-    <h2>Promociones Bancarias</h2>
+    <h1>Promociones</h1>
 
-    <ul>
-        <li>
-            <article aria-label="Promoción Banco Nación">
-                <figure>
-                    <img src="resources/images/placeholder-promocion-logo.png" alt="Logo Banco">
-                </figure>
-                <p>[Banco y texto explicativo de la promoción]</p>
-                <h3>Explicación de los detalles:</h3>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi hic dolorem fugit a cumque ut doloribus quod ad in illo, laudantium aut unde quibusdam. Expedita sed officia dolorum eaque adipisci!
-                </p>
-            </article>
-            <hr>
-        </li>
-
-        <li>
-            <article aria-label="Promoción Banco Provincia">
-                <figure>
-                    <img src="resources/images/placeholder-promocion-logo.png" alt="Logo Banco">
-                </figure>
-                <p>[Banco y texto explicativo de la promoción]</p>
-                <h3>Explicación de los detalles:</h3>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi hic dolorem fugit a cumque ut doloribus quod ad in illo, laudantium aut unde quibusdam. Expedita sed officia dolorum eaque adipisci!
-                </p>
-            </article>
-            <hr>
-        </li>
-
-        <li>
-            <article aria-label="Promoción Banco Galicia">
-                <figure>
-                    <img src="resources/images/placeholder-promocion-logo.png" alt="Logo Banco">
-                </figure>
-                <p>[Banco y texto explicativo de la promoción]</p>
-                <h3>Explicación de los detalles:</h3>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi hic dolorem fugit a cumque ut doloribus quod ad in illo, laudantium aut unde quibusdam. Expedita sed officia dolorum eaque adipisci!
-                </p>
-            </article>
-            <hr>
-        </li>
-
-        <li>
-            <article aria-label="Promoción Banco Macro">
-                <figure>
-                    <img src="resources/images/placeholder-promocion-logo.png" alt="Logo Banco">
-                </figure>
-                <p>[Banco y texto explicativo de la promoción]</p>
-                <h3>Explicación de los detalles:</h3>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi hic dolorem fugit a cumque ut doloribus quod ad in illo, laudantium aut unde quibusdam. Expedita sed officia dolorum eaque adipisci!
-                </p>
-            </article>
-            <hr>
-        </li>
-    </ul>
+    {% if context.promotions|default([])|length == 0 %}
+        <p>No hay promociones disponibles en este momento.</p>
+    {% else %}
+        <ul class="promotions-lista">
+            {% for promotion in context.promotions %}
+                <li>
+                    <article class="promotion-item">
+                        <figure>
+                            <picture>
+                                {% for source in promotion.responsiveImage.sources|default([]) %}
+                                    <source
+                                        srcset="resources/images/{{ source.url }}"
+                                        media="(max-width: {{ source.maxWidth }}px)"
+                                    >
+                                {% endfor %}
+                                <img
+                                    src="resources/images/{{ promotion.responsiveImage.fallbackSrc|default('') }}"
+                                    alt="{{ promotion.description }}"
+                                >
+                            </picture>
+                        </figure>
+                        <p>{{ promotion.description }}</p>
+                    </article>
+                    <hr>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 </main>
 {% endblock %}

@@ -187,6 +187,10 @@ main section article > button {
     color: var(--color-negro);
 }
 
+.reservation-total[hidden] {
+    display: none;
+}
+
 .reservation-total-valor {
     color: var(--color-violeta, #5c068c);
     font-size: 1.4rem;

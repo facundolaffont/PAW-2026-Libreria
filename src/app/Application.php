@@ -21,7 +21,7 @@
             // Security headers
             header('X-Content-Type-Options: nosniff');
             header('X-Frame-Options: DENY');
-            header("Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; frame-ancestors 'none'");
+            header("Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://covers.openlibrary.org https://archive.org https://*.archive.org; font-src 'self'; connect-src 'self' https://openlibrary.org; frame-ancestors 'none'");
 
             $logger = $this->dependencyContainer->get(LoggerInterface::class);
 

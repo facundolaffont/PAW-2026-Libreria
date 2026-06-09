@@ -32,7 +32,7 @@
     // Llamada a la Books API de Open Library
     // -------------------------------------------------------------------------
     function clearFields() {
-        ['titulo', 'autor', 'descripcion'].forEach(function (id) {
+        ['titulo', 'autor', 'genero', 'descripcion'].forEach(function (id) {
             var el = document.getElementById(id);
             if (el) {
                 el.value = '';
@@ -96,6 +96,12 @@
             descripcion = book.description.value;
         }
         setField('descripcion', descripcion);
+
+        var genero = '';
+        if (book.subjects && book.subjects.length > 0) {
+            genero = book.subjects[0].name || '';
+        }
+        setField('genero', genero);
 
         if (book.cover && book.cover.medium) {
             showCoverPreview(book.cover.medium);

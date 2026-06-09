@@ -9,9 +9,9 @@ class PromotionsSeeder extends AbstractSeed
         $this->execute('TRUNCATE TABLE promotions');
 
         $promotions = [
-            ['description' => 'Promoción de verano: 20% de descuento en novelas', 'image' => '599:placeholder-promoción-chica.png;placeholder-promoción-grande.png'],
-            ['description' => 'Semana del libro: envío gratis en compras mayores a $3000', 'image' => '599:placeholder-promoción-chica.png;placeholder-promoción-grande.png'],
-            ['description' => '2x1 en libros de ciencia ficción', 'image' => '599:placeholder-promoción-chica.png;placeholder-promoción-grande.png'],
+            ['description' => 'Promoción de verano: 20% de descuento en novelas', 'image' => 'promo-verano.svg'],
+            ['description' => 'Semana del libro: envío gratis en compras mayores a $3000', 'image' => 'promo-semana-libro.svg'],
+            ['description' => '2x1 en libros de ciencia ficción', 'image' => 'promo-2x1-scifi.svg'],
         ];
 
         $this->table('promotions')->insert($promotions)->saveData();

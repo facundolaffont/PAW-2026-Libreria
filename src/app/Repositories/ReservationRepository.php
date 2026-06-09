@@ -63,4 +63,45 @@
                 throw $e;
             }
         }
+
+        public function findAll(int $offset, int $limit): array {
+            $stmt = $this->db->prepare(
+                'SELECT r.id, r.nombre, r.email, r.telefono, r.created_at,
+                        rl.titulo, rl.autor
+                 FROM reservas r
+                 LEFT JOIN reserva_libros rl ON rl.reserva_id = r.id
+                 ORDER BY r.created_at DESC, r.id DESC, rl.id ASC
+                 LIMIT :limit OFFSET :offset'
+            );
+            $stmt->bindValue(':limit',  $limit,  \PDO::PARAM_INT);
+            $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
+            $stmt->execute();
+
+            $orders = [];
+            foreach ($stmt->fetchAll() as $row) {
+                $id = (int)$row['id'];
+                if (!isset($orders[$id])) {
+                    $orders[$id] = [
+                        'id'         => $id,
+                        'nombre'     => $row['nombre'],
+                        'email'      => $row['email'],
+                        'telefono'   => $row['telefono'],
+                        'created_at' => $row['created_at'],
+                        'libros'     => [],
+                    ];
+                }
+                if ($row['titulo'] !== null) {
+                    $orders[$id]['libros'][] = [
+                        'titulo' => $row['titulo'],
+                        'autor'  => $row['autor'] ?? '',
+                    ];
+                }
+            }
+
+            return array_values($orders);
+        }
+
+        public function countAll(): int {
+            return (int) $this->db->query('SELECT COUNT(*) FROM reservas')->fetchColumn();
+        }
     }

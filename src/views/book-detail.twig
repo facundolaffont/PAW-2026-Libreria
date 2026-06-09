@@ -81,7 +81,7 @@
     'image': 'resources/images/' ~ context.book.responsiveImage.fallbackSrc|default(''),
     'offers': {
         '@type': 'Offer',
-        'price': context.book.price|string,
+        'price': context.book.price,
         'priceCurrency': 'ARS',
         'availability': 'https://schema.org/InStock'
     }

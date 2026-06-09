@@ -117,6 +117,38 @@ article[aria-label] > p:last-of-type {
   line-height: 1.6;
 }
 
+/* Promociones dinámicas */
+ul.promotions-lista {
+    display: flex;
+    flex-direction: column;
+}
+
+article.promotion-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 24px;
+    padding: 28px 0;
+}
+
+article.promotion-item figure {
+    flex-shrink: 0;
+}
+
+article.promotion-item figure img {
+    width: 180px;
+    height: 120px;
+    object-fit: cover;
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-borde);
+}
+
+article.promotion-item > p {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-texto);
+}
+
 /* Separador */
 hr {
   border: none;

@@ -1,0 +1,93 @@
+{% extends 'base.twig' %}
+
+{% block content %}
+<main>
+    <h1>Pedidos</h1>
+
+    <p class="orders-total">
+        {{ context.total|default(0) }} pedido{{ context.total|default(0) != 1 ? 's' : '' }} en total
+    </p>
+
+    {% if context.orders|default([])|length == 0 %}
+        <p class="orders-vacio">Todavía no hay pedidos registrados.</p>
+    {% else %}
+
+        <div class="orders-tabla-wrapper" role="region" aria-label="Listado de pedidos" tabindex="0">
+            <table class="orders-tabla">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Cliente</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Teléfono</th>
+                        <th scope="col">Libros</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in context.orders %}
+                        <tr>
+                            <td>{{ order.id }}</td>
+                            <td>
+                                <time datetime="{{ order.created_at }}">
+                                    {{ order.created_at|date('d/m/Y H:i') }}
+                                </time>
+                            </td>
+                            <td>{{ order.nombre }}</td>
+                            <td>
+                                <a href="mailto:{{ order.email }}">{{ order.email }}</a>
+                            </td>
+                            <td>{{ order.telefono }}</td>
+                            <td>
+                                {% if order.libros|default([])|length > 0 %}
+                                    <ul class="orders-libros">
+                                        {% for libro in order.libros %}
+                                            <li>
+                                                <span class="orders-libro-titulo">{{ libro.titulo|default('') }}</span>
+                                                {% if libro.autor|default('') %}
+                                                    <span class="orders-libro-autor">— {{ libro.autor }}</span>
+                                                {% endif %}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% else %}
+                                    <span class="orders-sin-libros">Sin libros</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% if context.totalPages|default(1) > 1 %}
+            <nav aria-label="Paginación de pedidos">
+                <ol class="paginacion">
+                    {% if context.currentPage > 1 %}
+                        <li>
+                            <a href="orders?pagina={{ context.currentPage - 1 }}" aria-label="Página anterior">Anterior</a>
+                        </li>
+                    {% endif %}
+
+                    {% for i in 1..context.totalPages %}
+                        <li>
+                            <a
+                                href="orders?pagina={{ i }}"
+                                aria-label="Página {{ i }}"
+                                {% if i == context.currentPage %}aria-current="page"{% endif %}
+                            >{{ i }}</a>
+                        </li>
+                    {% endfor %}
+
+                    {% if context.currentPage < context.totalPages %}
+                        <li>
+                            <a href="orders?pagina={{ context.currentPage + 1 }}" aria-label="Página siguiente">Siguiente</a>
+                        </li>
+                    {% endif %}
+                </ol>
+            </nav>
+        {% endif %}
+
+    {% endif %}
+</main>
+{% endblock %}

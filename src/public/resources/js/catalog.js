@@ -225,15 +225,13 @@
             dom.listaJs.addEventListener('click', function (e) {
                 var btn = e.target.closest('button.boton-reservar-card');
                 if (!btn) return;
-                var id = btn.dataset.bookId;
-                var book = findBookById(id);
-                if (book && window.Cart) {
+                if (window.Cart) {
                     window.Cart.add({
-                        id: book.id,
-                        title: book.title,
-                        author: book.author,
-                        image: book.image,
-                        price: book.price
+                        id:     btn.dataset.bookId,
+                        title:  btn.dataset.title,
+                        author: btn.dataset.author,
+                        image:  btn.dataset.image,
+                        price:  parseFloat(btn.dataset.price)
                     });
                     flashAddedFeedback(btn);
                 }
@@ -533,6 +531,10 @@
         btn.textContent = 'Reservar';
         btn.className = 'boton-reservar-card';
         btn.dataset.bookId = book.id;
+        btn.dataset.title  = book.title;
+        btn.dataset.author = book.author;
+        btn.dataset.image  = book.image || '';
+        btn.dataset.price  = book.price;
         article.appendChild(btn);
 
         li.appendChild(article);

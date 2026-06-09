@@ -41,6 +41,11 @@ class ContextBuilder {
                 $this->reservationRepository,
                 $queryParams
             ),
+            'promotions' => $context += [
+                'promotions' => self::enrichPromotionsWithResponsiveImages(
+                    $this->promotionRepository->findAll()
+                ),
+            ],
             default => [],
         };
 

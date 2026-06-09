@@ -12,4 +12,9 @@
          * @return int ID de la reserva creada.
          */
         public function create(array $cliente, array $items): int;
+
+        /** @return array<int, array<string, mixed>> */
+        public function findAll(int $offset, int $limit): array;
+
+        public function countAll(): int;
     }

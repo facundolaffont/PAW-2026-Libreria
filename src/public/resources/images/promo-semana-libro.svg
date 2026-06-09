@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200">
+  <defs>
+    <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#5C068C"/>
+      <stop offset="100%" style="stop-color:#9C27B0"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="200" fill="url(#bg2)" rx="8"/>
+
+  <!-- Libros decorativos derecha -->
+  <rect x="310" y="40"  width="34" height="50" rx="3" fill="#CE93D8" opacity="0.6"/>
+  <rect x="314" y="44"  width="26" height="42" rx="2" fill="#BA68C8" opacity="0.4"/>
+  <line x1="314" y1="44" x2="314" y2="86" stroke="white" stroke-width="1.5" opacity="0.4"/>
+
+  <rect x="348" y="55"  width="28" height="45" rx="3" fill="#AB47BC" opacity="0.6"/>
+  <rect x="352" y="59"  width="20" height="37" rx="2" fill="#9C27B0" opacity="0.4"/>
+  <line x1="352" y1="59" x2="352" y2="96" stroke="white" stroke-width="1.5" opacity="0.4"/>
+
+  <rect x="295" y="60"  width="20" height="40" rx="3" fill="#E040FB" opacity="0.5"/>
+
+  <!-- Caja/paquete (envío) -->
+  <rect x="30" y="115" width="55" height="45" rx="4" fill="white" opacity="0.2"/>
+  <rect x="30" y="115" width="55" height="12" rx="4" fill="white" opacity="0.1"/>
+  <line x1="57" y1="115" x2="57" y2="160" stroke="white" stroke-width="1.5" opacity="0.3"/>
+  <path d="M38,121 L57,127 L76,121" stroke="white" stroke-width="1.5" fill="none" opacity="0.4"/>
+  <!-- flecha envío -->
+  <path d="M92,137 L108,137 M104,132 L108,137 L104,142" stroke="white" stroke-width="2.5"
+        stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.7"/>
+
+  <!-- Texto principal -->
+  <text x="210" y="68" font-family="Arial, sans-serif" font-size="15" font-weight="700"
+        text-anchor="middle" fill="#FFD700" letter-spacing="2">SEMANA DEL LIBRO</text>
+  <text x="210" y="105" font-family="Arial, sans-serif" font-size="36" font-weight="900"
+        text-anchor="middle" fill="white" letter-spacing="-1">Envío gratis</text>
+
+  <rect x="60" y="115" width="280" height="2" fill="white" opacity="0.3" rx="1"/>
+
+  <text x="210" y="142" font-family="Arial, sans-serif" font-size="14"
+        text-anchor="middle" fill="white" opacity="0.9">en compras mayores a</text>
+  <text x="210" y="165" font-family="Arial, sans-serif" font-size="22" font-weight="900"
+        text-anchor="middle" fill="#FFD700">$3.000</text>
+</svg>

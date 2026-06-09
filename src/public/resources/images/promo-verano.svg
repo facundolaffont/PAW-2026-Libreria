@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF8C00"/>
+      <stop offset="100%" style="stop-color:#FFD700"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="200" fill="url(#bg)" rx="8"/>
+
+  <!-- Sol -->
+  <circle cx="330" cy="55" r="38" fill="#FFF176" opacity="0.9"/>
+  <line x1="330" y1="5"  x2="330" y2="20"  stroke="#FFF176" stroke-width="4" stroke-linecap="round"/>
+  <line x1="330" y1="90" x2="330" y2="105" stroke="#FFF176" stroke-width="4" stroke-linecap="round"/>
+  <line x1="280" y1="55" x2="265" y2="55"  stroke="#FFF176" stroke-width="4" stroke-linecap="round"/>
+  <line x1="380" y1="55" x2="395" y2="55"  stroke="#FFF176" stroke-width="4" stroke-linecap="round"/>
+  <line x1="294" y1="19" x2="305" y2="30"  stroke="#FFF176" stroke-width="4" stroke-linecap="round"/>
+  <line x1="355" y1="80" x2="366" y2="91"  stroke="#FFF176" stroke-width="4" stroke-linecap="round"/>
+  <line x1="366" y1="19" x2="355" y2="30"  stroke="#FFF176" stroke-width="4" stroke-linecap="round"/>
+  <line x1="305" y1="80" x2="294" y2="91"  stroke="#FFF176" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Libro decorativo -->
+  <rect x="30" y="110" width="50" height="65" rx="3" fill="#fff" opacity="0.25"/>
+  <rect x="34" y="114" width="42" height="57" rx="2" fill="#fff" opacity="0.15"/>
+  <line x1="34" y1="114" x2="34" y2="171" stroke="#fff" stroke-width="2" opacity="0.5"/>
+
+  <!-- Texto principal -->
+  <text x="200" y="75" font-family="Arial, sans-serif" font-size="42" font-weight="900"
+        text-anchor="middle" fill="white" opacity="0.95" letter-spacing="-1">20% OFF</text>
+
+  <!-- Subtexto -->
+  <rect x="60" y="92" width="280" height="2" fill="white" opacity="0.4" rx="1"/>
+  <text x="200" y="125" font-family="Arial, sans-serif" font-size="17" font-weight="700"
+        text-anchor="middle" fill="white" opacity="0.95">en todas las novelas</text>
+  <text x="200" y="150" font-family="Arial, sans-serif" font-size="13"
+        text-anchor="middle" fill="white" opacity="0.85">Promoción de verano · Tiempo limitado</text>
+
+  <!-- Badge -->
+  <rect x="130" y="162" width="140" height="26" rx="13" fill="white" opacity="0.25"/>
+  <text x="200" y="180" font-family="Arial, sans-serif" font-size="12" font-weight="700"
+        text-anchor="middle" fill="white">¡Aprovechá ahora!</text>
+</svg>
