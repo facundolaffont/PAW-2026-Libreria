@@ -1,0 +1,53 @@
+src/public/resources/js/catalog.js
+  s_92a1a868dff3d9::t_7a6a016ad8cbd5 4-7,13-19,21-22,30,32,44,46,58,67-85,94-95,98-101,103,117,211,239-240,252,265,267-277,280-293,295-299,303,308-312,314-316,318-328,330-334,337-351,358,371,414,417,423,428,435-455,467,486,492,501-502,508,534,536-538,548,555
+src/app/Services/OpenLibraryService.php
+  s_92a1a868dff3d9::t_7a6a016ad8cbd5 1-55
+src/app/Controllers/NewBookController.php
+  s_92a1a868dff3d9::t_7a6a016ad8cbd5 6,30-31,55-62,79,99-136
+src/public/resources/js/open-library.js
+  s_92a1a868dff3d9::t_7a6a016ad8cbd5 1-163
+src/views/new-book.php
+  s_92a1a868dff3d9::t_7a6a016ad8cbd5 134,140,144-145,186
+src/config/container.php
+  s_92a1a868dff3d9::t_7a6a016ad8cbd5 5,9,67-70
+src/public/resources/styles/orders.css
+  s_92a1a868dff3d9::t_7a6a016ad8cbd5 1-212
+src/app/Application.php
+  s_92a1a868dff3d9::t_7a6a016ad8cbd5 60-65,75-76,83-86,110-130
+src/app/Controllers/ReservationController.php
+  s_92a1a868dff3d9::t_7a6a016ad8cbd5 5,25-27,59-60,62,64-65
+src/db/migrations/20260606000000_create_reservations_table.php
+  s_92a1a868dff3d9::t_7a6a016ad8cbd5 1-17
+src/app/Repositories/ReservationRepository.php
+  s_92a1a868dff3d9::t_7a6a016ad8cbd5 1-44
+src/app/Services/ContextBuilder.php
+  s_92a1a868dff3d9::t_7a6a016ad8cbd5 9,15-18,39-42,102-117
+src/app/Repositories/BookRepository.php
+  s_92a1a868dff3d9::t_7a6a016ad8cbd5 124-125
+src/views/orders.php
+  s_92a1a868dff3d9::t_7a6a016ad8cbd5 1-112
+Dockerfile
+  s_92a1a868dff3d9::t_7a6a016ad8cbd5 4-6
+src/app/Interfaces/ReservationRepositoryInterface.php
+  s_92a1a868dff3d9::t_7a6a016ad8cbd5 1-9
+src/public/resources/js/new-book-validation.js
+  s_92a1a868dff3d9::t_7a6a016ad8cbd5 80-83,129-130,136
+src/views/components/header.php
+  s_92a1a868dff3d9::t_7a6a016ad8cbd5 124
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "58284ed56f62709172465542e58996992545e9f2",
+  "prompts": {},
+  "sessions": {
+    "s_92a1a868dff3d9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "4a2848a6-a324-4800-9fdb-453800c1278b",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "rrobles_meli <renzo.robles@mercadolibre.com>"
+    }
+  }
+}
