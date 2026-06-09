@@ -86,3 +86,28 @@
     </div>
 </section>
 {% endblock %}
+
+{% block scripts %}
+{% for genre, genreBooks in context.booksByGenre|default({}) %}
+    {% set items = [] %}
+    {% for book in genreBooks %}
+        {% set items = items|merge([{
+            '@type': 'ListItem',
+            'position': loop.index,
+            'item': {
+                '@type': 'Book',
+                'name': book.title,
+                'author': book.author,
+                'image': 'resources/images/' ~ book.responsiveImage.fallbackSrc|default('default.jpg'),
+                'url': 'book-detail?id=' ~ book.id
+            }
+        }]) %}
+    {% endfor %}
+    <script type="application/ld+json">{{ {
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        'name': 'Libros de ' ~ genre,
+        'itemListElement': items
+    }|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_UNESCAPED_UNICODE') b-or constant('JSON_HEX_TAG'))|raw }}</script>
+{% endfor %}
+{% endblock %}

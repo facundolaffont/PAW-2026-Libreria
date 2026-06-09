@@ -30,3 +30,25 @@
     </article>
 </main>
 {% endblock %}
+
+{% block scripts %}
+<script type="application/ld+json">{{ {
+    '@context': 'https://schema.org',
+    '@type': 'BookStore',
+    'name': 'PAWPrints',
+    'description': 'Librería local con catálogo online. Refugio para los amantes de las buenas historias desde 2015.',
+    'image': 'resources/images/fachada1.jpg',
+    'email': 'pawprints@example.com',
+    'telephone': '+1234567890',
+    'address': {
+        '@type': 'PostalAddress',
+        'streetAddress': 'Dirección 1234',
+        'addressCountry': 'AR'
+    },
+    'sameAs': [
+        'http://www.instagram.com/',
+        'http://www.facebook.com/',
+        'http://www.x.com/'
+    ]
+}|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_UNESCAPED_UNICODE') b-or constant('JSON_HEX_TAG'))|raw }}</script>
+{% endblock %}
