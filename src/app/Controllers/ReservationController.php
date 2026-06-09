@@ -44,6 +44,11 @@
 
             $errors = $this->validate($nombre, $email, $telefono);
 
+            $items = $this->normalizeItems($libros);
+            if (empty($items)) {
+                $errors['general'] = 'Tu reserva está vacía. Agregá libros desde el catálogo.';
+            }
+
             if (!empty($errors)) {
                 View::render('reservation', 'Reserva', $this->logger,
                     [
@@ -56,13 +61,55 @@
                 return;
             }
 
-            $id = $this->reservationRepository->save($nombre, $email, $telefono, $libros);
-            $this->logger->info("Reserva guardada.", ['id' => $id, 'email' => $email]);
+            // Persiste primero: la DB pasa a ser la fuente de verdad.
+            try {
+                $this->reservationRepository->create(
+                    ['nombre' => $nombre, 'email' => $email, 'telefono' => $telefono],
+                    $items
+                );
+            } catch (\Throwable $e) {
+                View::render('reservation', 'Reserva', $this->logger, [
+                    'errors'   => ['general' => 'Hubo un problema al guardar tu reserva. Por favor, intentá nuevamente.'],
+                    'nombre'   => $nombre,
+                    'email'    => $email,
+                    'telefono' => $telefono,
+                ]);
+                return;
+            }
 
-            $this->emailService->sendReservationNotification($nombre, $email, $telefono, $libros);
+            // Mail best-effort: si falla, la reserva ya quedó guardada.
+            $enviado = $this->emailService->sendReservationNotification($nombre, $email, $telefono, $libros);
+            if (!$enviado) {
+                $this->logger->warning(
+                    "Reserva persistida pero no se pudo enviar el correo de notificación.",
+                    ['email' => $email]
+                );
+            }
 
+            // PRG: redirige en GET para evitar reenvíos al refrescar la página.
             header('Location: /reservation?enviada=1');
             exit;
+        }
+
+        /**
+         * Normaliza el array $_POST['libros'] a la forma que espera el repositorio,
+         * descartando entradas inválidas (sin título).
+         */
+        private function normalizeItems(array $libros): array {
+            $items = [];
+            foreach ($libros as $libro) {
+                if (!is_array($libro)) continue;
+                $titulo = trim((string)($libro['titulo'] ?? ''));
+                if ($titulo === '') continue;
+                $items[] = [
+                    'book_id'         => isset($libro['book_id']) && (int)$libro['book_id'] > 0 ? (int)$libro['book_id'] : null,
+                    'titulo'          => $titulo,
+                    'autor'           => trim((string)($libro['autor'] ?? '')),
+                    'cantidad'        => max(1, (int)($libro['cantidad'] ?? 1)),
+                    'precio_unitario' => max(0, (float)($libro['precio_unitario'] ?? 0)),
+                ];
+            }
+            return $items;
         }
 
         private function validate(string $nombre, string $email, string $telefono): array {

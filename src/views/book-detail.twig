@@ -49,7 +49,15 @@
                 </section>
 
                 {% if not context.isAdmin|default(false) %}
-                    <button type="button" class="boton-reservar">Agregar a mis reservas</button>
+                    <button
+                        type="button"
+                        class="boton-reservar"
+                        data-book-id="{{ context.book.id }}"
+                        data-title="{{ context.book.title|e('html_attr') }}"
+                        data-author="{{ context.book.author|e('html_attr') }}"
+                        data-image="{{ context.book.responsiveImage.fallbackSrc|default('')|e('html_attr') }}"
+                        data-price="{{ context.book.price|e('html_attr') }}"
+                    >Agregar a mis reservas</button>
                 {% endif %}
             </article>
         {% else %}

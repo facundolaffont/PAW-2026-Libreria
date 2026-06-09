@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     // Obtiene los carruseles.
                     const carousels = document.querySelectorAll("section.carrusel");
-                    
+
                     // Inicializa los carruseles únicamente con su contenedor.
                     // El efecto se define por argumento (tomado del data-effect de cada sección).
                     carousels.forEach((carrusel) => {
@@ -63,10 +63,47 @@ document.addEventListener("DOMContentLoaded", () => {
                         }
                     });
                 });
+
+                // Botones "Reservar" de los carruseles del home (delegado).
+                document.querySelectorAll("main section.carrusel .contenedor-carrusel").forEach((cont) => {
+                    cont.addEventListener("click", (e) => {
+                        const btn = e.target.closest("button.boton-reservar-card[data-book-id]");
+                        if (!btn || !window.Cart) return;
+                        const id = btn.dataset.bookId;
+                        if (!id || id === "0") return;
+
+                        window.Cart.add({
+                            id: id,
+                            title:  btn.dataset.title  || "",
+                            author: btn.dataset.author || "",
+                            image:  btn.dataset.image  || "",
+                            price:  btn.dataset.price  || ""
+                        });
+
+                        if (btn.dataset.flashing === "1") return;
+                        const original = btn.textContent;
+                        btn.dataset.flashing = "1";
+                        btn.textContent = "Agregado";
+                        btn.disabled = true;
+                        setTimeout(() => {
+                            btn.textContent = original;
+                            btn.disabled = false;
+                            delete btn.dataset.flashing;
+                        }, 1200);
+                    });
+                });
                 break;
 
             case "catalog":
                 Utilities.loadScript("Catalog", "resources/js/catalog.js");
+                break;
+
+            case "book-detail":
+                Utilities.loadScript("BookDetail", "resources/js/book-detail.js");
+                break;
+
+            case "reservation":
+                Utilities.loadScript("Reservation", "resources/js/reservation.js");
                 break;
         }
     };

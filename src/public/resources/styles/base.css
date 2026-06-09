@@ -353,6 +353,29 @@ header form {
     display: none;
 }
 
+.mis-reservas-icono-wrap {
+    position: relative;
+    display: inline-block;
+}
+
+.mis-reservas-badge {
+    position: absolute;
+    top: -6px;
+    right: 4px;
+    min-width: 1.1rem;
+    height: 1.1rem;
+    padding: 0 0.25rem;
+    box-sizing: border-box;
+    background-color: var(--color-violeta, #5c068c);
+    color: var(--color-blanco, #fff);
+    font-size: 0.7rem;
+    font-weight: bold;
+    line-height: 1.1rem;
+    text-align: center;
+    border-radius: 999px;
+    pointer-events: none;
+}
+
 header p {
     display: inline;
 }

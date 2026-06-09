@@ -41,7 +41,15 @@
                     <p>{{ book.author }}</p>
                     <p>$ {{ book.price|number_format(2, ',', '.') }}</p>
                     {% if not context.isAdmin|default(false) %}
-                        <button>Reservar</button>
+                        <button
+                            type="button"
+                            class="boton-reservar-card"
+                            data-book-id="{{ book.id }}"
+                            data-title="{{ book.title|e('html_attr') }}"
+                            data-author="{{ book.author|e('html_attr') }}"
+                            data-image="{{ book.responsiveImage.fallbackSrc|default('')|e('html_attr') }}"
+                            data-price="{{ book.price|e('html_attr') }}"
+                        >Reservar</button>
                     {% endif %}
                 </article>
             {% endfor %}
