@@ -1,0 +1,25 @@
+src/views/about-us.twig
+  s_92a1a868dff3d9::t_46f9ca4d49eabb 33-54
+src/views/book-detail.twig
+  s_92a1a868dff3d9::t_e8bdd03f9dbdb6 71-90
+src/views/catalog.twig
+  s_92a1a868dff3d9::t_7853233df637c8 236-258
+src/views/home-page.twig
+  s_92a1a868dff3d9::t_a287944d180444 89-113
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "36bfb77b3f7e9bf99be8b308219f44d667107034",
+  "prompts": {},
+  "sessions": {
+    "s_92a1a868dff3d9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "4a2848a6-a324-4800-9fdb-453800c1278b",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "rrobles_meli <renzo.robles@mercadolibre.com>"
+    }
+  }
+}
