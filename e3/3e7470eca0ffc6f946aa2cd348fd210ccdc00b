@@ -1,0 +1,28 @@
+src/views/home-page.twig
+  s_92a1a868dff3d9::t_44d1c18c98ac0f 44-52
+src/app/Interfaces/ReservationRepositoryInterface.php
+  s_92a1a868dff3d9::t_166a42c6f95fa8 3,5-15
+src/views/book-detail.twig
+  s_92a1a868dff3d9::t_f3302d0ad4e306 52-60
+src/app/Repositories/ReservationRepository.php
+  s_92a1a868dff3d9::t_166a42c6f95fa8 3,5-6,8,10,12-13,15-56,58-65
+src/views/reservation.twig
+  s_92a1a868dff3d9::t_88e70b1f0e1194 39-49,55-61
+  s_92a1a868dff3d9::t_1732d30fd63c79 121
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "e33e7470eca0ffc6f946aa2cd348fd210ccdc00b",
+  "prompts": {},
+  "sessions": {
+    "s_92a1a868dff3d9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "4a2848a6-a324-4800-9fdb-453800c1278b",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "rrobles_meli <renzo.robles@mercadolibre.com>"
+    }
+  }
+}
