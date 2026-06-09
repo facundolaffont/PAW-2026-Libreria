@@ -1,0 +1,49 @@
+src/app/Repositories/ReservationRepository.php
+  s_92a1a868dff3d9::t_558fb95b8b644f 66-106
+src/views/book-detail.twig
+  s_92a1a868dff3d9::t_ca0c63b7959903 84
+src/public/resources/styles/promotions.css
+  s_92a1a868dff3d9::t_7bfaeaf5ffd2c2 120-151
+src/public/resources/js/catalog.js
+  s_92a1a868dff3d9::t_1bb0f6406909ef 228,230-234
+  s_92a1a868dff3d9::t_f73692b051b6a1 534-537
+src/app/Interfaces/ReservationRepositoryInterface.php
+  s_92a1a868dff3d9::t_b1eb42106b028e 15-19
+src/views/promotions.twig
+  s_92a1a868dff3d9::t_f4d3ae38f71ca5 5,7-34
+src/views/orders.twig
+  s_92a1a868dff3d9::t_f4920b0e18fe2e 1-93
+src/public/resources/images/promo-2x1-scifi.svg
+  s_92a1a868dff3d9::t_8e07e1e636e64e 1-55
+src/db/seeds/PromotionsSeeder.php
+  s_92a1a868dff3d9::t_30e843e9d1ecb9 12-14
+src/app/Application.php
+  s_92a1a868dff3d9::t_33e397debe5543 24
+src/app/Services/ContextBuilder.php
+  s_92a1a868dff3d9::t_fc316d095bd421 44-48
+src/public/resources/images/promo-verano.svg
+  s_92a1a868dff3d9::t_b3fb6fd6bca4c6 1-41
+src/public/resources/images/promo-semana-libro.svg
+  s_92a1a868dff3d9::t_6a073ce129808b 1-42
+src/public/resources/js/open-library.js
+  s_92a1a868dff3d9::t_59442c5a30ae6a 35
+  s_92a1a868dff3d9::t_9fcd8a592d7b86 100-105
+src/public/resources/styles/reservation.css
+  s_92a1a868dff3d9::t_00ca0afa172843 190-193
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "631a511cccc66a184bca3ab211ca9d26382e99de",
+  "prompts": {},
+  "sessions": {
+    "s_92a1a868dff3d9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "4a2848a6-a324-4800-9fdb-453800c1278b",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "rrobles_meli <renzo.robles@mercadolibre.com>"
+    }
+  }
+}
